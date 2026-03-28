@@ -3,7 +3,6 @@
 **连接善意，守护生命。**
 将流浪动物救助从个人孤立行动，转化一个可协作、可追踪、可留痕、可激励的透明闭环。
 
----
 
 ## 🚨 Background | 背景与痛点
 
@@ -38,8 +37,16 @@
 * **灵魂绑定徽章 (SBT):** 赋予长期活跃参与者“信誉标识”，打造民间救助的信用档案。
 
 ---
-
-
+## 📂 项目结构 (Project Structure)
+```text
+src/
+├── components/       # 原子化 UI (CaseCard, MilestoneTimeline, BadgeGallery)
+├── contracts/        # 核心合约 (LifePassport.sol, DisbursementControl.sol)
+├── services/         # 业务封装 (IPFS_Uploader, Avalanche_Relayer)
+├── hooks/            # 自定义状态钩子 (useRescueFlow, useOnChainProof)
+└── types/            # 领域模型定义 (RescueCase, VolunteerRole)
+```
+---
 ## 🔧Tech Stack丨技术栈 
 * **前端:** React 19 / Next.js: 利用 SSR (服务端渲染) 优化救助案例的社交分享预览与首屏加载速度。TypeScript: 强类型驱动，确保救助状态机（发现-送医-领养）逻辑的严密性与可维护性。
 * **UI/UX 设计 :** Tailwind CSS: 原子化样式管理，实现高性能、响应式的 Mobile-First 救助现场操作界面。Web3 Aesthetic: 采用 Glassmorphism (玻璃拟态) 与深色模式，提升在高对比度户外场景下的阅读体验。
@@ -53,13 +60,4 @@
 2. **校园与社会协作：** 对接高校志愿服务体系与品牌方接口，实现公益时长认证与救助资源的高效匹配。
 3. **组织赋能：** 打造面向多 Case 的组织中台与贡献者个人主页，提升大规模救助的数字化管理能力。
 4. **AI 辅助核验：** 引入 AI 自动识别医疗票据，进一步提升资金释放的自动化效率。   
-
 ---
-## 📂 项目结构 (Project Structure)
-```text
-src/
-├── components/       # 原子化 UI (CaseCard, MilestoneTimeline, BadgeGallery)
-├── contracts/        # 核心合约 (LifePassport.sol, DisbursementControl.sol)
-├── services/         # 业务封装 (IPFS_Uploader, Avalanche_Relayer)
-├── hooks/            # 自定义状态钩子 (useRescueFlow, useOnChainProof)
-└── types/            # 领域模型定义 (RescueCase, VolunteerRole)
