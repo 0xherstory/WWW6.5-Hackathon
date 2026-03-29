@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>A fresh start · 姐妹互助DAO</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px 20px;
+            background: linear-gradient(145deg, #fff5f8 0%, #ffe9f0 100%);
+            min-height: 100vh;
+            color: #2d2f36;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #c44569, #e66767);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .sub {
+            color: #b5838a;
+            margin-bottom: 24px;
+            border-left: 3px solid #e66767;
+            padding-left: 12px;
+        }
+
+        button {
+            background: #f4a261;
+            border: none;
+            padding: 8px 18px;
+            margin: 5px 8px 5px 0;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s ease;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background: #e76f51;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .btn-outline {
+            background: #fff0f3;
+            color: #c44569;
+            border: 1px solid #f4acb7;
+        }
+
+        .btn-outline:hover {
+            background: #ffe0e7;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin: 24px 0;
+            border: 1px solid rgba(230, 103, 103, 0.2);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #c44569;
+            font-weight: 600;
+            border-bottom: 2px solid #ffe0e7;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .status-card {
+            background: #fef7f9;
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #f4a261;
+        }
+
+        input, textarea {
+            background: white;
+            border: 1px solid #ffcdd9;
+            border-radius: 28px;
+            padding: 10px 16px;
+            margin: 6px 8px 6px 0;
+            width: calc(100% - 20px);
+            max-width: 320px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #e66767;
+            box-shadow: 0 0 0 2px rgba(230,103,103,0.2);
+        }
+
+        textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .proposal-item {
+            background: #fffbfd;
+            border-radius: 24px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #ffdee4;
+        }
+
+        .proposal-title {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: #2d2f36;
+        }
+
+        .badge {
+            background: #e9ecef;
+            border-radius: 30px;
+            padding: 3px 12px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .admin-badge {
+            background: #e66767;
+            color: white;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: #ffe0e7;
+            margin: 12px 0;
+        }
+
+        #account {
+            font-family: monospace;
+            background: #2d2f36;
+            color: #f8f3f5;
+            padding: 8px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pending-item {
+            background: #fff5f7;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pending-item .addr {
+            font-family: monospace;
+            font-weight: 500;
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+
+        .pending-item button {
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            margin: 0;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 16px;
+            }
+            button {
+                padding: 6px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <h1>🌸 A fresh start</h1>
+            <div class="sub">社区互助 · 链上治理 · 姐妹同行</div>
+        </div>
+        <button id="connectBtn" style="background:#c44569;">🔗 连接钱包</button>
+    </div>
+    <div id="account" class="status-card">⚡ 未连接钱包</div>
+
+    <!-- 成员信息模块 -->
+    <div id="memberInfo" class="section" style="display:none;">
+        <h2>👭 我的身份</h2>
+        <div class="status-card">
+            <p>✅ 成员状态: <strong id="isActive" style="color:#e66767;">—</strong></p>
+            <p>👑 管理员: <strong id="isAdmin">—</strong></p>
+            <p>📝 加入申请状态: <span id="joinRequestStatus">—</span></p>
+            <p>🚪 退出申请状态: <span id="leaveRequestStatus">—</span></p>
+        </div>
+        <div class="flex-row">
+            <button id="requestJoinBtn">✨ 申请加入</button>
+            <button id="cancelJoinBtn" class="btn-outline">🗑️ 取消加入申请</button>
+            <button id="requestLeaveBtn">🚪 申请退出</button>
+            <button id="cancelLeaveBtn" class="btn-outline">↩️ 取消退出申请</button>
+        </div>
+        <div id="adminPanel" style="display:none; margin-top: 20px;">
+            <h3>🛡️ 管理员操作</h3>
+            <div class="flex-row">
+                <input type="text" id="approveAddress" placeholder="也可手动输入地址">
+                <button id="approveJoinBtn">✅ 批准加入</button>
+                <button id="rejectJoinBtn">❌ 拒绝加入</button>
+                <button id="approveLeaveBtn">✅ 批准退出</button>
+                <button id="rejectLeaveBtn">❌ 拒绝退出</button>
+                <button id="refreshRequestsBtn" class="btn-outline">🔄 刷新待审批列表</button>
+            </div>
+
+            <!-- 待审批加入申请列表 -->
+            <div style="margin-top: 20px;">
+                <h4>📥 待审批加入申请</h4>
+                <div id="pendingJoinList" style="max-height: 200px; overflow-y: auto;">
+                    <div style="color:#aaa; text-align:center;">暂无待审批加入申请</div>
+                </div>
+            </div>
+
+            <!-- 待审批退出申请列表 -->
+            <div style="margin-top: 20px;">
+                <h4>📤 待审批退出申请</h4>
+                <div id="pendingLeaveList" style="max-height: 200px; overflow-y: auto;">
+                    <div style="color:#aaa; text-align:center;">暂无待审批退出申请</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资金库模块 -->
+    <div id="treasuryInfo" class="section" style="display:none;">
+        <h2>🏦 互助资金库</h2>
+        <p>💰 总余额: <strong id="totalFunds" style="font-size:1.6rem;color:#2a9d8f;">0</strong> <span style="font-size:0.9rem;">AVAX</span></p>
+        <div class="flex-row">
+            <input type="number" id="donateAmount" placeholder="捐款金额 (AVAX)" step="0.01">
+            <button id="donateBtn">💖 爱心捐款</button>
+        </div>
+    </div>
+
+    <!-- 投票与提案模块 -->
+    <div id="votingInfo" class="section" style="display:none;">
+        <h2>🗳️ 社区治理提案</h2>
+        <div style="background:#fff0f3; border-radius: 20px; padding: 12px 18px; margin-bottom: 20px;">
+            <h3 style="margin:0 0 8px 0;">📝 发起新提案</h3>
+            <input type="text" id="recipient" placeholder="受益人地址">
+            <input type="number" id="proposalAmount" placeholder="申请金额 (AVAX)" step="0.01">
+            <textarea id="reason" placeholder="提案理由 (例如: 社区活动经费、困难援助等)"></textarea>
+            <button id="createProposalBtn">✨ 创建提案</button>
+            <div><small>📌 仅活跃成员可创建提案，投票期结束后自动可执行</small></div>
+        </div>
+        <div>
+            <h3>📋 全部提案</h3>
+            <div id="proposalsList" style="max-height: 500px; overflow-y: auto;"></div>
+            <div id="noProposalsMsg" style="color:#b5838a; text-align:center; padding:20px;">暂无提案，成为成员后发起第一个吧 🌱</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.2.0/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
