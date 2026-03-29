@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-// 作用：收钱、付钱，只允许投票合约调用付钱功能
 contract SisterhoodTreasury {
-    address public votingContract;   // 谁可以动用资金（后面设为投票合约地址）
-    uint256 public totalFunds;       // 当前总金额
-
-    mapping(address => uint256) public contributions;  // 每人捐了多少
+    address public votingContract;
+    uint256 public totalFunds;
+    mapping(address => uint256) public contributions;
 
     event DonationReceived(address indexed donor, uint256 amount);
     event FundsReleased(address indexed recipient, uint256 amount, string reason);
 
-    constructor(address _votingContract) {
-        votingContract = _votingContract;   // 部署时指定投票合约地址
+    constructor() {
+        // 无需参数，votingContract 初始为 address(0)
+    }
+
+    // 由部署者调用，将投票合约地址写入（只能设置一次）
+    function setVotingContract(address _votingContract) external {
+        require(votingContract == address(0), "Already set");
+        votingContract = _votingContract;
     }
 
     // 接收捐款（直接转账或调用 donate 函数）
