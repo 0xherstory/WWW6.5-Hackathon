@@ -1,0 +1,189 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
+import { Upload, X } from 'lucide-react';
+import Layout from '@/components/Layout/Layout';
+import { toast } from 'sonner';
+import { useCreateExhibition, useCreationFee } from '@/hooks/useContract';
+
+const CreateExhibitionPage = () => {
+  const navigate = useNavigate();
+  const { isConnected } = useAccount();
+  const { data: fee } = useCreationFee();
+  const { createExhibition } = useCreateExhibition(() => {
+    toast.success('展厅创建成功！');
+    navigate('/');
+  });
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const creationFee = fee ? Number(fee) / 1e18 : 0.001;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCoverFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCoverPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeCover = () => {
+    setCoverFile(null);
+    setCoverPreview(null);
+  };
+
+  const handleSubmit = async () => {
+    if (!isConnected) {
+      toast.error('请先连接钱包');
+      return;
+    }
+    if (!title.trim()) {
+      toast.error('请输入展厅标题');
+      return;
+    }
+    if (!content.trim()) {
+      toast.error('请输入主题介绍');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await createExhibition({
+        title: title.trim(),
+        contentHash: content.trim(),
+        coverHash: coverPreview || '',
+      });
+      toast.success('交易已发送，请等待确认...');
+    } catch (err: any) {
+      toast.error(err.message || '创建失败，请重试');
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Layout>
+      <div className="gallery-container max-w-2xl">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground mb-1">
+            创建新展厅
+          </h1>
+          <div className="h-0.5 w-16 rounded-full bg-primary mb-8" />
+
+          {/* Title */}
+          <div className="mb-6">
+            <label className="mb-1.5 block text-sm font-medium text-foreground">
+              展厅标题 <span className="text-xs text-muted-foreground">({title.length}/50)</span>
+            </label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value.slice(0, 50))}
+              placeholder="给展厅起一个吸引人的名字"
+              className="w-full rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+          </div>
+
+          {/* Cover Upload */}
+          <div className="mb-6">
+            <label className="mb-1.5 block text-sm font-medium text-foreground">封面图片</label>
+            {coverPreview ? (
+              <div className="relative aspect-video rounded-xl overflow-hidden">
+                <img src={coverPreview} alt="Cover preview" className="w-full h-full object-cover" />
+                <button
+                  onClick={removeCover}
+                  className="absolute top-2 right-2 p-1.5 rounded-full bg-foreground/50 hover:bg-foreground/70 text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div
+                onClick={() => document.getElementById('cover-input')?.click()}
+                className="aspect-video rounded-xl border-2 border-dashed flex items-center justify-center cursor-pointer transition-all border-border bg-muted/30 hover:border-primary/30"
+              >
+                <input
+                  id="cover-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                <div className="text-center text-muted-foreground">
+                  <Upload className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <span className="text-sm">点击上传封面图片</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Markdown Editor */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-sm font-medium text-foreground">主题介绍</label>
+              <div className="flex rounded-lg border border-border overflow-hidden text-xs">
+                <button
+                  onClick={() => setPreviewMode(false)}
+                  className={`px-3 py-1 transition-colors ${
+                    !previewMode ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  编辑
+                </button>
+                <button
+                  onClick={() => setPreviewMode(true)}
+                  className={`px-3 py-1 transition-colors ${
+                    previewMode ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  预览
+                </button>
+              </div>
+            </div>
+
+            {!previewMode ? (
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="使用 Markdown 格式编写展厅主题介绍..."
+                rows={10}
+                className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all resize-none font-mono"
+              />
+            ) : (
+              <div className="min-h-[240px] rounded-xl border border-border bg-card p-4 text-sm text-foreground leading-relaxed">
+                {content || <span className="text-muted-foreground">暂无内容</span>}
+              </div>
+            )}
+          </div>
+
+          {/* Submit */}
+          <div className="flex items-center justify-between rounded-xl bg-secondary/50 p-4 mb-6">
+            <div>
+              <p className="text-sm font-medium text-foreground">质押金额</p>
+              <p className="text-xs text-muted-foreground">创建展厅需要质押 AVAX</p>
+            </div>
+            <span className="text-lg font-bold text-primary">{creationFee} AVAX</span>
+          </div>
+
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !isConnected}
+            className="w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
+          >
+            {!isConnected ? '请先连接钱包' : isSubmitting ? '确认中...' : `创建展厅 · 质押 ${creationFee} AVAX`}
+          </button>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default CreateExhibitionPage;

@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vercel:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:minimax-algeng-chat-tts.oss-cn-wulanchabu.aliyuncs.com)",
+      "Bash(node -e \"const fs = require\\(''fs''\\); const json = JSON.parse\\(fs.readFileSync\\(''/Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/hergallery-contract/artifacts/contracts/HerGallery.sol/HerGallery.json'', ''utf8''\\)\\); fs.writeFileSync\\(''/Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/hergallery-contract/HerGallery.abi.json'', JSON.stringify\\(json.abi, null, 2\\)\\);\")",
+      "Read(//Users/tmaiam/workplace/github/gallery-bloom/**)",
+      "Bash(cp -r /Users/tmaiam/workplace/github/gallery-bloom/public/* /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/public/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/package.json /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/vite.config.ts /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/tailwind.config.ts /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/tsconfig.json /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/postcss.config.js /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/tsconfig.app.json /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(cp /Users/tmaiam/workplace/github/gallery-bloom/tsconfig.node.json /Users/tmaiam/workplace/github/WWW6.5-Hackathon/HerGallery/frontend/)",
+      "Bash(ls /Users/tmaiam/workplace/github/gallery-bloom/*.lock* /Users/tmaiam/workplace/github/gallery-bloom/*.lockb)",
+      "Bash(bun install:*)",
+      "Bash(node -e \"const w = require\\(''wagmi''\\); console.log\\(Object.keys\\(w\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''contract''\\) || k.toLowerCase\\(\\).includes\\(''read''\\) || k.toLowerCase\\(\\).includes\\(''write''\\)\\).slice\\(0, 20\\)\\)\")",
+      "Bash(node -e \"const w = require\\(''wagmi''\\); console.log\\(Object.keys\\(w\\).filter\\(k => [''useAccount'', ''useConnect'', ''useDisconnect'', ''useWaitForTransaction''].includes\\(k\\)\\)\\)\")",
+      "Bash(node -e \"const w = require\\(''wagmi''\\); console.log\\(Object.keys\\(w\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''connector''\\)\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(curl -s -X POST https://api.avax-test.network/ext/bc/C/rpc -H \"Content-Type: application/json\" --data '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"eth_blockNumber\"\",\"\"params\"\":[],\"\"id\"\":1}')",
+      "Bash(curl -s -X POST https://rpc.ankr.com/avalanche_fuji -H \"Content-Type: application/json\" --data '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"eth_blockNumber\"\",\"\"params\"\":[],\"\"id\"\":1}')",
+      "Bash(curl -s -X POST https://avalanche-fuji-c-chain.publicnode.com -H \"Content-Type: application/json\" --data '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"eth_blockNumber\"\",\"\"params\"\":[],\"\"id\"\":1}')"
+    ],
+    "additionalDirectories": [
+      "/Users/tmaiam/workplace/github/gallery-bloom"
+    ]
+  }
+}
