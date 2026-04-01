@@ -71,6 +71,7 @@ export function ReviewDialog({
   const analyzeReview = useCallback(async () => {
     if (!comment.trim()) {
       setAnalysis(null);
+      setIsAnalyzing(false);
       return;
     }
 
@@ -84,7 +85,7 @@ export function ReviewDialog({
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
 
       const response = await fetch("/api/analyze-review", {
         method: "POST",
@@ -107,7 +108,12 @@ export function ReviewDialog({
       const data: AnalysisResult = await response.json();
       // 仅在弹窗仍然打开时更新状态
       setAnalysis(data);
+      setIsAnalyzing(false);
     } catch (err) {
+      // 无论成功失败，都要关闭 loading 状态
+      setIsAnalyzing(false);
+      setAnalysis(null);
+
       // 仅在弹窗开启时显示错误
       if (open) {
         const errorMsg = err instanceof Error ? err.message : "分析失败，请重试";
@@ -115,12 +121,6 @@ export function ReviewDialog({
         if (!errorMsg.includes("abort") && !errorMsg.includes("cancelled")) {
           setError(errorMsg);
         }
-      }
-      setAnalysis(null);
-    } finally {
-      // 只有在弹窗仍然打开时才关闭loading状态
-      if (open) {
-        setIsAnalyzing(false);
       }
     }
   }, [comment, rating, open]);

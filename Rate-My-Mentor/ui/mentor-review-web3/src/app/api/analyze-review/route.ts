@@ -63,34 +63,42 @@ async function analyzeCommentWithMiniMax(
 
   if (!response.ok) {
     const error = await response.text();
+    console.error("MiniMax API error:", error);
     throw new Error(`MiniMax API error: ${error}`);
   }
 
   const data = await response.json();
+  console.log("MiniMax response:", JSON.stringify(data, null, 2));
 
-  // 解析 AI 返回的 JSON
+  // 解析 AI 返回的 JSON - MiniMax v2 返回格式
   const content = data.choices?.[0]?.message?.content || "";
 
+  // 尝试解析
   try {
-    // 尝试提取 JSON
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
-      return {
-        tags: result.tags || [],
-        scores: {
-          communication: Math.min(1, Math.max(0, result.scores?.communication || 0.5)),
-          technical: Math.min(1, Math.max(0, result.scores?.technical || 0.5)),
-          responsiveness: Math.min(1, Math.max(0, result.scores?.responsiveness || 0.5)),
-          overall: Math.min(1, Math.max(0, result.scores?.overall || rating / 5)),
-        },
-        sentiment: ["positive", "neutral", "negative"].includes(result.sentiment)
-          ? result.sentiment
-          : "neutral",
-      };
+    // 尝试提取 JSON（可能包含在 markdown 代码块中）
+    let jsonStr = content;
+
+    // 如果有 markdown 代码块，提取其中的内容
+    const codeBlockMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlockMatch) {
+      jsonStr = codeBlockMatch[1];
     }
+
+    const result = JSON.parse(jsonStr.trim());
+    return {
+      tags: result.tags || [],
+      scores: {
+        communication: Math.min(1, Math.max(0, result.scores?.communication || 0.5)),
+        technical: Math.min(1, Math.max(0, result.scores?.technical || 0.5)),
+        responsiveness: Math.min(1, Math.max(0, result.scores?.responsiveness || 0.5)),
+        overall: Math.min(1, Math.max(0, result.scores?.overall || rating / 5)),
+      },
+      sentiment: ["positive", "neutral", "negative"].includes(result.sentiment)
+        ? result.sentiment
+        : "neutral",
+    };
   } catch (parseError) {
-    console.error("Failed to parse AI response:", content);
+    console.error("Failed to parse AI response:", content, parseError);
   }
 
   // 如果解析失败，使用规则引擎作为后备
