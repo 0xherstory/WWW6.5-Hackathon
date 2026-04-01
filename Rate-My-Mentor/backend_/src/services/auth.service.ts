@@ -1,7 +1,9 @@
-import { emailTransporter } from '../config/email';
-import { env } from '../config/env';
-import { openaiClient } from '../config/openai';
-import { OfferOCRResult } from '../types/auth.types';
+import { encodeAbiParameters, keccak256, toBytes } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { getEmailTransporter } from '../config/email';
+import { getEnv, requireEnv } from '../config/env';
+import { getOpenAIClient } from '../config/openai';
+import { IssuedCredential, OfferOCRResult } from '../types/auth.types';
 import { generateOTP, getOTPExpireTime } from '../utils/otp.util';
 
 // 内存存储OTP（黑客松MVP够用，生产环境可以换Redis）
@@ -13,20 +15,22 @@ export class AuthService {
     // 生成6位验证码
     const otpCode = generateOTP();
     // 计算过期时间
-    const expireAt = getOTPExpireTime(Number(env.OTP_EXPIRE_MINUTES));
+    const OTP_EXPIRE_MINUTES = getEnv('OTP_EXPIRE_MINUTES', '10');
+    const expireAt = getOTPExpireTime(Number(OTP_EXPIRE_MINUTES));
 
     // 把验证码存起来，后续验证用
     otpStore.set(email.toLowerCase(), { code: otpCode, expireAt });
 
     // 发送邮件
-    await emailTransporter.sendMail({
-      from: `"Rate My Mentor" <${env.EMAIL_USER}>`,
+    const EMAIL_USER = getEnv('EMAIL_USER', '');
+    await getEmailTransporter().sendMail({
+      from: `"Rate My Mentor" <${EMAIL_USER}>`,
       to: email,
       subject: '你的Rate My Mentor邮箱验证验证码',
       html: `
         <h3>欢迎使用 Rate My Mentor</h3>
         <p>你的邮箱验证验证码是：<b style="font-size: 20px;">${otpCode}</b></p>
-        <p>验证码有效期为 ${env.OTP_EXPIRE_MINUTES} 分钟，请勿泄露给他人</p>
+        <p>验证码有效期为 ${OTP_EXPIRE_MINUTES} 分钟，请勿泄露给他人</p>
         <p>如非本人操作，请忽略此邮件</p>
       `,
     });
@@ -55,8 +59,9 @@ export class AuthService {
 
   // 3. OCR识别Offer Letter，提取公司信息
   static async extractOfferInfo(base64Image: string): Promise<OfferOCRResult> {
-    const response = await openaiClient.chat.completions.create({
-      model: env.OPENAI_MODEL,
+    const OPENAI_MODEL = getEnv('OPENAI_MODEL', 'gpt-4o');
+    const response = await getOpenAIClient().chat.completions.create({
+      model: OPENAI_MODEL,
       messages: [
         {
           role: 'user',
@@ -91,5 +96,63 @@ export class AuthService {
     if (!result) throw new Error('OCR识别失败，无返回结果');
 
     return JSON.parse(result) as OfferOCRResult;
+  }
+
+  // 4. 签发链上可验证凭证（OCR 通过后调用）
+  static async issueCredential(
+    userAddress: string,
+    ocrResult: OfferOCRResult
+  ): Promise<IssuedCredential> {
+    const { BACKEND_PRIVATE_KEY } = requireEnv(['BACKEND_PRIVATE_KEY'] as const);
+
+    const credentialId = crypto.randomUUID();
+    const companyId = ocrResult.companyName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    const credentialHash = keccak256(toBytes(credentialId));
+
+    // 有效期：优先用 OCR 抽取的到期日，否则默认一年
+    let expireTime: number;
+    if (ocrResult.expireDate) {
+      const parsed = Date.parse(ocrResult.expireDate);
+      expireTime = !isNaN(parsed)
+        ? Math.floor(parsed / 1000)
+        : Math.floor(Date.now() / 1000) + 365 * 24 * 3600;
+    } else {
+      expireTime = Math.floor(Date.now() / 1000) + 365 * 24 * 3600;
+    }
+
+    // 签名方式与 generateSignature.ts / testMintSBT.ts 完全一致：
+    // keccak256(abi.encode(credentialId, userAddress, companyId, credentialHash, expireTime))
+    const encoded = encodeAbiParameters(
+      [
+        { type: 'string' },
+        { type: 'address' },
+        { type: 'string' },
+        { type: 'bytes32' },
+        { type: 'uint256' },
+      ],
+      [
+        credentialId,
+        userAddress as `0x${string}`,
+        companyId,
+        credentialHash as `0x${string}`,
+        BigInt(expireTime),
+      ]
+    );
+    const messageHash = keccak256(encoded);
+    const account = privateKeyToAccount(BACKEND_PRIVATE_KEY as `0x${string}`);
+    const signature = await account.signMessage({ message: { raw: messageHash } });
+
+    return {
+      credentialId,
+      companyId,
+      companyName: ocrResult.companyName,
+      credentialHash,
+      expireTime,
+      signature,
+    };
   }
 }

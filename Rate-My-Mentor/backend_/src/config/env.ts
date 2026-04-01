@@ -4,32 +4,51 @@ import { z } from 'zod';
 // 加载.env文件
 dotenv.config();
 
-// 环境变量校验规则，确保必填项不缺失
-const envSchema = z.object({
+// 仅校验“基础启动项”：确保服务能启动
+const baseEnvSchema = z.object({
   PORT: z.string().default('3001'),
   NODE_ENV: z.enum(['development', 'production']).default('development'),
-  OPENAI_API_KEY: z.string().min(1, 'OpenAI API Key 必填'),
-  OPENAI_MODEL: z.string().default('gpt-4o'),
-  PINATA_API_KEY: z.string().min(1, 'Pinata API Key 必填'),
-  PINATA_API_SECRET: z.string().min(1, 'Pinata API Secret 必填'),
-  EMAIL_HOST: z.string().min(1, '邮箱SMTP地址 必填'),
-  EMAIL_PORT: z.string().default('465'),
-  EMAIL_USER: z.string().min(1, '发件邮箱 必填'),
-  EMAIL_PASS: z.string().min(1, '邮箱授权码 必填'),
-  OTP_EXPIRE_MINUTES: z.string().default('10'),
-  CONTRACT_ADDRESS: z.string().min(1, '合约地址 必填'),
-  CONTRACT_ABI: z.string().default('[]'),
-  RPC_URL: z.string().min(1, '区块链RPC地址 必填'),
-  CHAIN_ID: z.string().default('11155111'),
-  ENCRYPTION_KEY: z.string().length(32, '加密密钥必须为32位字符串'),
 });
 
-// 校验并导出环境变量
-const parsedEnv = envSchema.safeParse(process.env);
-
-if (!parsedEnv.success) {
-  console.error('❌ 环境变量校验失败，请检查.env文件：', parsedEnv.error.format());
+const parsedBaseEnv = baseEnvSchema.safeParse(process.env);
+if (!parsedBaseEnv.success) {
+  console.error('❌ 基础环境变量校验失败，请检查.env文件：', parsedBaseEnv.error.format());
   process.exit(1);
 }
 
-export const env = parsedEnv.data;
+export const env = parsedBaseEnv.data;
+
+function isMissing(v: unknown): boolean {
+  return v == null || (typeof v === 'string' && v.trim().length === 0);
+}
+
+/**
+ * 按需校验：在具体功能调用时检查必需环境变量
+ * - 缺失时抛出明确错误（不会影响服务启动）
+ */
+export function requireEnv<K extends string>(
+  keys: readonly K[]
+): Record<K, string> {
+  const missing: string[] = [];
+  const out = {} as Record<K, string>;
+  for (const k of keys) {
+    const v = process.env[k];
+    if (isMissing(v)) missing.push(k);
+    else out[k] = String(v);
+  }
+  if (missing.length > 0) {
+    throw new Error(
+      `缺少环境变量：${missing.join(', ')}。请在 backend_/.env 中补齐后重试。`
+    );
+  }
+  return out;
+}
+
+/**
+ * 带默认值的读取（可选项）
+ */
+export function getEnv(key: string, defaultValue: string): string {
+  const v = process.env[key];
+  if (v == null || String(v).trim().length === 0) return defaultValue;
+  return String(v);
+}

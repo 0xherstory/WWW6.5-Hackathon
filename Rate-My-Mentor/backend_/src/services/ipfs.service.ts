@@ -1,4 +1,4 @@
-import { pinataClient } from '../config/pinata';
+import { getPinataClient } from '../config/pinata';
 import { encryptContent, decryptContent } from '../utils/encryption.util';
 
 export class IPFSService {
@@ -8,7 +8,7 @@ export class IPFSService {
     const encryptedContent = encryptContent(rawContent);
 
     // 上传到Pinata IPFS
-    const uploadResult = await pinataClient.pinJSONToIPFS(
+    const uploadResult = await getPinataClient().pinJSONToIPFS(
       {
         encryptedContent,
         uploadTime: new Date().toISOString(),

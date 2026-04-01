@@ -1,5 +1,5 @@
-import { openaiClient } from '../config/openai';
-import { env } from '../config/env';
+import { getOpenAIClient } from '../config/openai';
+import { getEnv } from '../config/env';
 import { AIReviewResult, ReviewDimension } from '../types/review.types';
 
 export class AIService {
@@ -33,8 +33,9 @@ export class AIService {
       }
     `;
 
-    const response = await openaiClient.chat.completions.create({
-      model: env.OPENAI_MODEL,
+    const OPENAI_MODEL = getEnv('OPENAI_MODEL', 'gpt-4o');
+    const response = await getOpenAIClient().chat.completions.create({
+      model: OPENAI_MODEL,
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       response_format: { type: 'json_object' },

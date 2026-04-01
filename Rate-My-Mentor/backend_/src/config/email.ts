@@ -1,20 +1,27 @@
 import nodemailer from 'nodemailer';
-import { env } from './env';
+import { getEnv, requireEnv } from './env';
 
-// 初始化邮箱发送客户端，用于发送OTP验证码
-export const emailTransporter = nodemailer.createTransport({
-  host: env.EMAIL_HOST,
-  port: Number(env.EMAIL_PORT),
-  secure: true, // 465端口必须用true
-  auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
-  },
-});
+let _emailTransporter: nodemailer.Transporter | null = null;
 
-// 启动时验证邮箱服务是否可用
-emailTransporter.verify().then(() => {
-  console.log('📧 邮箱服务连接成功');
-}).catch((err) => {
-  console.error('❌ 邮箱服务连接失败，请检查配置：', err);
-});
+// 懒加载：调用 OTP/邮件功能时才校验邮箱配置
+export function getEmailTransporter(): nodemailer.Transporter {
+  if (_emailTransporter) return _emailTransporter;
+  const { EMAIL_HOST, EMAIL_USER, EMAIL_PASS } = requireEnv([
+    'EMAIL_HOST',
+    'EMAIL_USER',
+    'EMAIL_PASS',
+  ] as const);
+  const EMAIL_PORT = getEnv('EMAIL_PORT', '465');
+
+  _emailTransporter = nodemailer.createTransport({
+    host: EMAIL_HOST,
+    port: Number(EMAIL_PORT),
+    secure: true, // 465端口必须用true
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
+
+  return _emailTransporter;
+}

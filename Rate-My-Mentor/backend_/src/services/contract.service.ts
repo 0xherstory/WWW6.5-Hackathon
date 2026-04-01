@@ -1,4 +1,4 @@
-import { CONTRACT_ADDRESS, publicClient } from '../config/contract';
+import { getContractAddress, getPublicClient } from '../config/contract';
 import { OnChainReview, CredentialSBT } from '../types/contract.types';
 
 // 合约ABI，合约同学写好后替换这里的内容
@@ -57,6 +57,8 @@ export class ContractService {
   // 1. 验证用户是否持有有效的SBT凭证
   static async checkUserHasSBT(walletAddress: `0x${string}`): Promise<boolean> {
     try {
+      const publicClient = getPublicClient();
+      const CONTRACT_ADDRESS = getContractAddress();
       const hasSBT = await publicClient.readContract({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -73,6 +75,8 @@ export class ContractService {
   // 2. 获取用户的SBT凭证信息
   static async getUserSBTInfo(walletAddress: `0x${string}`): Promise<CredentialSBT | null> {
     try {
+      const publicClient = getPublicClient();
+      const CONTRACT_ADDRESS = getContractAddress();
       const sbtInfo = await publicClient.readContract({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -96,6 +100,8 @@ export class ContractService {
   // 3. 获取某个公司的所有链上评价
   static async getCompanyReviews(companyName: string): Promise<OnChainReview[]> {
     try {
+      const publicClient = getPublicClient();
+      const CONTRACT_ADDRESS = getContractAddress();
       const reviews = await publicClient.readContract({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -113,6 +119,8 @@ export class ContractService {
   // 4. 获取公司的评价总数
   static async getCompanyReviewCount(companyName: string): Promise<number> {
     try {
+      const publicClient = getPublicClient();
+      const CONTRACT_ADDRESS = getContractAddress();
       const count = await publicClient.readContract({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,

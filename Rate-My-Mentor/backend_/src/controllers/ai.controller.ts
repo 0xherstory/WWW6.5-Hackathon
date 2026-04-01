@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AIService } from '../services/ai.service';
+import { AuthService } from '../services/auth.service';
 import { successResponse, errorResponse } from '../utils/response.util';
 
 export class AIController {
@@ -23,7 +24,7 @@ export class AIController {
       const { base64Image } = req.body;
       if (!base64Image) return res.status(400).json(errorResponse('图片不能为空'));
 
-      const result = await AIService.extractOfferInfo(base64Image);
+      const result = await AuthService.extractOfferInfo(base64Image);
       res.json(successResponse(result, 'OCR识别成功'));
     } catch (error) {
       console.error('OCR识别失败：', error);

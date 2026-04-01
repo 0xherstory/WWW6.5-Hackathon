@@ -1,5 +1,5 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { sepolia } from "wagmi/chains";
+import { avalancheFuji } from "wagmi/chains";
 
 const projectId =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "demo-placeholder";
@@ -7,6 +7,6 @@ const projectId =
 export const wagmiConfig = getDefaultConfig({
   appName: "Rate My Mentor",
   projectId,
-  chains: [sepolia],
+  chains: [avalancheFuji],
   ssr: true,
 });

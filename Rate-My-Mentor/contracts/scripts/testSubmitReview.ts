@@ -2,7 +2,10 @@ import { ethers } from "ethers";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const REVIEW_CONTRACT_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+// Fuji deployed address (see contracts/ignition/deployments/chain-43113/deployed_addresses.json)
+const REVIEW_CONTRACT_ADDRESS =
+  process.env.REVIEW_CONTRACT_ADDRESS ??
+  "0x3845300491F10FC8C87694C5c8D7D62bFc12e1DC";
 
 const REVIEW_ABI = [
   "function submitReview(uint256 _credentialId, bytes32 _targetId, string calldata _targetType, uint8 _overallScore, uint8[5] calldata _dimScores, bytes32 _cid) external",
@@ -15,7 +18,7 @@ async function main() {
 
   const review = new ethers.Contract(REVIEW_CONTRACT_ADDRESS, REVIEW_ABI, wallet);
 
-  const tokenId = 1n;
+  const tokenId = BigInt(process.env.SBT_TOKEN_ID ?? "1");
   console.log("使用 tokenId:", tokenId.toString());
 
   const targetId = ethers.keccak256(ethers.toUtf8Bytes("mentor:0x1234"));
