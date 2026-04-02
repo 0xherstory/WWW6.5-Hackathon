@@ -1,6 +1,15 @@
+//这个脚本在做：把链上分散的、偏底层的评价数据，整理成前端“公司声誉页/看板”可以直接消费的结构化结果。
+//负责读数据、聚合数据、变形成适合展示的数据。
+//编写逻辑：
+// 拉取链上 review 列表
+// 根据每条 review 的 ipfsCid
+// 去 IPFS 把真实内容拿回来
+// 解密
+// 把真实评价原文返回给前端
+
 import { DimensionScore, CompanyReputation, ReviewDimension } from '../types/review.types';
 import { ContractService } from './contract.service';
-import { IPFSService } from './ipfs.service';
+//import { IPFSService } from './ipfs.service';
 
 export class ReputationService {
   // 1. 获取公司的完整声誉数据（用于声誉看板，已删除导师姓名）
@@ -27,28 +36,28 @@ export class ReputationService {
       };
     }
 
-    // 3. 计算综合平均分
-    const totalScore = reviews.reduce((sum, review) => sum + Number(review.overallScore), 0);
-    const overallAverageScore = Number((totalScore / reviewCount).toFixed(1));
+   // 3. 计算综合平均分
+   const totalScore = reviews.reduce((sum, review) => sum + Number(review.overallScore), 0);
+   const overallAverageScore = Number((totalScore / reviewCount).toFixed(1));
 
     // 4. 计算每个维度的平均分（简化版）
-    const dimensionAverageScores: DimensionScore[] = Object.values(ReviewDimension).map((dimension) => ({
+   const dimensionAverageScores: DimensionScore[] = Object.values(ReviewDimension).map(
+     (dimension) => ({
       dimension,
       score: overallAverageScore,
       comment: '',
-    }));
+    })
+  );
 
-    // 5. 处理最新评价：只有查看者持有SBT，才返回解密后的详细内容
-    const latestReviews = reviews.slice(-5).reverse(); // 取最新5条
-    const hasSBT = viewerWalletAddress
-      ? await ContractService.checkUserHasSBT(viewerWalletAddress)
-      : false;
+    // 5. 处理最新评价
+   const latestReviews = reviews.slice(-5).reverse(); // 取最新5条
 
     // 6. 给前端返回的评价数据
-    const processedReviews = await Promise.all(
+   const processedReviews = await Promise.all(
       latestReviews.map(async (review) => {
-        // 没有SBT，只返回公开数据
-        if (!hasSBT) {
+        try {
+          const rawContent = await IPFSService.getDecryptedReview(review.ipfsCid);
+
           return {
             walletAddress: review.reviewer,
             mentorCompany: review.mentorCompany,
@@ -62,42 +71,27 @@ export class ReputationService {
             },
             ipfsCid: review.ipfsCid,
           };
-        }
-
-        // 有SBT，解密返回详细内容
-        try {
-          const rawContent = await IPFSService.getDecryptedReview(review.ipfsCid);
-          return {
-            walletAddress: review.reviewer,
-            mentorCompany: review.mentorCompany,
-            rawReviewContent: rawContent,
-            aiResult: {
-              overallScore: review.overallScore,
-              dimensionScores: [],
-              summary: '',
-              tags: [],
-              isQualified: true,
-            },
-            ipfsCid: review.ipfsCid,
-          };
         } catch (error) {
+          console.error(`获取评价原文失败，cid=${review.ipfsCid}:`, error);
+
           return {
             walletAddress: review.reviewer,
             mentorCompany: review.mentorCompany,
             rawReviewContent: '内容获取失败',
             aiResult: {
-              overallScore: review.overallScore,
+              overallScore: Number(review.overallScore),
               dimensionScores: [],
               summary: '',
               tags: [],
               isQualified: true,
+              unqualifiedReason: '',
             },
             ipfsCid: review.ipfsCid,
           };
         }
       })
     );
-
+        
     // 7. 返回完整的声誉数据
     return {
       mentorCompany,
