@@ -20,7 +20,7 @@
 | 用途 | 路径 |
 |------|------|
 | 本地开发目录 | `d:/OneDrive/creating/2512-Vibe Coding/MyWorks/web3-plant-oh-card/SanctuaryProtocol` |
-| 黑客松仓库 | clone 到哪里就用哪里，建议 `d:/WWW6.5-Hackathon` |
+| 黑客松仓库 | `D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon` |
 | 项目在黑客松仓库中的位置 | `SanctuaryProtocol/`（仓库根目录下，不在 projects/ 内） |
 | fork 来源 | `https://github.com/0xherstory/WWW6.5-Hackathon` |
 | 你的 fork | `https://github.com/Tenlossiby/WWW6.5-Hackathon` |
@@ -33,8 +33,8 @@
 ### 1. Clone 你的 fork
 
 ```bash
-git clone https://github.com/Tenlossiby/WWW6.5-Hackathon.git "d:/WWW6.5-Hackathon"
-cd "d:/WWW6.5-Hackathon"
+git clone https://github.com/Tenlossiby/WWW6.5-Hackathon.git "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
+cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
 ```
 
 ### 2. 添加上游仓库（用于同步最新变化）
@@ -43,13 +43,7 @@ cd "d:/WWW6.5-Hackathon"
 git remote add upstream https://github.com/0xherstory/WWW6.5-Hackathon.git
 ```
 
-### 3. 创建项目分支
-
-```bash
-git checkout -b SanctuaryProtocol
-```
-
-### 4. 执行第一次同步（见下方"日常同步"步骤）
+### 3. 执行第一次同步（见下方"日常同步"步骤）
 
 ---
 
@@ -59,25 +53,19 @@ git checkout -b SanctuaryProtocol
 ### 步骤 1：同步上游最新代码
 
 ```bash
-cd "d:/WWW6.5-Hackathon"
+cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
 git fetch upstream
 git merge upstream/main
 ```
 
-### 步骤 2：切换到项目分支
-
-```bash
-git checkout SanctuaryProtocol
-```
-
-### 步骤 3：复制文件（排除不需要的文件）
+### 步骤 2：复制文件（排除不需要的文件）
  
 **只复制 v2.2 活跃代码，排除旧版遗留文件：**
  
 **Windows PowerShell（推荐）：**
 ```powershell
 $source = "d:\OneDrive\creating\2512-Vibe Coding\MyWorks\web3-plant-oh-card\SanctuaryProtocol"
-$dest = "d:\WWW6.5-Hackathon\SanctuaryProtocol"
+$dest = "D:\BaiduSyncdisk\study\2602Hersolidity\WWW6.5-Hackathon\SanctuaryProtocol"
 
 # 创建目标目录
 New-Item -ItemType Directory -Force -Path $dest
@@ -178,7 +166,7 @@ Write-Host "Sync complete!"
 **Git Bash / WSL（备选）：**
 ```bash
 SOURCE="d:/OneDrive/creating/2512-Vibe Coding/MyWorks/web3-plant-oh-card/SanctuaryProtocol"
-DEST="d:/WWW6.5-Hackathon/SanctuaryProtocol"
+DEST="D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon/SanctuaryProtocol"
 
 mkdir -p "$DEST"
 
@@ -210,18 +198,18 @@ rm -rf "$DEST/docs"
 cp -r "$SOURCE/Documents" "$DEST/docs"
 ```
 
-### 步骤 4：提交
+### 步骤 3：提交
  
 ```bash
-cd "d:/WWW6.5-Hackathon"
+cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
 git add SanctuaryProtocol/
 git status   # 检查要提交的文件是否正确
 git commit -m "Update SanctuaryProtocol - <简短描述变更内容>"
 ```
 
-### 步骤 5：推送
+### 步骤 4：推送
 ```bash
-git push -u origin SanctuaryProtocol
+git push
 ```
 
 ---
@@ -232,7 +220,7 @@ git push -u origin SanctuaryProtocol
 2. 点击 **"Compare & pull request"**
 3. 确认：
    - **base**: `0xherstory/WWW6.5-Hackathon` 的 `main`
-   - **compare**: `Tenlossiby/WWW6.5-Hackathon` 的 `SanctuaryProtocol`
+   - **compare**: `Tenlossiby/WWW6.5-Hackathon` 的 `main`
 4. 填写标题和描述
 5. 提交 PR
 
@@ -249,16 +237,13 @@ git push -u origin SanctuaryProtocol
 我需要把我的项目同步到一个黑客松 fork 仓库，请帮我执行以下操作：
 
 1. Clone 我的 fork：
-   git clone https://github.com/Tenlossiby/WWW6.5-Hackathon.git "d:/WWW6.5-Hackathon"
+   git clone https://github.com/Tenlossiby/WWW6.5-Hackathon.git "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
 
 2. 进入目录，添加上游：
-   cd "d:/WWW6.5-Hackathon"
+   cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
    git remote add upstream https://github.com/0xherstory/WWW6.5-Hackathon.git
 
-3. 创建项目分支：
-   git checkout -b SanctuaryProtocol
-
-4. 然后执行"同步操作"（见 Prompt 2）
+3. 然后执行"同步操作"（见 Prompt 2）
 
 完成后告诉我状态。
 ```
@@ -270,30 +255,28 @@ git push -u origin SanctuaryProtocol
 帮我执行项目同步，把本地开发代码复制到黑客松仓库。
 
 源目录：d:\OneDrive\creating\2512-Vibe Coding\MyWorks\web3-plant-oh-card\SanctuaryProtocol
-目标目录：d:\WWW6.5-Hackathon\SanctuaryProtocol
+目标目录：D:\BaiduSyncdisk\study\2602Hersolidity\WWW6.5-Hackathon\SanctuaryProtocol
 
 步骤：
 1. 先在黑客松仓库拉取上游最新代码：
-   cd "d:/WWW6.5-Hackathon" && git fetch upstream && git merge upstream/main
+   cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon" && git fetch upstream && git merge upstream/main
 
-2. 切换到项目分支：git checkout SanctuaryProtocol
-
-3. 复制文件到 SanctuaryProtocol/，注意：
+2. 复制文件到 SanctuaryProtocol/，注意：
    - 只复制 v2.2 活跃代码，排除旧版遗留文件
    - 必须排除：node_modules, .next, .git, .claude, artifacts, cache, typechain-types, coverage
    - 必须排除：.env.local, .env（包含私钥和敏感信息，绝对不能上传）
    - 必须排除旧版文件：contracts/SanctuaryProtocol.sol, contracts/PlantOHCard.sol, contracts/IVerifier.sol, contracts/ISanctuaryProtocol.sol, scripts/deploy.ts, test/PlantOHCard.test.js, fix-chain.ps1, fix-sanctuary.ps1
 
-4. 特殊映射：源目录的 Documents/ → 目标的 docs/
+3. 特殊映射：源目录的 Documents/ → 目标的 docs/
 
-5. 需要复制的目录：contracts/interfaces/, contracts/plugins/, src/, public/, messages/
-6. 需要复制的合约文件：contracts/SanctuaryProtocolV2.sol
-7. 需要复制的脚本：scripts/ 目录下所有 .ts 文件（排除 deploy.ts）
-8. 需要复制的配置文件：package.json, hardhat.config.ts, tsconfig.json, next.config.js, tailwind.config.ts, postcss.config.js, .gitignore, .env.example, .env.local.example, vitest.config.ts, README.md
+4. 需要复制的目录：contracts/interfaces/, contracts/plugins/, src/, public/, messages/
+5. 需要复制的合约文件：contracts/SanctuaryProtocolV2.sol
+6. 需要复制的脚本：scripts/ 目录下所有 .ts 文件（排除 deploy.ts）
+7. 需要复制的配置文件：package.json, hardhat.config.ts, tsconfig.json, next.config.js, tailwind.config.ts, postcss.config.js, .gitignore, .env.example, .env.local.example, vitest.config.ts, README.md
 
-9. 复制完成后：git add SanctuaryProtocol/
-10. 运行 git status 让我检查
-11. 不要自动 commit，等我确认后再提交
+8. 复制完成后：git add SanctuaryProtocol/
+9. 运行 git status 让我检查
+10. 不要自动 commit，等我确认后再提交
 
 注意事项：
 - 只修改 SanctuaryProtocol/ 目录下的文件
@@ -307,7 +290,7 @@ git push -u origin SanctuaryProtocol
 ```
 帮我在黑客松仓库提交并推送代码：
 
-cd "d:/WWW6.5-Hackathon"
+cd "D:/BaiduSyncdisk/study/2602Hersolidity/WWW6.5-Hackathon"
 
 提交信息格式：
 git commit -m "Update SanctuaryProtocol - <一句话描述这次更新了什么>"
@@ -316,7 +299,7 @@ git commit -m "Update SanctuaryProtocol - <一句话描述这次更新了什么>
 git push
 
 注意：
-- 确保当前在 SanctuaryProtocol 分支上
+- 确保当前在 main 分支上
 - 确保只提交了 SanctuaryProtocol/ 下的文件
 - 推送前让我确认 commit 信息
 ```
@@ -328,7 +311,7 @@ git push
 帮我用 gh CLI 创建一个 PR：
 
 仓库：Tenlossiby/WWW6.5-Hackathon
-分支：SanctuaryProtocol → main
+分支：main → main（fork main 到 upstream main）
 上游：0xherstory/WWW6.5-Hackathon
 
 PR 标题：SanctuaryProtocol - Web3 植物系疗愈 OH 卡系统

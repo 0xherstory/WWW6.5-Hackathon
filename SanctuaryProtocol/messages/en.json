@@ -615,13 +615,49 @@
     "title": "Counseling Service",
     "subtitle": "One-on-one support from professional counselors",
     "comingSoon": "Coming Soon",
-    "description": "We are partnering with professional counseling teams to create a safe and private online consultation experience. Once launched, beneficiaries will be able to access free psychological support through the Sanctuary Protocol."
+    "description": "We are partnering with professional counseling teams to create a safe and private online consultation experience. Once launched, beneficiaries will be able to access free psychological support through the Sanctuary Protocol.",
+    "features": {
+      "matching": {
+        "title": "Smart Matching",
+        "desc": "Match with suitable counselors based on your needs"
+      },
+      "privacy": {
+        "title": "Privacy Protection",
+        "desc": "End-to-end encryption, anonymous consultation"
+      },
+      "funding": {
+        "title": "Fund Disbursement",
+        "desc": "Automatic settlement through Sanctuary Protocol"
+      },
+      "verified": {
+        "title": "Verified Credentials",
+        "desc": "All counselors undergo rigorous verification"
+      }
+    }
   },
   "cbt": {
     "title": "CBT Cognitive Behavioral Therapy",
     "subtitle": "Structured journaling to reshape thinking patterns",
     "comingSoon": "Coming soon, stay tuned",
-    "description": "CBT (Cognitive Behavioral Therapy) is a scientifically validated psychotherapy method. We are developing an interactive CBT journaling tool to help users identify and change negative thinking patterns."
+    "description": "CBT (Cognitive Behavioral Therapy) is a scientifically validated psychotherapy method. We are developing an interactive CBT journaling tool to help users identify and change negative thinking patterns.",
+    "features": {
+      "journal": {
+        "title": "Mood Journal",
+        "desc": "Record and track emotional changes"
+      },
+      "restructure": {
+        "title": "Cognitive Restructuring",
+        "desc": "Identify and change negative thinking patterns"
+      },
+      "tracking": {
+        "title": "Progress Tracking",
+        "desc": "Visualize your healing journey"
+      },
+      "exercises": {
+        "title": "Interactive Exercises",
+        "desc": "Guided CBT technique training"
+      }
+    }
   },
   "guestMode": {
     "notice": "You are experiencing in guest mode. Data is only saved in your local browser. Connect your wallet to permanently save your healing journey."

@@ -226,7 +226,7 @@ export default function LaunchPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-2 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-[10px] sm:text-xs font-medium truncate">{locale === 'zh' ? card.cnName : card.enName}</p>
+                  <p className="text-[10px] sm:text-xs font-medium truncate">{locale === 'zh' ? card.cnName : card.name}</p>
                   <p className="text-white/70 text-[8px] sm:text-[10px]">{t('launch.gallery.track')} {card.trackId} · {t('launch.gallery.stage')} {card.stage}</p>
                 </div>
                 {hoveredCard === card.id && (

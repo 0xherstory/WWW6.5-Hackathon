@@ -8,7 +8,9 @@
 
 ## 🇨🇳 中文
 
-一款去金融化的植物主题 Web3 心理投射（OH卡）系统，结合**去中心化互助协议**，为边缘群体提供绝对安全的心理疗愈工具与无审查的资金支持渠道。
+**Sanctuary（庇护所）** 是一个去中心化的互助协议平台，为边缘群体提供安全、私密、无审查的心理疗愈庇护空间。平台采用**插件化架构**，支持多种心理疗愈范式（如植物OH卡自助、心理咨询匹配、CBT日记等），通过智能合约实现资金的透明托管与自动拨付，构建可持续的"资助者-受助者"互助生态。
+
+> 🏛️ **核心理念**: 庇护所不仅是疗愈工具，更是一个**去中心化的社会支持基础设施**——让每个人都能在需要时获得庇护，在有能力时成为他人的守护者。
 
 ---
 
@@ -50,12 +52,65 @@
 | **合约** | Solidity 0.8.24 + Hardhat 2.28 + OpenZeppelin 5 |
 | **网络** | Avalanche Fuji Testnet (Chain ID: 43113) |
 
+#### 系统架构
+
+```mermaid
+graph TD
+    %% 样式定义
+    classDef donor fill:#e8f4f8,stroke:#3b82f6,stroke-width:2px;
+    classDef protocol fill:#1e293b,stroke:#f8fafc,stroke-width:3px,color:#fff;
+    classDef plugin fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef user fill:#ecfdf5,stroke:#10b981,stroke-width:2px;
+    classDef provider fill:#fffbeb,stroke:#f59e0b,stroke-width:2px;
+
+    %% 模块划分
+    subgraph InputLayer [资金源泉 Input]
+        Donor[💎 资助者 / 藏家 <br/>- 提供资金与流动性 -]:::donor
+    end
+
+    subgraph L1 [底层基础设施 Layer 1]
+        Sanctuary((🏦 Sanctuary Protocol <br/> 庇护所中央金库 & 验证路由)):::protocol
+    end
+
+    subgraph L2 [范式插件层 Plugins / Layer 2]
+        PluginA[🌿 PlantOHCard <br/> 植物OH卡自助范式<br/>✅ 已上线]:::plugin
+        PluginB[💬 CounselorService <br/> 心理咨询匹配范式 <br/> ⏳ 待市场需求]:::plugin
+        PluginC[✍️ CBTJournal <br/> 认知行为疗法自助书写范式<br/> ⏳ 待市场需求]:::plugin
+    end
+
+    subgraph OutputLayer [价值接收端 Output]
+        Recipient[🙋‍♀️ 受助者 / 边缘群体 <br/>- 消耗福利额度，接受疗愈 -]:::user
+        Counselor[🤝 心理咨询师 <br/>- 提供专业人工疗愈服务 -]:::provider
+    end
+
+    %% 资金流 (粗实线，绿色)
+    Donor == "1. 捐赠资金 (稳定币/ETH)" ===> Sanctuary
+    Sanctuary == "3A. 拨付生存互助金 (Payee = 受助者)" ===> Recipient
+    Sanctuary == "3B. 拨付咨询服务费 (Payee = 咨询师)" ===> Counselor
+    Sanctuary == "3C. 拨付觉察鼓励金 (Payee = 受助者)" ===> Recipient
+
+    %% 交互/行为流 (虚线，蓝色)
+    Recipient -. "2A. 使用OH卡进行觉察 (产生PoW)" .-> PluginA
+    Recipient -. "2B. 接受咨询师心理疏导" .-> PluginB
+    Counselor -. "2B. 向受助者提供专业疏导" .-> PluginB
+    Recipient -. "2C. 完成CBT日记记录" .-> PluginC
+
+    %% 跨合约指令流 (实线，红色)
+    PluginA -- "触发打款指令" --> Sanctuary
+    PluginB -- "触发打款指令" --> Sanctuary
+    PluginC -- "触发打款指令" --> Sanctuary
+```
+
+> 💡 **插件化设计**: Sanctuary Protocol 采用模块化架构，任何开发者都可以基于 `ISanctuaryPlugin` 接口开发新的疗愈范式插件。当前仅实现了 [🌿 PlantOHCard](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/launch) 插件，[💬 CounselorService](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/counselor) 和 [✍️ CBTJournal](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/cbt) 将根据市场需求后续开发。
+
 #### 合约架构
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    SanctuaryProtocolV2                       │
-│                   (资金池托管合约 - UUPS)                     │
+│              (庇护所中央金库 - UUPS 可升级)                   │
+│                                                              │
+│  🔌 插件兼容层: 支持任意符合 ISanctuaryPlugin 接口的合约       │
 ├─────────────────────────────────────────────────────────────┤
 │  - 资金池管理 (接收捐赠、拨付资金)                            │
 │  - 插件系统 (注册、审计、沙盒期、激活)                        │
@@ -64,16 +119,19 @@
 │  - 多次领取支持 (非捐赠者可多次领取)                         │
 └─────────────────────────────────────────────────────────────┘
                               │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  PlantOHCardPlugin                           │
-│                   (疗愈插件合约)                              │
-├─────────────────────────────────────────────────────────────┤
-│  - 疗愈记录存储 (卡牌选择、日记哈希、时长)                    │
-│  - 工作量证明验证                                           │
-│  - 自动计算拨付金额                                         │
-│  - 调用协议合约请求资金拨付                                  │
-└─────────────────────────────────────────────────────────────┘
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ PlantOHCard   │    │ CounselorSvc  │    │  CBTJournal   │
+│   Plugin      │    │   Plugin      │    │   Plugin      │
+│   ✅ 已上线    │    │  ⏳ 待开发     │    │  ⏳ 待开发     │
+│   (/launch)   │    │  (/counselor) │    │    (/cbt)     │
+│               │    │               │    │               │
+│ - OH卡疗愈记录 │    │ - 咨询匹配    │    │ - CBT日记    │
+│ - PoW验证    │    │ - 服务验证    │    │ - 完成验证    │
+│ - 自动拨付   │    │ - 自动拨付    │    │ - 自动拨付    │
+└───────────────┘    └───────────────┘    └───────────────┘
 ```
 
 ---
@@ -252,7 +310,9 @@ MIT License
 
 ## 🇬🇧 English
 
-A defi-less, plant-themed Web3 psychological projection (OH Card) system combined with a **decentralized mutual aid protocol**, providing absolutely safe psychological healing tools and censorship-free financial support channels for marginalized communities.
+**Sanctuary** is a decentralized mutual aid protocol platform that provides a safe, private, and censorship-free sanctuary space for psychological healing to marginalized communities. The platform adopts a **plugin-based architecture** supporting multiple healing paradigms (such as Plant OH Card self-help, counseling matching, CBT journaling, etc.), enabling transparent fund custody and automatic disbursement through smart contracts, building a sustainable "donor-recipient" mutual aid ecosystem.
+
+> 🏛️ **Core Philosophy**: Sanctuary is not just a healing tool, but a **decentralized social support infrastructure** — where everyone can find shelter when in need, and become a guardian for others when able.
 
 ---
 
@@ -294,12 +354,66 @@ A defi-less, plant-themed Web3 psychological projection (OH Card) system combine
 | **Contracts** | Solidity 0.8.24 + Hardhat 2.28 + OpenZeppelin 5 |
 | **Network** | Avalanche Fuji Testnet (Chain ID: 43113) |
 
+#### System Architecture
+
+```mermaid
+graph TD
+    %% Style Definitions
+    classDef donor fill:#e8f4f8,stroke:#3b82f6,stroke-width:2px;
+    classDef protocol fill:#1e293b,stroke:#f8fafc,stroke-width:3px,color:#fff;
+    classDef plugin fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef user fill:#ecfdf5,stroke:#10b981,stroke-width:2px;
+    classDef provider fill:#fffbeb,stroke:#f59e0b,stroke-width:2px;
+
+    %% Module Groups
+    subgraph InputLayer [Funding Source]
+        Donor[💎 Donor / Collector <br/>- Provides funds & liquidity -]:::donor
+    end
+
+    subgraph L1 [Layer 1 Infrastructure]
+        Sanctuary((🏦 Sanctuary Protocol <br/> Central Treasury & Validation Router)):::protocol
+    end
+
+    subgraph L2 [Plugin Layer / Layer 2]
+        PluginA[🌿 PlantOHCard <br/> Self-Help Paradigm<br/>✅ Live]:::plugin
+        PluginB[💬 CounselorService <br/> Counseling Match Paradigm <br/> ⏳ Pending Market Demand]:::plugin
+        PluginC[✍️ CBTJournal <br/> CBT Self-Writing Paradigm<br/> ⏳ Pending Market Demand]:::plugin
+    end
+
+    subgraph OutputLayer [Value Recipients]
+        Recipient[🙋‍♀️ Recipient / Marginalized Group <br/>- Consumes welfare quota, receives healing -]:::user
+        Counselor[🤝 Psychotherapist <br/>- Provides professional healing services -]:::provider
+    end
+
+    %% Fund Flow (thick solid, green)
+    Donor == "1. Donate Funds (Stablecoin/ETH)" ===> Sanctuary
+    Sanctuary == "3A. Disburse Mutual Aid (Payee = Recipient)" ===> Recipient
+    Sanctuary == "3B. Disburse Counseling Fee (Payee = Therapist)" ===> Counselor
+    Sanctuary == "3C. Disburse Awareness Reward (Payee = Recipient)" ===> Recipient
+
+    %% Interaction/Behavior Flow (dashed, blue)
+    Recipient -. "2A. Use OH Card for Awareness (Generate PoW)" .-> PluginA
+    Recipient -. "2B. Receive Counseling" .-> PluginB
+    Counselor -. "2B. Provide Professional Guidance" .-> PluginB
+    Recipient -. "2C. Complete CBT Journal" .-> PluginC
+
+    %% Cross-Contract Instruction Flow (solid, red)
+    PluginA -- "Trigger Payout" --> Sanctuary
+    PluginB -- "Trigger Payout" --> Sanctuary
+    PluginC -- "Trigger Payout" --> Sanctuary
+```
+
+> 💡 **Plugin Architecture**: Sanctuary Protocol uses a modular design where any developer can create new healing paradigm plugins by implementing the `ISanctuaryPlugin` interface. Currently only [🌿 PlantOHCard](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/launch) is live, while [💬 CounselorService](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/counselor) and [✍️ CBTJournal](https://github.com/Tenlossiby/WWW6.5-Hackathon/tree/main/src/app/%5Blocale%5D/cbt) will be developed based on market demand.
+
 #### Contract Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    SanctuaryProtocolV2                       │
-│                   (Fund Pool Escrow - UUPS)                  │
+│              (Sanctuary Central Treasury - UUPS)             │
+│                                                              │
+│  🔌 Plugin Compatibility: Supports any contract implementing │
+│                           ISanctuaryPlugin interface         │
 ├─────────────────────────────────────────────────────────────┤
 │  - Fund Pool Management (receive donations, disburse funds)  │
 │  - Plugin System (register, audit, sandbox, activate)        │
@@ -308,16 +422,19 @@ A defi-less, plant-themed Web3 psychological projection (OH Card) system combine
 │  - Multiple Claims Support (non-donors can claim repeatedly) │
 └─────────────────────────────────────────────────────────────┘
                               │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  PlantOHCardPlugin                           │
-│                   (Healing Plugin Contract)                   │
-├─────────────────────────────────────────────────────────────┤
-│  - Healing Record Storage (card selection, journal hash, dur) │
-│  - Proof of Work Verification                                │
-│  - Automatic Payout Calculation                              │
-│  - Protocol Contract Interaction for Fund Disbursement       │
-└─────────────────────────────────────────────────────────────┘
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ PlantOHCard   │    │ CounselorSvc  │    │  CBTJournal   │
+│   Plugin      │    │   Plugin      │    │   Plugin      │
+│   ✅ Live      │    │  ⏳ Pending    │    │  ⏳ Pending    │
+│   (/launch)   │    │  (/counselor) │    │    (/cbt)     │
+│               │    │               │    │               │
+│ - OH Records │    │ - Matching    │    │ - CBT Journal │
+│ - PoW Verify │    │ - Verification│    │ - Completion  │
+│ - Auto Payout│    │ - Auto Payout │    │ - Auto Payout │
+└───────────────┘    └───────────────┘    └───────────────┘
 ```
 
 ---

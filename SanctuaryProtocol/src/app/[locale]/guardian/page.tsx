@@ -88,7 +88,7 @@ export default function GuardianPage() {
           txHash: txHash,
           timestamp: Date.now(),
           amount: donationAmount,
-          description: t('guardian.transactionDescription', { cardName: locale === 'zh' ? card?.cnName : card?.enName || selectedCard, amount: donationAmount })
+          description: t('guardian.transactionDescription', { cardName: locale === 'zh' ? card?.cnName : card?.name || selectedCard, amount: donationAmount })
         });
         localStorage.setItem(storageKey, JSON.stringify(existingTransactions));
         
@@ -253,14 +253,14 @@ export default function GuardianPage() {
                   >
                     <Image
                       src={card.imagePath}
-                      alt={locale === 'zh' ? card.cnName : card.enName}
+                      alt={locale === 'zh' ? card.cnName : card.name}
                       fill
                       className="object-cover"
                       draggable={false}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
-                      <p className="text-tag font-medium truncate">{locale === 'zh' ? card.cnName : card.enName}</p>
+                      <p className="text-tag font-medium truncate">{locale === 'zh' ? card.cnName : card.name}</p>
                       <p className="text-tag text-white/70">{t('launch.gallery.track')} {card.trackId} · {t('launch.gallery.stage')} {card.stage}</p>
                     </div>
                     {selectedCard === card.id && (
@@ -362,7 +362,7 @@ export default function GuardianPage() {
                     <div className="aspect-[9/16] relative overflow-hidden">
                       <Image
                         src={card.imagePath}
-                        alt={locale === 'zh' ? card.cnName : card.enName}
+                        alt={locale === 'zh' ? card.cnName : card.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         draggable={false}
@@ -370,7 +370,7 @@ export default function GuardianPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                      <p className="text-small font-medium">{locale === 'zh' ? card.cnName : card.enName}</p>
+                      <p className="text-small font-medium">{locale === 'zh' ? card.cnName : card.name}</p>
                       <p className="text-tag text-white/70">
                         {formatDate(item.timestamp)}
                       </p>
