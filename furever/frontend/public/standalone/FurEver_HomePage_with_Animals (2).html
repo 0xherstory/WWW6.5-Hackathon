@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FurEver - 流浪动物链上生命护照</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --warm-cream: #FFF8F0;
+  --soft-orange: #FF8C42;
+  --deep-orange: #E6713A;
+  --warm-brown: #5C3D2E;
+  --soft-pink: #FFE4D6;
+  --mint: #7ECEC1;
+  --deep-mint: #5BB5A6;
+  --light-mint: #E8F6F3;
+  --text-dark: #3D2B1F;
+  --text-mid: #7A6458;
+  --text-light: #A89488;
+  --card-shadow: 0 8px 32px rgba(92, 61, 46, 0.08);
+  --card-hover: 0 12px 48px rgba(92, 61, 46, 0.15);
+  --gradient-warm: linear-gradient(135deg, #FF8C42 0%, #FFB347 100%);
+  --gradient-mint: linear-gradient(135deg, #7ECEC1 0%, #5BB5A6 100%);
+  --chain-blue: #4A90D9;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans SC', sans-serif; background: var(--warm-cream); color: var(--text-dark); overflow-x: hidden; }
+
+/* NAV - placeholder, Rae will unify */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,248,240,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--warm-brown); }
+.nav-logo span { color: var(--soft-orange); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { text-decoration: none; font-size: 0.85rem; color: var(--text-mid); font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--soft-orange); font-weight: 700; }
+.nav-wallet { background: var(--gradient-warm); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans SC', sans-serif; }
+
+/* HERO */
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; position: relative; background: linear-gradient(180deg, #FFF8F0 0%, #FFE4D6 50%, #E8F6F3 100%); }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E6713A' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.5; }
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-paw { font-size: 4rem; margin-bottom: 1rem; animation: pawBounce 2s ease-in-out infinite; }
+@keyframes pawBounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(5deg); } }
+.hero-title { font-family: 'Nunito', sans-serif; font-size: 4rem; font-weight: 900; color: var(--warm-brown); margin-bottom: 0.5rem; letter-spacing: -1px; }
+.hero-title span { color: var(--soft-orange); }
+.hero-subtitle { font-size: 1.3rem; color: var(--text-mid); margin-bottom: 0.5rem; font-weight: 300; line-height: 1.8; }
+.hero-tagline { font-size: 1rem; color: var(--text-light); margin-bottom: 2.5rem; font-weight: 300; }
+.hero-stats { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.stat { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 16px; padding: 1.2rem 1.8rem; border: 1px solid rgba(255,140,66,0.15); }
+.stat-number { font-family: 'Nunito', sans-serif; font-size: 1.8rem; font-weight: 900; color: var(--soft-orange); }
+.stat-label { font-size: 0.8rem; color: var(--text-light); margin-top: 0.2rem; }
+.hero-cta { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gradient-warm); color: white; padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(255,140,66,0.3); }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,140,66,0.4); }
+.scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: var(--text-light); font-size: 0.85rem; animation: scrollFloat 2s ease-in-out infinite; }
+@keyframes scrollFloat { 0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; } 50% { transform: translateX(-50%) translateY(8px); opacity: 0.5; } }
+
+/* SECTIONS */
+.section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-label { font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--soft-orange); margin-bottom: 0.8rem; }
+.section-title { font-family: 'Nunito', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 1.5rem; line-height: 1.3; }
+
+/* PROBLEM */
+.problem-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.problem-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: var(--card-shadow); border-top: 4px solid var(--soft-orange); transition: transform 0.3s ease; }
+.problem-card:hover { transform: translateY(-4px); }
+.problem-icon { font-size: 2rem; margin-bottom: 1rem; }
+.problem-card h3 { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 0.8rem; }
+.problem-card p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; }
+
+/* SOLUTION */
+.solution-section { padding: 5rem 2rem; background: white; }
+.solution-container { max-width: 1100px; margin: 0 auto; }
+.solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.solution-card { background: var(--warm-cream); border-radius: 20px; padding: 2rem; border-left: 4px solid var(--mint); transition: transform 0.3s; }
+.solution-card:hover { transform: translateY(-4px); }
+.solution-icon { font-size: 2rem; margin-bottom: 1rem; }
+.solution-card h3 { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 0.8rem; }
+.solution-card p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.7; }
+
+/* LIFECYCLE */
+.lifecycle-section { padding: 5rem 2rem; background: linear-gradient(180deg, #E8F6F3 0%, #FFF8F0 100%); }
+.lifecycle-container { max-width: 1100px; margin: 0 auto; }
+.lifecycle-flow { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; gap: 0.5rem; flex-wrap: wrap; }
+.lifecycle-step { flex: 1; min-width: 150px; text-align: center; padding: 1.5rem 0.8rem; background: white; border-radius: 16px; box-shadow: var(--card-shadow); transition: transform 0.3s; }
+.lifecycle-step:hover { transform: translateY(-4px); }
+.lifecycle-step-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.lifecycle-step-title { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 0.3rem; }
+.lifecycle-step-desc { font-size: 0.72rem; color: var(--text-mid); line-height: 1.5; }
+.lifecycle-arrow { font-size: 1.5rem; color: var(--soft-orange); flex-shrink: 0; }
+.lifecycle-label { text-align: center; margin-top: 1.5rem; }
+.lifecycle-label-tag { display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+.label-now { background: var(--soft-pink); color: var(--deep-orange); }
+.label-future { background: #E8E4F0; color: #7A6B8A; }
+
+/* INTERACTIVE LIFECYCLE */
+.lc-steps-row { display: flex; justify-content: center; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0; }
+.lc-step { text-align: center; padding: 1.2rem 1rem; background: white; border-radius: 16px; box-shadow: var(--card-shadow); cursor: pointer; transition: all 0.3s; min-width: 120px; flex: 1; max-width: 160px; position: relative; border: 2px solid transparent; }
+.lc-step:hover { transform: translateY(-4px); box-shadow: var(--card-hover); }
+.lc-step.active { border-color: var(--soft-orange); background: var(--soft-pink); transform: translateY(-4px); }
+.lc-step-badge { position: absolute; top: -8px; right: -4px; padding: 0.15rem 0.5rem; border-radius: 8px; font-size: 0.6rem; font-weight: 800; font-family: 'Nunito', sans-serif; }
+.lc-badge-now { background: var(--soft-pink); color: var(--deep-orange); }
+.lc-badge-future { background: #E8E4F0; color: #7A6B8A; }
+.lc-step-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+.lc-step-title { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--warm-brown); }
+.lc-arrow { font-size: 1.2rem; color: var(--soft-orange); flex-shrink: 0; }
+
+.lc-detail-container { margin-top: 1.5rem; }
+.lc-detail { display: none; animation: detailIn 0.4s ease; }
+.lc-detail.active { display: block; }
+@keyframes detailIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.lc-detail-inner { display: flex; gap: 2rem; background: white; border-radius: 20px; padding: 2rem; box-shadow: var(--card-shadow); border-top: 3px solid var(--soft-orange); }
+.lc-detail-text { flex: 1.2; }
+.lc-detail-visual { flex: 0.8; display: flex; align-items: center; justify-content: center; }
+.lc-detail-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+.lc-detail-step-num { background: var(--soft-pink); color: var(--deep-orange); padding: 0.2rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
+.lc-detail-header h3 { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--warm-brown); }
+.lc-detail-text p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.8rem; }
+.lc-detail-text p strong { color: var(--text-dark); }
+.lc-detail-meta { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; }
+.lc-meta-item { font-size: 0.78rem; color: var(--text-light); padding: 0.3rem 0; }
+
+/* Mock cards inside lifecycle detail */
+.lc-mock-card { width: 220px; border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.05); }
+.lc-mock-header { background: var(--gradient-warm); color: white; padding: 0.6rem 1rem; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 800; }
+.lc-mock-body { padding: 1rem; background: var(--warm-cream); }
+.lc-mock-avatar { font-size: 2.5rem; text-align: center; margin-bottom: 0.3rem; }
+.lc-mock-name { font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 0.4rem; }
+.lc-mock-tags { display: flex; gap: 0.3rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.lc-mock-tag { padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.6rem; font-weight: 600; }
+.lc-mock-timeline { margin-top: 0.5rem; }
+.lc-mock-tl-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--text-mid); padding: 0.25rem 0; opacity: 0; animation: tlItemIn 0.4s ease forwards; }
+.lc-mock-tl-item:nth-child(1) { animation-delay: 0.3s; }
+.lc-mock-tl-item:nth-child(2) { animation-delay: 0.7s; }
+.lc-mock-tl-item:nth-child(3) { animation-delay: 1.1s; }
+.lc-mock-tl-item:nth-child(4) { animation-delay: 1.5s; }
+@keyframes tlItemIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.lc-mock-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Dynamic status indicator */
+.status-indicator { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; transition: all 0.4s ease; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; animation: statusPulse 2s ease-in-out infinite; }
+@keyframes statusPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+.status-text { font-size: 0.78rem; transition: all 0.3s ease; }
+.status-fade-in { animation: statusFadeIn 0.4s ease; }
+@keyframes statusFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Counter animation */
+.live-counter { font-family: 'Nunito', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--soft-orange); }
+.live-recent { font-size: 0.65rem; color: var(--text-light); margin-top: 0.3rem; transition: all 0.3s; }
+.live-recent.updated { animation: statusFadeIn 0.4s ease; }
+
+/* NFT card generation */
+.nft-generating { opacity: 0.3; filter: blur(2px); transition: all 0.8s ease; }
+.nft-ready { opacity: 1; filter: blur(0); }
+.nft-stamp { opacity: 0; transition: all 0.5s ease 0.8s; }
+.nft-stamp.visible { opacity: 1; }
+.nft-shine { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s ease; }
+.nft-card-wrap { position: relative; overflow: hidden; }
+.nft-card-wrap.ready .nft-shine { left: 100%; }
+
+/* Heartbeat */
+.heartbeat-icon { display: inline-block; animation: heartbeat 1.5s ease-in-out infinite; }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.2); } 28% { transform: scale(1); } 42% { transform: scale(1.15); } 56% { transform: scale(1); } }
+.heartbeat-warning { color: var(--deep-orange); animation: warningFlash 1s ease-in-out infinite; }
+@keyframes warningFlash { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Calendar dots */
+.mini-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 0.5rem; }
+.cal-day { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--text-light); position: relative; }
+.cal-day.has-event { background: var(--light-mint); color: var(--deep-mint); font-weight: 700; cursor: pointer; }
+.cal-day.has-event:hover { background: var(--mint); color: white; }
+.cal-day.has-event-orange { background: var(--soft-pink); color: var(--deep-orange); font-weight: 700; }
+.cal-tooltip { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--warm-brown); color: white; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.6rem; white-space: nowrap; z-index: 10; }
+.cal-day:hover .cal-tooltip { display: block; }
+
+/* ROADMAP */
+.roadmap-section { padding: 4rem 2rem 5rem; background: var(--warm-cream); }
+.roadmap-container { max-width: 800px; margin: 0 auto; }
+.roadmap-items { margin-top: 2rem; }
+.roadmap-item { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; align-items: flex-start; }
+.roadmap-phase { flex-shrink: 0; width: 80px; height: 80px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.7rem; color: white; }
+.phase-now { background: var(--gradient-warm); }
+.phase-next { background: var(--gradient-mint); }
+.phase-future { background: linear-gradient(135deg, #A8A0D0 0%, #8B82B8 100%); }
+.roadmap-phase-icon { font-size: 1.5rem; margin-bottom: 0.2rem; }
+.roadmap-content { flex: 1; background: white; border-radius: 16px; padding: 1.5rem; box-shadow: var(--card-shadow); }
+.roadmap-content h3 { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; color: var(--warm-brown); margin-bottom: 0.5rem; }
+.roadmap-content p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.7; }
+.roadmap-tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.65rem; font-weight: 700; margin-left: 0.5rem; }
+.tag-demo { background: var(--soft-pink); color: var(--deep-orange); }
+.tag-v2 { background: var(--light-mint); color: var(--deep-mint); }
+.tag-v3 { background: #E8E4F0; color: #7A6B8A; }
+
+/* TECH */
+.tech-section { padding: 4rem 2rem; background: white; }
+.tech-container { max-width: 900px; margin: 0 auto; text-align: center; }
+.tech-grid { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-top: 2rem; }
+.tech-item { background: var(--warm-cream); border-radius: 14px; padding: 1.2rem 1.8rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--card-shadow); transition: transform 0.3s; }
+.tech-item:hover { transform: translateY(-3px); }
+.tech-item-icon { font-size: 1.5rem; }
+.tech-item-info { text-align: left; }
+.tech-item-name { font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; color: var(--warm-brown); }
+.tech-item-desc { font-size: 0.7rem; color: var(--text-light); }
+
+/* WHY WEB3 */
+.why-section { padding: 4rem 2rem; background: var(--warm-cream); }
+.why-container { max-width: 800px; margin: 0 auto; }
+.why-box { background: #F0F4FF; border-radius: 20px; padding: 2rem; border: 1px solid #D4DFFF; margin-top: 1.5rem; }
+.why-box p { font-size: 0.9rem; color: var(--text-dark); line-height: 1.8; margin-bottom: 1rem; }
+.why-box p:last-child { margin-bottom: 0; }
+.why-highlight { color: var(--chain-blue); font-weight: 700; }
+
+/* FOOTER */
+.footer { padding: 3rem 2rem; text-align: center; background: var(--warm-brown); color: rgba(255,255,255,0.6); }
+.footer-logo { font-family: 'Nunito', sans-serif; font-size: 1.5rem; font-weight: 900; color: white; margin-bottom: 0.5rem; }
+.footer-tagline { font-size: 0.9rem; margin-bottom: 1.5rem; color: rgba(255,255,255,0.5); }
+.footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+.footer-links a:hover { color: white; }
+.footer-copy { font-size: 0.75rem; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.5rem; }
+  .hero-subtitle { font-size: 1rem; }
+  .hero-stats { gap: 1rem; }
+  .problem-cards, .solution-grid { grid-template-columns: 1fr; }
+  .lifecycle-flow { flex-direction: column; }
+  .lifecycle-arrow { transform: rotate(90deg); }
+  .section-title { font-size: 1.6rem; }
+  .nav-links { display: none; }
+  .roadmap-item { flex-direction: column; align-items: center; text-align: center; }
+  .roadmap-phase { width: 60px; height: 60px; }
+  .lc-step { min-width: 80px; padding: 0.8rem 0.5rem; }
+  .lc-step-icon { font-size: 1.3rem; }
+  .lc-step-title { font-size: 0.7rem; }
+  .lc-arrow { font-size: 0.9rem; }
+  .lc-detail-inner { flex-direction: column; }
+  .lc-detail-visual { justify-content: center; }
+}
+
+/* ══════════════════════════════════════════
+   ANIMALS SECTION
+══════════════════════════════════════════ */
+:root {
+  --orange:   #FF8C42;
+  --orange-d: #E6713A;
+  --brown-d:  #5C3D2E;
+  --blue:     #4A90D9;
+  --blue-l:   #EBF4FF;
+  --r-card:   20px;
+  --r-btn:    50px;
+  --r-tag:    20px;
+}
+.animals-section { padding: 5rem 2rem; background: #fff; }
+.animals-section .section-container { max-width: 1160px; margin: 0 auto; }
+.section-title-centered { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(1.6rem,4vw,2.2rem); color: var(--warm-brown); text-align: center; margin-bottom: 8px; }
+.section-sub { text-align: center; color: var(--text-mid); font-size: 0.95rem; margin-bottom: 2.5rem; }
+.animals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 24px; }
+
+/* Animal card */
+.animal-card { background: #fff; border-radius: var(--r-card); box-shadow: var(--card-shadow); overflow: hidden; transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); }
+.animal-card.visible { opacity: 1; transform: translateY(0); transition: opacity .5s ease, transform .5s ease, box-shadow .25s; }
+.animal-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover); }
+.animal-card.featured { border: 2px solid rgba(255,140,66,.3); position: relative; }
+.gender-badge { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 1rem; font-weight: 700; color: #fff; }
+.gender-f { background: #F9A8C9; }
+.gender-m { background: #80B8F0; }
+.animal-body { padding: 18px 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.animal-name { font-family: 'Noto Sans SC'; font-weight: 700; font-size: 1.25rem; color: var(--warm-brown); }
+.animal-meta { font-size: 0.85rem; color: var(--text-mid); }
+.animal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.animal-desc { font-size: 0.88rem; color: var(--text-mid); flex: 1; line-height: 1.7; }
+.animal-actions { display: flex; gap: 8px; margin-top: 4px; }
+.animal-chain { padding: 10px 20px 14px; background: var(--blue-l); display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--blue); font-family: 'Courier New', monospace; border-top: 1px solid rgba(74,144,217,.12); }
+.chain-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; animation: statusPulse 2s ease-in-out infinite; }
+.featured-ribbon { position: absolute; top: 16px; left: -2px; background: var(--orange); color: #fff; font-size: .72rem; font-weight: 700; font-family: 'Nunito', sans-serif; padding: 4px 12px 4px 10px; border-radius: 0 20px 20px 0; z-index: 2; box-shadow: 0 2px 8px rgba(255,140,66,.4); letter-spacing: .04em; }
+.tag { display: inline-block; padding: 3px 12px; border-radius: var(--r-tag); font-size: .78rem; font-weight: 700; font-family: 'Noto Sans SC', sans-serif; }
+.tag-mint { background: #D4F5F1; color: #3AA99A; }
+.tag-orange { background: #FFE8D6; color: var(--orange-d); }
+.tag-blue { background: var(--blue-l); color: var(--blue); }
+.tag-red { background: #FFE8E8; color: #C45A5A; }
+.btn-a { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 18px; border-radius: var(--r-btn); font-size: .88rem; font-weight: 700; font-family: 'Nunito', sans-serif; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s; text-decoration: none; flex: 1; }
+.btn-a:hover { transform: translateY(-2px); box-shadow: var(--card-hover); }
+.btn-mint-a { background: var(--mint); color: #fff; }
+.btn-mint-a:hover { background: var(--deep-mint); }
+.btn-outline-a { background: transparent; border: 2px solid var(--orange); color: var(--orange); }
+.btn-outline-a:hover { background: var(--orange); color: #fff; }
+
+/* Photo flip */
+.photo-flip { position: relative; cursor: pointer; user-select: none; border-radius: var(--r-card) var(--r-card) 0 0; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+.photo-flip .layer-before { width: 100%; height: auto; display: block; }
+.photo-flip .layer-after { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .22s ease; pointer-events: none; }
+.photo-flip.flipped .layer-after { opacity: 1; }
+.photo-flip .layer-label { position: absolute; bottom: 10px; left: 10px; font-size: .68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; font-family: 'Noto Sans SC', sans-serif; pointer-events: none; transition: opacity .28s ease; z-index: 3; }
+.photo-flip .label-before { background: rgba(92,61,46,.72); color: #fff; }
+.photo-flip .label-after { background: rgba(126,206,193,.85); color: #fff; opacity: 0; }
+.photo-flip.flipped .label-before { opacity: 0; }
+.photo-flip.flipped .label-after { opacity: 1; }
+.photo-flip .flip-hint { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.52)); color: #fff; font-size: .72rem; font-weight: 700; text-align: center; padding: 24px 0 10px; pointer-events: none; opacity: 0; transition: opacity .22s; letter-spacing: .05em; z-index: 3; }
+.photo-flip:hover .flip-hint { opacity: 1; }
+@keyframes photoFlipIn { 0%{transform:scale(1) rotateY(0)} 40%{transform:scale(.94) rotateY(-18deg)} 100%{transform:scale(1) rotateY(0)} }
+@keyframes photoFlipOut { 0%{transform:scale(1) rotateY(0)} 40%{transform:scale(.94) rotateY(18deg)} 100%{transform:scale(1) rotateY(0)} }
+.photo-flip.flipping-on { animation: photoFlipIn .38s cubic-bezier(.36,.07,.19,.97) both; }
+.photo-flip.flipping-off { animation: photoFlipOut .38s cubic-bezier(.36,.07,.19,.97) both; }
+
+/* Story btn */
+.story-btn { display: flex; align-items: center; justify-content: space-between; flex: 1; background: linear-gradient(135deg,#FFF3E8,#FFE8D0); border: none; border-radius: 12px; padding: 9px 14px; cursor: pointer; font-family: 'Noto Sans SC', sans-serif; font-size: .82rem; font-weight: 700; color: var(--orange-d); transition: background .2s, transform .15s; margin-top: 0; }
+.story-btn:hover { background: linear-gradient(135deg,#FFE8D0,#FFD9B5); transform: translateY(-1px); }
+.story-btn .s-icon { font-size: .85rem; }
+
+/* ══════════════════════════════════════════
+   STORY MODAL
+══════════════════════════════════════════ */
+#storyModal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(26,15,10,.88); align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(6px); }
+#storyModal.open { display: flex; animation: modalIn .3s ease; }
+@keyframes modalIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+.sm-frame { position: relative; width: min(360px,100%); height: min(720px,90vh); background: var(--warm-cream); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 80px rgba(0,0,0,.5); }
+
+/* Story modal topbar */
+.sm-bar { flex-shrink: 0; background: rgba(255,248,240,.95); backdrop-filter: blur(10px); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,140,66,.1); }
+.sm-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .9rem; color: var(--warm-brown); }
+.sm-close { background: #f5ede5; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: var(--text-mid); display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.sm-close:hover { background: var(--soft-pink); color: var(--orange-d); }
+
+/* Chapter progress bar */
+.sm-progress { flex-shrink: 0; display: flex; gap: 4px; padding: 8px 16px 6px; }
+.sm-prog-dot { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,140,66,.18); transition: background .4s; }
+.sm-prog-dot.done { background: var(--orange); }
+.sm-prog-dot.active { background: var(--orange-d); }
+
+/* Scroll container */
+.sm-scroll { flex: 1; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
+.sm-scroll::-webkit-scrollbar { display: none; }
+
+/* Chapters */
+.sm-chapter { width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 22px 32px; overflow: hidden; }
+.ch-rescue { background: linear-gradient(160deg,#FFF8F0 0%,#FFE4D6 60%,#FFD4BC 100%); }
+.ch-check  { background: linear-gradient(160deg,#E8F6F3 0%,#D4F0EB 60%,#C0E8E0 100%); }
+.ch-surgery{ background: linear-gradient(160deg,#FFF0E8 0%,#FFE0CC 60%,#FFCFB3 100%); }
+.ch-recovery{ background: linear-gradient(160deg,#F0FBF8 0%,#E0F5F0 60%,#D4EEE8 100%); }
+.ch-adoption{ background: linear-gradient(160deg,#FFFDE8 0%,#FFF5C0 60%,#FFE88A 100%); }
+
+.ch-label { position: absolute; top: 12px; left: 14px; background: rgba(255,255,255,.75); backdrop-filter: blur(8px); border-radius: 20px; padding: 3px 10px; font-size: .62rem; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--warm-brown); letter-spacing: .04em; text-transform: uppercase; }
+
+/* Photo in modal */
+.sm-photo { width: 140px; height: 140px; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 24px rgba(92,61,46,.18); margin-bottom: 14px; flex-shrink: 0; position: relative; }
+.sm-photo img { width: 100%; height: 100%; object-fit: cover; }
+.sm-photo-label { position: absolute; bottom: 6px; left: 6px; background: rgba(92,61,46,.7); color: #fff; font-size: .58rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
+/* Info card */
+.sm-card { width: 100%; background: rgba(255,255,255,.72); backdrop-filter: blur(12px); border-radius: 18px; padding: 16px 18px; box-shadow: 0 4px 20px rgba(92,61,46,.1); }
+.sm-animal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sm-emoji { font-size: 2rem; }
+.sm-animal-name { font-weight: 700; font-size: 1.1rem; color: var(--warm-brown); font-family: 'Noto Sans SC', sans-serif; }
+.sm-animal-meta { font-size: .7rem; color: var(--text-mid); margin-top: 2px; }
+
+/* ── CHAPTER 1: BOUNCE TEXT ── */
+.bw { display: inline-block; opacity: 0; animation-play-state: paused; animation: bwIn .45s cubic-bezier(.36,.07,.19,.97) forwards; }
+@keyframes bwIn { 0%{opacity:0;transform:translateY(28px) scale(.82)} 60%{opacity:1;transform:translateY(-7px) scale(1.04)} 80%{transform:translateY(3px) scale(.98)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+.rescue-date-sm { font-family:'Nunito',sans-serif; font-size:.82rem; font-weight:800; color:var(--orange-d); letter-spacing:.08em; margin-bottom:6px; }
+.rescue-place-sm { font-size:1rem; font-weight:700; color:var(--warm-brown); margin-bottom:8px; line-height:1.4; }
+.rescue-note-sm { font-size:.8rem; color:var(--text-mid); line-height:1.6; }
+.paw-anim { font-size: 3rem; margin-bottom: 10px; animation: pawSpin 3s ease-in-out infinite; }
+@keyframes pawSpin { 0%,100%{transform:rotate(0) scale(1)} 30%{transform:rotate(-10deg) scale(1.08)} 60%{transform:rotate(8deg) scale(1.05)} }
+
+/* ── CHAPTER 2: TYPEWRITER ── */
+.tw-line { display: block; overflow: hidden; white-space: nowrap; border-right: 2px solid var(--mint-d,#5BB5A6); animation-play-state: paused; animation: twType var(--td,1.2s) steps(var(--tc,20),end) var(--tdelay,0s) both, twCursor .7s step-end var(--tdelay,0s) 3; }
+@keyframes twType { from{max-width:0} to{max-width:100%} }
+@keyframes twCursor { 0%,100%{border-color:var(--mint-d,#5BB5A6)} 50%{border-color:transparent} }
+.tw-line.done { border-right-color: transparent; }
+.check-hosp { font-weight:700; font-size:.88rem; color:var(--deep-mint,#5BB5A6); margin-bottom:5px; }
+.check-dt   { font-size:.72rem; color:var(--text-light); margin-bottom:8px; }
+.check-diag { font-size:.92rem; font-weight:700; color:var(--warm-brown); line-height:1.5; }
+.steth-anim { font-size: 3rem; margin-bottom: 12px; animation: stethPulse 2s ease-in-out infinite; }
+@keyframes stethPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06) rotate(5deg)} }
+
+/* ── CHAPTER 3: BOUNCE NUMBERS ── */
+.cost-big { font-family:'Nunito',sans-serif; font-size:2.8rem; font-weight:900; color:var(--orange-d); text-align:center; margin:8px 0; text-shadow:0 2px 12px rgba(230,113,58,.3); }
+.cost-pre { font-size:1.6rem; vertical-align:middle; }
+.cost-val { display:inline-block; }
+.cost-val.cpop { animation:cPop .28s cubic-bezier(.36,.07,.19,.97); }
+@keyframes cPop { 0%{transform:scale(1)} 40%{transform:scale(1.4) translateY(-4px)} 100%{transform:scale(1)} }
+.surg-type { font-size:.86rem; font-weight:700; color:var(--warm-brown); text-align:center; margin-bottom:5px; opacity:0; animation-play-state:paused; animation:fadeUpSm .5s .6s forwards; }
+.surg-break { font-size:.72rem; color:var(--text-mid); text-align:center; opacity:0; animation-play-state:paused; animation:fadeUpSm .5s 1s forwards; }
+@keyframes fadeUpSm { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.scissors-anim { font-size:2.8rem; margin-bottom:10px; animation:scissorsAnim .8s ease-in-out infinite alternate; }
+@keyframes scissorsAnim { 0%{transform:scale(1) rotate(-5deg)} 100%{transform:scale(1.05) rotate(5deg)} }
+
+/* ── CHAPTER 4: HEARTS ── */
+.heart-p { position:absolute; pointer-events:none; animation:hFloat var(--hd,2.5s) ease-out var(--hdelay,0s) forwards; font-size:var(--hs,1.1rem); z-index:5; }
+@keyframes hFloat { 0%{opacity:1;transform:translate(0,0) scale(1)} 50%{opacity:.8;transform:translate(var(--hx,20px),calc(var(--hy,-60px)*.5)) scale(1.15)} 100%{opacity:0;transform:translate(calc(var(--hx,20px)*1.5),var(--hy,-120px)) scale(.6)} }
+.weight-row { display:flex; align-items:center; justify-content:center; gap:12px; margin:12px 0; }
+.wt-b .wt-num { color:var(--text-mid); }
+.wt-a .wt-num { color:var(--deep-mint,#5BB5A6); }
+.wt-num { font-family:'Nunito',sans-serif; font-size:1.4rem; font-weight:900; display:block; }
+.wt-label { font-size:.62rem; color:var(--text-light); }
+.wt-arrow { font-size:1.3rem; color:var(--deep-mint,#5BB5A6); animation:arrBounce 1s ease-in-out infinite; }
+@keyframes arrBounce { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+.rec-note { font-size:.8rem; color:var(--text-mid); line-height:1.6; text-align:center; opacity:0; animation-play-state:paused; animation:fadeUpSm .6s .4s forwards; }
+.leaf-anim { font-size:2.8rem; margin-bottom:10px; animation:leafSway 2s ease-in-out infinite; }
+@keyframes leafSway { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.06)} }
+
+/* ── CHAPTER 5: FREEZE FADE ── */
+.freeze-photo { width:150px; height:150px; border-radius:20px; overflow:hidden; position:relative; margin-bottom:14px; box-shadow:0 8px 28px rgba(255,140,66,.25); }
+.freeze-photo img { width:100%; height:100%; object-fit:cover; animation-play-state:paused; animation:freezeReveal 1.5s .2s cubic-bezier(.22,1,.36,1) forwards; filter:grayscale(1) blur(2px); }
+@keyframes freezeReveal { 0%{filter:grayscale(1) blur(2px);transform:scale(1.05)} 60%{filter:grayscale(.4) blur(.5px)} 100%{filter:grayscale(0) blur(0);transform:scale(1)} }
+.adopt-badge { background:linear-gradient(135deg,#FFD166,#FFB347); color:var(--warm-brown); font-family:'Nunito',sans-serif; font-weight:800; font-size:.68rem; padding:4px 14px; border-radius:20px; display:inline-block; margin-bottom:8px; animation:badgePulse 2s ease-in-out infinite; }
+@keyframes badgePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+.adopt-title { font-family:'Nunito',sans-serif; font-size:1.2rem; font-weight:900; color:var(--warm-brown); text-align:center; margin-bottom:6px; opacity:0; animation-play-state:paused; animation:freezeTxt .6s .7s cubic-bezier(.22,1,.36,1) forwards; }
+.adopt-note { font-size:.8rem; color:var(--text-mid); text-align:center; line-height:1.6; opacity:0; animation-play-state:paused; animation:freezeTxt .6s 1s forwards; }
+@keyframes freezeTxt { 0%{opacity:0;transform:scale(.92) translateY(8px);filter:blur(4px)} 100%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)} }
+.adopt-chain { margin-top:8px; font-size:.65rem; color:#4A90D9; font-family:'Courier New',monospace; background:#EBF4FF; border-radius:8px; padding:4px 10px; text-align:center; opacity:0; animation-play-state:paused; animation:freezeTxt .6s 1.4s forwards; }
+.stars-wrap { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.star-p { position:absolute; animation:starTwinkle var(--sd,3s) var(--sdelay,0s) ease-in-out infinite; font-size:var(--ssz,.8rem); }
+@keyframes starTwinkle { 0%,100%{opacity:0;transform:scale(.5)} 50%{opacity:1;transform:scale(1)} }
+
+/* Scroll hint in chapters */
+.ch-scroll-hint { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:.62rem; color:rgba(92,61,46,.4); display:flex; flex-direction:column; align-items:center; pointer-events:none; animation:hintBob 2s ease-in-out infinite; }
+@keyframes hintBob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(4px)} }
+
+/* Music btn */
+.sm-music { background:var(--soft-pink); border:none; border-radius:16px; padding:4px 10px; font-size:.68rem; font-weight:700; color:var(--orange-d); cursor:pointer; font-family:'Noto Sans SC',sans-serif; transition:background .2s; }
+.sm-music:hover { background:var(--orange); color:#fff; }
+
+@media (max-width:768px) {
+  .animals-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV (placeholder - Rae will unify) -->
+<nav class="nav">
+  <div class="nav-logo">🐾 Fur<span>Ever</span></div>
+  <div class="nav-links">
+    <a href="#" class="active">首页</a>
+    <a href="#animals">动物档案</a>
+    <a href="CloudAdoptionPage.html">云领养</a>
+    <a href="furever.html">捐赠记录</a>
+  </div>
+  <button class="nav-wallet">🔗 连接钱包</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-paw">🐾</div>
+    <h1 class="hero-title">Fur<span>Ever</span></h1>
+    <p class="hero-subtitle">每一只动物从街头到家庭的旅程<br>都不应该因为任何一个平台的倒闭而消失</p>
+    <p class="hero-tagline">流浪动物链上生命护照协议 · Built on Avalanche</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-number">5,300万</div><div class="stat-label">中国流浪猫数量</div></div>
+      <div class="stat"><div class="stat-number">100万+</div><div class="stat-label">云养猫付费用户（已验证）</div></div>
+      <div class="stat"><div class="stat-number">0</div><div class="stat-label">资金透明的救助平台</div></div>
+    </div>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
+      <a href="#animals" class="hero-cta">🐾 浏览动物档案</a>
+      <a href="#problem" class="hero-cta" style="background:white; color:var(--warm-brown); box-shadow:0 4px 20px rgba(0,0,0,0.08)">↓ 了解更多</a>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ 向下滚动</div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="section-label">Problem</div>
+  <h2 class="section-title">现有平台证明了需求，但也暴露了致命问题</h2>
+  <div class="problem-cards">
+    <div class="problem-card">
+      <div class="problem-icon">💸</div>
+      <h3>资金不透明</h3>
+      <p>用户付费后无法验证资金是否真的用在了动物身上。猫粮品质、手术费用、运营开支，全靠平台"自说自话"。</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📊</div>
+      <h3>数据无法验证</h3>
+      <p>救助数据缺乏独立验证机制。平台声称的救助数量、绝育数量，用户无法核实真伪。</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">💥</div>
+      <h3>平台倒闭数据消失</h3>
+      <p>"寻它科技"2023年融资数千万做云领养，2024年倒闭，近千只猫的数据和资金全部消失。中心化平台说没就没。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="solution-container">
+    <div class="section-label">Solution</div>
+    <h2 class="section-title">FurEver 的答案</h2>
+    <p style="color:var(--text-mid); font-size:0.95rem; margin-bottom:0.5rem">从"一台猫屋的模糊投喂"升级到"一只具体动物的精确陪伴"</p>
+    <div class="solution-grid">
+      <div class="solution-card">
+        <div class="solution-icon">📋</div>
+        <h3>生命护照</h3>
+        <p>每只被救助的动物都有一份不可篡改的链上档案——从被发现到康复到被领养，完整的生命旅程永久可查。</p>
+        <a href="#" onclick="alert('跳转到动物档案页')" style="display:inline-block; margin-top:1rem; font-size:0.85rem; color:var(--deep-orange); text-decoration:none; font-weight:700;">浏览动物档案 →</a>
+      </div>
+      <div class="solution-card">
+        <div class="solution-icon">💛</div>
+        <h3>一对一陪伴</h3>
+        <p>不是往猫屋里撒猫粮，而是云领养一只具体的动物。每月29元，每周收到它的近况，建立真正的情感连接。</p>
+        <a href="#" onclick="alert('跳转到云领养页')" style="display:inline-block; margin-top:1rem; font-size:0.85rem; color:var(--deep-mint); text-decoration:none; font-weight:700;">去云领养 →</a>
+      </div>
+      <div class="solution-card">
+        <div class="solution-icon">🔗</div>
+        <h3>链上透明</h3>
+        <p>每笔捐款、每次救助记录都上链，任何人可以独立验证。资金去向不再靠平台"自说自话"，而是链上"自证清白"。</p>
+        <a href="#" onclick="alert('跳转到捐赠记录页')" style="display:inline-block; margin-top:1rem; font-size:0.85rem; color:var(--chain-blue); text-decoration:none; font-weight:700;">查看捐赠记录 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFECYCLE (interactive) -->
+<section class="lifecycle-section" id="lifecycle">
+  <div class="lifecycle-container">
+    <div class="section-label">Life Journey</div>
+    <h2 class="section-title">一条完整的动物生命线</h2>
+    <p style="color:var(--text-mid); font-size:0.95rem; margin-bottom:0.5rem">从街头到家庭，全程链上记录，永不消失。点击每个阶段了解详情 👇</p>
+
+    <div style="display:flex; justify-content:center; gap:1.5rem; margin-bottom:2rem; flex-wrap:wrap">
+      <span class="lifecycle-label-tag label-now">🟢 本次 Demo 实现</span>
+      <span class="lifecycle-label-tag label-future">🔮 未来路线图</span>
+    </div>
+
+    <!-- Steps row -->
+    <div class="lc-steps-row">
+      <div class="lc-step active" onclick="showLifecycleDetail(0)" id="lcStep0">
+        <div class="lc-step-badge lc-badge-now">Demo</div>
+        <div class="lc-step-icon">🏥</div>
+        <div class="lc-step-title">被救助</div>
+      </div>
+      <div class="lc-arrow">→</div>
+      <div class="lc-step" onclick="showLifecycleDetail(1)" id="lcStep1">
+        <div class="lc-step-badge lc-badge-now">Demo</div>
+        <div class="lc-step-icon">☁️</div>
+        <div class="lc-step-title">云领养</div>
+      </div>
+      <div class="lc-arrow">→</div>
+      <div class="lc-step" onclick="showLifecycleDetail(2)" id="lcStep2">
+        <div class="lc-step-badge lc-badge-now">Demo</div>
+        <div class="lc-step-icon">🏠</div>
+        <div class="lc-step-title">真正领养</div>
+      </div>
+      <div class="lc-arrow">→</div>
+      <div class="lc-step" onclick="showLifecycleDetail(3)" id="lcStep3">
+        <div class="lc-step-badge lc-badge-future">Phase 2</div>
+        <div class="lc-step-icon">💉</div>
+        <div class="lc-step-title">健康管理</div>
+      </div>
+      <div class="lc-arrow">→</div>
+      <div class="lc-step" onclick="showLifecycleDetail(4)" id="lcStep4">
+        <div class="lc-step-badge lc-badge-future">Phase 3</div>
+        <div class="lc-step-icon">🛡️</div>
+        <div class="lc-step-title">宠物信托</div>
+      </div>
+    </div>
+
+    <!-- Detail panels -->
+    <div class="lc-detail-container">
+      <!-- Detail 0: 被救助 - dynamic status -->
+      <div class="lc-detail active" id="lcDetail0">
+        <div class="lc-detail-inner">
+          <div class="lc-detail-text">
+            <div class="lc-detail-header">
+              <span class="lc-detail-step-num">Step 1</span>
+              <h3>被救助 → 建立链上救助档案</h3>
+            </div>
+            <p>流浪动物被发现，志愿者将它送到救助站。救助站为它创建一份<strong>链上生命护照</strong>，记录被发现的时间地点、健康状况、治疗过程、绝育记录。</p>
+            <p>所有关键数据的哈希值存储在 Avalanche 链上，确保<strong>不可篡改</strong>。照片和视频存储在 IPFS 上，永不丢失。</p>
+            <div class="lc-detail-meta">
+              <span class="lc-meta-item" id="metaManager">👤 管理者：救助站 / 志愿者</span>
+              <div class="status-indicator">
+                <div class="status-dot" id="statusDot" style="background:#E6713A"></div>
+                <span class="status-text" id="statusText">🔴 救治中</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-detail-visual">
+            <div class="lc-mock-card">
+              <div class="lc-mock-header">📋 生命护照</div>
+              <div class="lc-mock-body">
+                <div class="lc-mock-avatar">🐱</div>
+                <div class="lc-mock-name">花花 <span style="font-size:0.65rem;color:var(--text-light)">ID: 0x7E3F...A421</span></div>
+                <div class="lc-mock-tags">
+                  <span class="lc-mock-tag" style="background:var(--soft-pink);color:var(--deep-orange)">橘猫</span>
+                  <span class="lc-mock-tag" style="background:var(--light-mint);color:var(--deep-mint)">已绝育</span>
+                </div>
+                <div class="lc-mock-timeline" id="timeline0">
+                  <div class="lc-mock-tl-item"><span class="lc-mock-dot" style="background:var(--soft-orange)"></span>03-05 被发现</div>
+                  <div class="lc-mock-tl-item"><span class="lc-mock-dot" style="background:var(--soft-orange)"></span>03-08 绝育手术</div>
+                  <div class="lc-mock-tl-item"><span class="lc-mock-dot" style="background:var(--mint)"></span>03-20 开放云领养</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail 1: 云领养 - live counter -->
+      <div class="lc-detail" id="lcDetail1">
+        <div class="lc-detail-inner">
+          <div class="lc-detail-text">
+            <div class="lc-detail-header">
+              <span class="lc-detail-step-num">Step 2</span>
+              <h3>云领养 → 一对一情感连接</h3>
+            </div>
+            <p>爱心人士在平台上浏览动物档案，选择一只进行<strong>云领养</strong>。每月 29 元，定向支持这只动物的食物和医疗。</p>
+            <p>每周收到它的近况推送——新照片、体重变化、健康状态。这不是"捐款"，而是<strong>"情感订阅"</strong>，和山区儿童一对一资助是同样的心理模型。</p>
+            <div class="lc-detail-meta">
+              <span class="lc-meta-item">👤 参与者：爱心人士</span>
+              <span class="lc-meta-item">💰 资金：69% 给动物，链上透明</span>
+            </div>
+          </div>
+          <div class="lc-detail-visual">
+            <div class="lc-mock-card">
+              <div class="lc-mock-header" style="background:var(--gradient-mint)">☁️ 云领养</div>
+              <div class="lc-mock-body" style="text-align:center">
+                <div style="font-size:2rem;margin:0.3rem 0">🐱</div>
+                <div class="lc-mock-name">云领养花花</div>
+                <div style="font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--soft-orange);margin:0.3rem 0">¥29<span style="font-size:0.7rem;color:var(--text-light)">/月</span></div>
+                <div style="margin:0.5rem 0;padding:0.5rem;background:rgba(255,140,66,0.08);border-radius:10px">
+                  <div style="font-size:0.6rem;color:var(--text-light)">正在守护中</div>
+                  <div class="live-counter" id="liveCounter">127</div>
+                  <div style="font-size:0.6rem;color:var(--text-light)">人正在守护流浪动物</div>
+                </div>
+                <div class="live-recent" id="liveRecent">最近加入：小红 · 3分钟前</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail 2: 真正领养 - NFT generation animation -->
+      <div class="lc-detail" id="lcDetail2">
+        <div class="lc-detail-inner">
+          <div class="lc-detail-text">
+            <div class="lc-detail-header">
+              <span class="lc-detail-step-num">Step 3</span>
+              <h3>真正领养 → 档案交接</h3>
+            </div>
+            <p>云领养人或其他人决定<strong>真正领养</strong>这只动物，平台对接救助站完成线下领养流程。</p>
+            <p>领养成功后生成 <strong>NFT 领养证书</strong>，作为领养关系的链上凭证。同时建立领养信用记录——如果发生弃养，链上有据可查。档案管理权从救助站转移到宠物主人手里。</p>
+            <div class="lc-detail-meta">
+              <span class="lc-meta-item">🔄 档案交接：救助站 → 宠物主人</span>
+              <span class="lc-meta-item">🎫 产出：NFT 领养证书</span>
+            </div>
+          </div>
+          <div class="lc-detail-visual">
+            <div class="nft-card-wrap" id="nftCardWrap">
+              <div class="lc-mock-card" style="border:2px solid var(--mint)" id="nftCard">
+                <div class="lc-mock-header" style="background:linear-gradient(135deg,#FFD700,#FFA500)">🎫 NFT 领养证书</div>
+                <div class="lc-mock-body nft-generating" id="nftBody" style="text-align:center">
+                  <div style="font-size:2.5rem;margin:0.5rem 0">🐱</div>
+                  <div class="lc-mock-name" style="font-size:1rem">花花 #0421</div>
+                  <div style="font-size:0.7rem;color:var(--text-light);margin:0.3rem 0">领养人：0x8f3a...7d2e</div>
+                  <div style="font-size:0.7rem;color:var(--text-light)">日期：2026-04-01</div>
+                  <div class="nft-stamp" id="nftStamp" style="margin-top:0.6rem;font-size:0.65rem;color:var(--chain-blue);font-family:monospace;background:#F0F4FF;padding:0.3rem 0.6rem;border-radius:6px;display:inline-block">✅ Avalanche C-Chain 认证</div>
+                </div>
+              </div>
+              <div class="nft-shine" id="nftShine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail 3: 健康管理 - calendar -->
+      <div class="lc-detail" id="lcDetail3">
+        <div class="lc-detail-inner">
+          <div class="lc-detail-text">
+            <div class="lc-detail-header">
+              <span class="lc-detail-step-num" style="background:#E8E4F0;color:#7A6B8A">Phase 2</span>
+              <h3>健康管理 → 档案继续更新</h3>
+            </div>
+            <p>宠物主人在<strong>同一份生命护照</strong>上继续记录疫苗接种、体检报告、日常照片和体重变化。</p>
+            <p>档案从"救助记录"自然延伸为"宠物健康管理工具"。即使你的宠物不是从平台领养的，也可以直接创建档案使用。医疗数据上链存证，未来可作为宠物保险的核保依据。</p>
+            <div class="lc-detail-meta">
+              <span class="lc-meta-item">👤 管理者：宠物主人</span>
+              <span class="lc-meta-item">🔮 状态：未来路线图</span>
+            </div>
+          </div>
+          <div class="lc-detail-visual">
+            <div class="lc-mock-card" style="opacity:0.9">
+              <div class="lc-mock-header" style="background:linear-gradient(135deg,#A8A0D0,#8B82B8)">💉 健康管理</div>
+              <div class="lc-mock-body">
+                <div class="lc-mock-name" style="font-size:0.8rem">花花 · 2026年4月</div>
+                <div class="mini-calendar">
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">一</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">二</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">三</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">四</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">五</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">六</div>
+                  <div class="cal-day" style="font-weight:700;color:var(--text-mid)">日</div>
+                  <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day has-event">3<div class="cal-tooltip">体重:4.2kg</div></div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div>
+                  <div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day has-event-orange">10<div class="cal-tooltip">驱虫 ✓</div></div><div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div>
+                  <div class="cal-day has-event">15<div class="cal-tooltip">猫三联疫苗 ✓</div></div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
+                  <div class="cal-day">22</div><div class="cal-day has-event">23<div class="cal-tooltip">体检 健康</div></div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.6rem;display:flex;gap:0.5rem;justify-content:center">
+                  <span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mint)"></span> 体检</span>
+                  <span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--deep-orange)"></span> 用药</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail 4: 宠物信托 - heartbeat -->
+      <div class="lc-detail" id="lcDetail4">
+        <div class="lc-detail-inner">
+          <div class="lc-detail-text">
+            <div class="lc-detail-header">
+              <span class="lc-detail-step-num" style="background:#E8E4F0;color:#7A6B8A">Phase 3</span>
+              <h3>宠物信托 → 终身保障</h3>
+            </div>
+            <p>宠物主人可以设置<strong>智能合约信托</strong>——指定监护人（万一我出事，谁来照顾它）、预存照护基金（按月释放）、设定触发条件（心跳确认机制）。</p>
+            <p>如果所有监护人都无法接手，动物<strong>回到救助系统</strong>，状态变为"待云领养"，重新开放云领养。<strong>生命线形成闭环。</strong></p>
+            <div class="lc-detail-meta">
+              <span class="lc-meta-item">🔄 闭环：无人接手 → 回到救助系统</span>
+              <span class="lc-meta-item">🔮 状态：远期愿景</span>
+            </div>
+          </div>
+          <div class="lc-detail-visual">
+            <div class="lc-mock-card" style="opacity:0.9">
+              <div class="lc-mock-header" style="background:linear-gradient(135deg,#A8A0D0,#8B82B8)">🛡️ 宠物信托</div>
+              <div class="lc-mock-body">
+                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
+                  <div class="lc-mock-name" style="margin:0">花花的信托</div>
+                  <span class="heartbeat-icon" id="heartIcon">❤️</span>
+                </div>
+                <div style="font-size:0.75rem;color:var(--text-mid);line-height:2">
+                  <div>监护人：小红 (0x3B8C...)</div>
+                  <div>照护基金：500 USDC</div>
+                  <div>释放方式：50 USDC / 月</div>
+                </div>
+                <div style="margin-top:0.5rem;padding:0.4rem;background:var(--light-mint);border-radius:8px;text-align:center">
+                  <div style="font-size:0.6rem;color:var(--text-light)">上次心跳确认</div>
+                  <div style="font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:var(--deep-mint)" id="heartbeatDays">1 天前</div>
+                </div>
+                <div id="heartbeatWarning" style="display:none;margin-top:0.4rem;text-align:center;font-size:0.65rem;padding:0.3rem;border-radius:6px;background:#FFF0E0;color:var(--deep-orange)">
+                  ⚠️ 即将触发信托转移
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     ANIMALS SECTION · 动物档案
+══════════════════════════════════════════ -->
+<section class="animals-section" id="animals">
+  <div class="section-container">
+    <div class="section-label" style="text-align:center">Animal Archive</div>
+    <h2 class="section-title-centered">等待回家的毛孩子们 🐾</h2>
+    <p class="section-sub">每一个都有自己的故事，每一个都渴望一份专属于它的偏爱<br>
+      <small style="color:var(--text-light)">点击图片切换救助前后对比 · 点击「救助故事」看完整动画</small>
+    </p>
+
+    <div class="animals-grid">
+
+      <!-- 虎斑妈妈 -->
+      <div class="animal-card">
+        <div class="photo-flip" onclick="flipPhoto(this)">
+          <img class="layer-before" src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774946518737/e8d9a745-4011-4e1a-a561-120c9d10200b.png" alt="虎斑妈妈 刚救助时">
+          <img class="layer-after"  src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774955808551/f695f37f-ef33-43ac-a891-dd440b2bb3cd.png" alt="虎斑妈妈 现在">
+          <div class="layer-label label-before">刚救助时</div>
+          <div class="layer-label label-after">现在 ✨</div>
+          <div class="flip-hint">点击查看救助后 ✨</div>
+          <div class="gender-badge gender-f" style="position:absolute;top:14px;right:14px;z-index:4;">♀</div>
+        </div>
+        <div class="animal-body">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="animal-name">虎斑妈妈 🐯</div><span style="font-size:1.5rem">🤎</span>
+          </div>
+          <div class="animal-meta">中华田园犬 · 4岁 · 母 · 广州基地</div>
+          <div class="animal-tags">
+            <span class="tag tag-mint">✓ 已绝育</span><span class="tag tag-mint">✓ 已接种疫苗</span>
+            <span class="tag tag-orange">需要耐心</span><span class="tag tag-orange">慢慢信任</span>
+          </div>
+          <div class="animal-desc">真希望有一瓶能忘掉一切的药水，让虎斑妈妈彻底抹去过去所有的委屈与不安。希望它能等到一份只属于它的偏爱与独宠。</div>
+          <div class="animal-actions" style="margin-top:8px">
+            <button class="story-btn" onclick="openStory('huban')"><span>🎬 查看救助故事</span><span class="s-icon">▶</span></button>
+            <a href="#" class="btn-a btn-mint-a">☁️ 云领养</a>
+          </div>
+        </div>
+        <div class="animal-chain"><div class="chain-dot"></div><span>已上链 #0xa2e7...3b18 · 区块 #18,441,023</span></div>
+      </div>
+
+      <!-- 桃子妹妹 -->
+      <div class="animal-card">
+        <div class="photo-flip" onclick="flipPhoto(this)">
+          <img class="layer-before" src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774946800985/06e72bc1-d11d-43fd-ba2a-9d4f9a0b2d66.png" alt="桃子妹妹 刚救助时">
+          <img class="layer-after"  src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774955983156/1d477f42-d950-4d39-a5a5-8ccad02f8c2a.png" alt="桃子妹妹 现在">
+          <div class="layer-label label-before">刚救助时</div>
+          <div class="layer-label label-after">现在 ✨</div>
+          <div class="flip-hint">点击查看救助后 ✨</div>
+          <div class="gender-badge gender-f" style="position:absolute;top:14px;right:14px;z-index:4;">♀</div>
+        </div>
+        <div class="animal-body">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="animal-name">桃子妹妹 🍑</div><span style="font-size:1.5rem">🧡</span>
+          </div>
+          <div class="animal-meta">混血小型犬 · 3岁 · 母 · 广州基地</div>
+          <div class="animal-tags">
+            <span class="tag tag-mint">✓ 已绝育</span><span class="tag tag-mint">✓ 已接种疫苗</span>
+            <span class="tag tag-orange">胆小害羞</span><span class="tag tag-orange">渴望亲近</span>
+          </div>
+          <div class="animal-desc">桃子虽生性胆小、总怯生生地躲着人，可偶尔不经意间，也能从它的余光里，看出它其实很渴望靠近、想要和人类亲近相伴。</div>
+          <div class="animal-actions" style="margin-top:8px">
+            <button class="story-btn" onclick="openStory('taozi')"><span>🎬 查看救助故事</span><span class="s-icon">▶</span></button>
+            <a href="#" class="btn-a btn-mint-a">☁️ 云领养</a>
+          </div>
+        </div>
+        <div class="animal-chain"><div class="chain-dot"></div><span>已上链 #0xd3f1...8c04 · 区块 #18,455,712</span></div>
+      </div>
+
+      <!-- 排骨哥哥 (featured) -->
+      <div class="animal-card featured">
+        <div class="featured-ribbon">★ 特别推荐</div>
+        <div class="photo-flip" onclick="flipPhoto(this)">
+          <img class="layer-before" src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947327023/b5ae28d9-42bc-460d-85e0-9d59488e1339.png" alt="排骨哥哥 刚救助时">
+          <img class="layer-after"  src="https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774958559294/c4b10551-8a68-4cfb-ba8e-ea29ffb4706b.png" alt="排骨哥哥 现在">
+          <div class="layer-label label-before">刚救助时</div>
+          <div class="layer-label label-after">现在 ✨</div>
+          <div class="flip-hint">点击查看救助后 ✨</div>
+          <div class="gender-badge gender-m" style="position:absolute;top:14px;right:14px;z-index:4;">♂</div>
+        </div>
+        <div class="animal-body">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="animal-name">排骨哥哥 🦴</div><span style="font-size:1.5rem">🤎</span>
+          </div>
+          <div class="animal-meta">中华田园犬 · 9岁 · 公 · 已康复</div>
+          <div class="animal-tags">
+            <span class="tag tag-mint">✓ 已绝育</span><span class="tag tag-mint">✓ 已接种疫苗</span>
+            <span class="tag tag-orange">高冷猫系</span><span class="tag tag-orange">爱睡觉</span>
+          </div>
+          <div class="animal-desc">排骨哥哥性格非常高冷，像一只猫——你不主动，他也不搭理你。但只要你伸出手，他会静静享受每一下抚摸，满足得闭上眼睛。</div>
+          <div class="animal-actions" style="margin-top:8px">
+            <button class="story-btn" onclick="openStory('paiguo')"><span>🎬 查看救助故事</span><span class="s-icon">▶</span></button>
+            <a href="#" class="btn-a btn-mint-a">☁️ 云领养</a>
+          </div>
+        </div>
+        <div class="animal-chain"><div class="chain-dot"></div><span>已上链 #0xc4a8...9f31 · 区块 #18,433,210</span></div>
+      </div>
+
+      <!-- 芝麻妹妹 -->
+      <div class="animal-card">
+        <div class="photo-flip" onclick="flipPhoto(this)">
+          <img class="layer-before" src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947514742/444b82e8-4869-4649-9ab6-8d8724f1663f.png" alt="芝麻妹妹 刚救助时">
+          <img class="layer-after"  src="https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774959228860/0ad7cad5-e5e7-4af0-91c7-04305243f5d7.png" alt="芝麻妹妹 现在">
+          <div class="layer-label label-before">刚救助时</div>
+          <div class="layer-label label-after">现在 ✨</div>
+          <div class="flip-hint">点击查看救助后 ✨</div>
+          <div class="gender-badge gender-f" style="position:absolute;top:14px;right:14px;z-index:4;">♀</div>
+        </div>
+        <div class="animal-body">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="animal-name">芝麻妹妹 🌰</div><span style="font-size:1.5rem">🤍</span>
+          </div>
+          <div class="animal-meta">小型混血犬 · 2岁 · 母 · 贵州基地</div>
+          <div class="animal-tags">
+            <span class="tag tag-mint">✓ 已绝育</span><span class="tag tag-mint">✓ 已接种疫苗</span>
+            <span class="tag tag-orange">温顺亲人</span><span class="tag tag-orange">爱陪伴</span>
+          </div>
+          <div class="animal-desc">芝麻妹妹性格温顺亲人，尤其喜欢依偎在人类腿边打盹，对小朋友格外耐心。体重从2.7KG增长至4.5KG，现健康活泼。</div>
+          <div class="animal-actions" style="margin-top:8px">
+            <button class="story-btn" onclick="openStory('zhima')"><span>🎬 查看救助故事</span><span class="s-icon">▶</span></button>
+            <a href="#" class="btn-a btn-mint-a">☁️ 云领养</a>
+          </div>
+        </div>
+        <div class="animal-chain"><div class="chain-dot"></div><span>已上链 #0x5e2a...7f90 · 区块 #18,438,561</span></div>
+      </div>
+
+      <!-- 爪爪弟弟 -->
+      <div class="animal-card">
+        <div class="photo-flip" onclick="flipPhoto(this)">
+          <img class="layer-before" src="https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947992633/166e60c5-6307-4c40-b529-059db21aea4b.png" alt="爪爪弟弟 刚救助时">
+          <img class="layer-after"  src="https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774959705962/52448446-5495-4e5b-88f8-994d54dc08de.png" alt="爪爪弟弟 现在">
+          <div class="layer-label label-before">刚救助时</div>
+          <div class="layer-label label-after">现在 ✨</div>
+          <div class="flip-hint">点击查看救助后 ✨</div>
+          <div class="gender-badge gender-m" style="position:absolute;top:14px;right:14px;z-index:4;">♂</div>
+        </div>
+        <div class="animal-body">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="animal-name">爪爪弟弟 🐾</div><span style="font-size:1.5rem">💙</span>
+          </div>
+          <div class="animal-meta">家猫混血 · 1岁 · 公 · 待领养</div>
+          <div class="animal-tags">
+            <span class="tag tag-red">未绝育</span><span class="tag tag-mint">✓ 已接种疫苗</span>
+            <span class="tag tag-orange">重生宝宝</span><span class="tag tag-orange">云守护</span>
+          </div>
+          <div class="animal-desc">被遗弃过，被放弃过，却从未被真正丢下。小爪爪重生归来，欢迎每一位喜欢它的人，在线云养、云守护，一起看它慢慢长大。</div>
+          <div class="animal-actions" style="margin-top:8px">
+            <button class="story-btn" onclick="openStory('zhuazhua')"><span>🎬 查看救助故事</span><span class="s-icon">▶</span></button>
+            <a href="#" class="btn-a btn-mint-a">☁️ 云领养</a>
+          </div>
+        </div>
+        <div class="animal-chain"><div class="chain-dot"></div><span>已上链 #0x8b4c...1e27 · 区块 #18,440,189</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STORY MODAL
+══════════════════════════════════════════ -->
+<div id="storyModal" onclick="closeStoryOnBackdrop(event)">
+  <div class="sm-frame">
+    <div class="sm-bar">
+      <div class="sm-title" id="smTitle">救助故事</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="sm-music" id="smMusicBtn" onclick="toggleStoryMusic()">♪ 音乐</button>
+        <button class="sm-close" onclick="closeStory()">✕</button>
+      </div>
+    </div>
+    <div class="sm-progress" id="smProgress">
+      <div class="sm-prog-dot active" data-ch="0"></div>
+      <div class="sm-prog-dot" data-ch="1"></div>
+      <div class="sm-prog-dot" data-ch="2"></div>
+      <div class="sm-prog-dot" data-ch="3"></div>
+      <div class="sm-prog-dot" data-ch="4"></div>
+    </div>
+    <div class="sm-scroll" id="smScroll">
+      <!-- chapters injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<section class="roadmap-section" id="roadmap">
+  <div class="roadmap-container">
+    <div class="section-label">Roadmap</div>
+    <h2 class="section-title">产品路线图</h2>
+
+    <div class="roadmap-items">
+      <div class="roadmap-item">
+        <div class="roadmap-phase phase-now">
+          <div class="roadmap-phase-icon">🐾</div>
+          Phase 1
+        </div>
+        <div class="roadmap-content">
+          <h3>Demo 阶段 <span class="roadmap-tag tag-demo">当前</span></h3>
+          <p>动物链上生命档案、一对一云领养交互、捐赠资金链上透明可查。基于 Avalanche C-Chain 构建，验证核心逻辑。</p>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-phase phase-next">
+          <div class="roadmap-phase-icon">🏠</div>
+          Phase 2
+        </div>
+        <div class="roadmap-content">
+          <h3>宠物主人档案 + NFT 领养证书 <span class="roadmap-tag tag-v2">下一步</span></h3>
+          <p>领养成功后生成 NFT 证书，建立链上领养信用体系。宠物主人可以在同一份档案上继续记录疫苗、体检、日常——从救助档案自然延伸为宠物管理工具。</p>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-phase phase-future">
+          <div class="roadmap-phase-icon">🛡️</div>
+          Phase 3
+        </div>
+        <div class="roadmap-content">
+          <h3>宠物信托 <span class="roadmap-tag tag-v3">远期愿景</span></h3>
+          <p>宠物主人可以设置智能合约信托——指定监护人、预存照护基金、设定触发条件。万一主人出事了，合约自动将照护责任和资金转移给指定的人。如果无人接手，动物回到救助系统重新开放云领养，生命线形成闭环。</p>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-phase phase-future">
+          <div class="roadmap-phase-icon">🤝</div>
+          Phase 4
+        </div>
+        <div class="roadmap-content">
+          <h3>生态合作 <span class="roadmap-tag tag-v3">远期愿景</span></h3>
+          <p>对接宠物保险（链上健康档案作为核保依据），企业 CSR 透明化合作（品牌冠名救助项目，链上可验证公益数据），为未来的动物保护立法提供链上数据支撑。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY WEB3 -->
+<section class="why-section">
+  <div class="why-container">
+    <div class="section-label">Why Web3</div>
+    <h2 class="section-title">为什么用区块链？</h2>
+    <div class="why-box">
+      <p>不是为了用区块链而用区块链。FurEver 的核心体验——动物故事页面、社区互动、近况推送——全部用传统技术实现。</p>
+      <p>我们只把 <span class="why-highlight">真正需要多方信任的环节</span> 放到链上：每笔资金的流向记录和动物的关键档案存证。</p>
+      <p>这样做解决了三个问题：<span class="why-highlight">资金透明</span>——任何人可以独立验证每笔钱的去向；<span class="why-highlight">数据不可篡改</span>——救助站无法修改已上链的记录；<span class="why-highlight">永久存活</span>——即使平台倒闭，链上数据依然存在。</p>
+    </div>
+  </div>
+</section>
+
+<!-- TECH -->
+<section class="tech-section">
+  <div class="tech-container">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title">技术架构</h2>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-item-icon">⛰️</div>
+        <div class="tech-item-info">
+          <div class="tech-item-name">Avalanche C-Chain</div>
+          <div class="tech-item-desc">低 Gas 费，每次存证仅需几分钱</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">📝</div>
+        <div class="tech-item-info">
+          <div class="tech-item-name">Solidity</div>
+          <div class="tech-item-desc">智能合约，存证 + 捐赠 + NFT</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">💻</div>
+        <div class="tech-item-info">
+          <div class="tech-item-name">Next.js / React</div>
+          <div class="tech-item-desc">前端框架，移动端优先</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">📦</div>
+        <div class="tech-item-info">
+          <div class="tech-item-name">IPFS</div>
+          <div class="tech-item-desc">去中心化存储，照片视频永不丢失</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">🔗</div>
+        <div class="tech-item-info">
+          <div class="tech-item-name">ethers.js</div>
+          <div class="tech-item-desc">前端与合约交互</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">🐾 FurEver</div>
+  <div class="footer-tagline">每一只动物的生命旅程，都值得被永远记住</div>
+  <div class="footer-links">
+    <a href="#">首页</a>
+    <a href="#">动物档案</a>
+    <a href="#">云领养</a>
+    <a href="#">捐赠记录</a>
+    <a href="#">GitHub</a>
+  </div>
+  <div class="footer-copy">赛道 1: 生命与共生 · 赛道 3: Avalanche 生态 · Pink Hackathon 2026</div>
+</footer>
+
+<script>
+// ===== Lifecycle interactive accordion =====
+let statusInterval, counterInterval, heartbeatInterval, nftTimeout;
+
+function showLifecycleDetail(index) {
+  // Clear all running animations
+  clearInterval(statusInterval);
+  clearInterval(counterInterval);
+  clearInterval(heartbeatInterval);
+  clearTimeout(nftTimeout);
+
+  document.querySelectorAll('.lc-step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.lc-detail').forEach(d => d.classList.remove('active'));
+  document.getElementById('lcStep' + index).classList.add('active');
+  document.getElementById('lcDetail' + index).classList.add('active');
+
+  // Start animations for the active panel
+  if (index === 0) startStatusAnimation();
+  if (index === 1) startCounterAnimation();
+  if (index === 2) startNFTAnimation();
+  if (index === 4) startHeartbeatAnimation();
+}
+
+// Step 1: Dynamic status cycling
+function startStatusAnimation() {
+  const states = [
+    { dot: '#E6713A', text: '🔴 救治中', manager: '👤 管理者：救助站 / 志愿者' },
+    { dot: '#FFB347', text: '🟡 康复中', manager: '👤 管理者：救助站 / 志愿者' },
+    { dot: '#7ECEC1', text: '🟢 待云领养', manager: '👤 管理者：救助站 / 志愿者' },
+    { dot: '#5BB5A6', text: '💚 已被守护', manager: '👤 守护者：爱心用户 0x8f3a...' },
+  ];
+  let i = 0;
+  function updateStatus() {
+    i = (i + 1) % states.length;
+    const dot = document.getElementById('statusDot');
+    const text = document.getElementById('statusText');
+    const manager = document.getElementById('metaManager');
+    if (dot && text && manager) {
+      dot.style.background = states[i].dot;
+      text.textContent = states[i].text;
+      text.classList.remove('status-fade-in');
+      void text.offsetWidth;
+      text.classList.add('status-fade-in');
+      manager.textContent = states[i].manager;
+    }
+  }
+  statusInterval = setInterval(updateStatus, 2500);
+}
+
+// Step 2: Live counter
+function startCounterAnimation() {
+  const names = ['小红', '匿名用户', '爱猫人', '团子加油', '花花守护者', '毛毛妈', '阿柴', '流浪猫之家'];
+  let count = 127;
+  function updateCounter() {
+    count += 1;
+    const counter = document.getElementById('liveCounter');
+    const recent = document.getElementById('liveRecent');
+    if (counter) counter.textContent = count;
+    if (recent) {
+      const name = names[Math.floor(Math.random() * names.length)];
+      const mins = Math.floor(Math.random() * 5) + 1;
+      recent.textContent = '最近加入：' + name + ' · ' + mins + '分钟前';
+      recent.classList.remove('updated');
+      void recent.offsetWidth;
+      recent.classList.add('updated');
+    }
+  }
+  counterInterval = setInterval(updateCounter, 3000);
+}
+
+// Step 3: NFT generation animation
+function startNFTAnimation() {
+  const body = document.getElementById('nftBody');
+  const stamp = document.getElementById('nftStamp');
+  const wrap = document.getElementById('nftCardWrap');
+  if (body) { body.classList.remove('nft-ready'); body.classList.add('nft-generating'); }
+  if (stamp) stamp.classList.remove('visible');
+  if (wrap) wrap.classList.remove('ready');
+  nftTimeout = setTimeout(() => {
+    if (body) { body.classList.remove('nft-generating'); body.classList.add('nft-ready'); }
+    setTimeout(() => {
+      if (stamp) stamp.classList.add('visible');
+      if (wrap) wrap.classList.add('ready');
+    }, 400);
+  }, 1200);
+}
+
+// Step 5: Heartbeat animation
+function startHeartbeatAnimation() {
+  let days = 1;
+  const warning = document.getElementById('heartbeatWarning');
+  const daysEl = document.getElementById('heartbeatDays');
+  if (warning) warning.style.display = 'none';
+  if (daysEl) daysEl.textContent = '1 天前';
+  function updateHeartbeat() {
+    days++;
+    if (daysEl) {
+      daysEl.textContent = days + ' 天前';
+      if (days >= 25) {
+        daysEl.style.color = '#E6713A';
+      } else {
+        daysEl.style.color = '#5BB5A6';
+      }
+    }
+    if (days >= 28 && warning) {
+      warning.style.display = 'block';
+      warning.classList.add('heartbeat-warning');
+    }
+    if (days >= 32) {
+      days = 1;
+      if (warning) { warning.style.display = 'none'; warning.classList.remove('heartbeat-warning'); }
+      if (daysEl) { daysEl.style.color = '#5BB5A6'; }
+    }
+  }
+  heartbeatInterval = setInterval(updateHeartbeat, 1500);
+}
+
+// Start initial animation
+startStatusAnimation();
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ══════════════════════════════════════════
+//  ANIMAL CARD ENTRANCE
+// ══════════════════════════════════════════
+(function(){
+  const cards = document.querySelectorAll('.animal-card');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:.15});
+  cards.forEach(c=>obs.observe(c));
+})();
+
+// ══════════════════════════════════════════
+//  PHOTO FLIP
+// ══════════════════════════════════════════
+function flipPhoto(el){
+  const isFlipped = el.classList.contains('flipped');
+  el.classList.add(isFlipped?'flipping-off':'flipping-on');
+  el.classList.toggle('flipped');
+  setTimeout(()=>el.classList.remove('flipping-on','flipping-off'),400);
+}
+
+// ══════════════════════════════════════════
+//  ANIMAL DATA
+// ══════════════════════════════════════════
+const SM_ANIMALS = {
+  huban: {
+    name:'虎斑妈妈', emoji:'🐯', heart:'🤎', meta:'中华田园犬 · 4岁 · 母 · 广州基地',
+    imgBefore:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774946518737/e8d9a745-4011-4e1a-a561-120c9d10200b.png',
+    imgAfter:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774955808551/f695f37f-ef33-43ac-a891-dd440b2bb3cd.png',
+    rescue:{date:'2023年11月', place:'从广东湛江屠宰场救助', note:'救助至广州基地，当时还带着一窝小奶狗'},
+    check:{date:'2023年11月15日', hospital:'海珠圣约瑟宠物医院', diag:['子宫蓄脓','需紧急手术']},
+    surgery:{type:'子宫蓄脓 + 绝育手术', cost:2350, breakdown:'蓄脓 ¥2,000 · 绝育 ¥350'},
+    recovery:{before:'5.2KG', after:'8.5KG', note:'慢慢肥了起来，比刚来时好很多了'},
+    adoption:{note:'等待一份只属于它的偏爱与独宠', chain:'#0xa2e7...3b18 · 区块 #18,441,023'}
+  },
+  taozi: {
+    name:'桃子妹妹', emoji:'🍑', heart:'🧡', meta:'混血小型犬 · 3岁 · 母 · 广州基地',
+    imgBefore:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774946800985/06e72bc1-d11d-43fd-ba2a-9d4f9a0b2d66.png',
+    imgAfter:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774955983156/1d477f42-d950-4d39-a5a5-8ccad02f8c2a.png',
+    rescue:{date:'2024年5月3日', place:'街头发现被遗弃', note:'救助者出了助养费后将它送入基地'},
+    check:{date:'2024年5月3日', hospital:'迦嘉动物医院', diag:['营养不良','需要营养补充']},
+    surgery:{type:'绝育手术', cost:350, breakdown:'绝育手术 ¥350'},
+    recovery:{before:'瘦弱', after:'圆润', note:'吃饭越来越香，一点点圆润起来，胃口变大了'},
+    adoption:{note:'在余光里等待一个愿意靠近它的人', chain:'#0xd3f1...8c04 · 区块 #18,455,712'}
+  },
+  paiguo: {
+    name:'排骨哥哥', emoji:'🦴', heart:'🤎', meta:'中华田园犬 · 9岁 · 公 · 已康复',
+    imgBefore:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947327023/b5ae28d9-42bc-460d-85e0-9d59488e1339.png',
+    imgAfter:'https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774958559294/c4b10551-8a68-4cfb-ba8e-ea29ffb4706b.png',
+    rescue:{date:'2022年9月27日', place:'邻居家传来惨叫', note:'发现人出钱将他从施暴邻居手中买下'},
+    check:{date:'2022年9月27日', hospital:'迦嘉动物医院', diag:['头骨裂开 · 右脚骨折','同日紧急安排手术']},
+    surgery:{type:'头骨修复 + 骨折手术', cost:5372, breakdown:'手术费用 ¥5,372'},
+    recovery:{before:'瘦骨嶙峋', after:'圆润健壮', note:'没有了当初的瘦骨嶙峋，精神头越来越好'},
+    adoption:{note:'已完全康复，开放实地或云端领养', chain:'#0xc4a8...9f31 · 区块 #18,433,210'}
+  },
+  zhima: {
+    name:'芝麻妹妹', emoji:'🌰', heart:'🤍', meta:'小型混血犬 · 2岁 · 母 · 贵州基地',
+    imgBefore:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947514742/444b82e8-4869-4649-9ab6-8d8724f1663f.png',
+    imgAfter:'https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774959228860/0ad7cad5-e5e7-4af0-91c7-04305243f5d7.png',
+    rescue:{date:'2023年5月12日', place:'路边发现，无法行走', note:'体重仅 2.7KG，情况糟糕'},
+    check:{date:'2023年5月12日', hospital:'贵州贵阳医院', diag:['髌骨骨折','后腿无法活动']},
+    surgery:{type:'骨折修复 + 绝育手术', cost:3500, breakdown:'手术费用 ¥3,500'},
+    recovery:{before:'2.7KG', after:'4.5KG', note:'两周缓慢行走，三个月完全康复，现毛色油亮'},
+    adoption:{note:'等待一个愿意让它依偎的腿弯', chain:'#0x5e2a...7f90 · 区块 #18,438,561'}
+  },
+  zhuazhua: {
+    name:'爪爪弟弟', emoji:'🐱', heart:'💙', meta:'家猫混血 · 1岁 · 公 · 待领养',
+    imgBefore:'https://storage.res-capy.com/storage/upload/users/usr_01KN166YYPA8B2G7FJ8BE2JS6W/workspaces/default-workspace/sessions/1774947992633/166e60c5-6307-4c40-b529-059db21aea4b.png',
+    imgAfter:'https://storage.res-capy.com/storage/upload/users/usr_01KN1VY0Y4JM6A4NB2BHR4EK4A/workspaces/default-workspace/sessions/1774959705962/52448446-5495-4e5b-88f8-994d54dc08de.png',
+    rescue:{date:'2023年6月', place:'租客遗弃，朋友圈求助', note:'皮包骨头，脖子大脓包，浑身毛发打结'},
+    check:{date:'入院评估', hospital:'医生放弃，救助人自救', diag:['病情严重，医生不想治疗','救助人决定自己照料']},
+    surgery:{type:'自救治疗', cost:100, breakdown:'针管+羊奶粉+消炎药+生理盐水+金疮药'},
+    recovery:{before:'奄奄一息', after:'撒娇乖猫', note:'伤口愈合，长出软软新绒毛，愿意互动撒娇了'},
+    adoption:{note:'被遗弃过，被放弃过，却从未被真正丢下', chain:'#0x8b4c...1e27 · 区块 #18,440,189'}
+  }
+};
+
+// ══════════════════════════════════════════
+//  STORY MODAL OPEN/CLOSE
+// ══════════════════════════════════════════
+let smCurrentAnimal = null;
+let smObs = null;
+let smTriggered = new WeakSet();
+let smCostTimer = null;
+
+function bwSpan(text, baseDelay){
+  return Array.from(text).map((ch,i)=>`<span class="bw" style="animation-delay:${(baseDelay+i*0.055).toFixed(2)}s">${ch===' '?'&nbsp;':ch}</span>`).join('');
+}
+
+function buildChapters(a){
+  // Chapter 1: Rescue - bounce text
+  const ch1 = `
+  <div class="sm-chapter ch-rescue" data-ch="0">
+    <div class="ch-label">Chapter 1 · 救助</div>
+    <div class="paw-anim">🐾</div>
+    <div class="sm-photo"><img src="${a.imgBefore}" alt="${a.name}"><div class="sm-photo-label">刚救助时</div></div>
+    <div class="sm-card">
+      <div class="sm-animal-header"><div class="sm-emoji">${a.emoji}</div><div><div class="sm-animal-name">${a.name} ${a.heart}</div><div class="sm-animal-meta">${a.meta}</div></div></div>
+      <div class="rescue-date-sm" id="rdate-${a._id}">${bwSpan(a.rescue.date, 0.1)}</div>
+      <div class="rescue-place-sm" id="rplace-${a._id}">${bwSpan(a.rescue.place, 0.4)}</div>
+      <div class="rescue-note-sm" id="rnote-${a._id}">${bwSpan(a.rescue.note, 0.9)}</div>
+    </div>
+    <div class="ch-scroll-hint"><span style="font-size:.9rem">↓</span><span>向下滑动</span></div>
+  </div>`;
+
+  // Chapter 2: Check - typewriter
+  const diagLines = a.check.diag.map((line,i)=>`<span class="tw-line check-diag" style="--td:${(0.7+line.length*0.04).toFixed(1)}s;--tc:${line.length};--tdelay:${(1.4+i*1.2).toFixed(1)}s">🔍 ${line}</span>`).join('');
+  const ch2 = `
+  <div class="sm-chapter ch-check" data-ch="1">
+    <div class="ch-label">Chapter 2 · 检查</div>
+    <div class="steth-anim">🏥</div>
+    <div class="sm-photo"><img src="${a.imgBefore}" alt="${a.name}"><div class="sm-photo-label" style="background:rgba(91,181,166,.75)">入院检查</div></div>
+    <div class="sm-card">
+      <div class="check-hosp"><span class="tw-line" style="--td:.9s;--tc:${a.check.hospital.length};--tdelay:.1s">📍 ${a.check.hospital}</span></div>
+      <div class="check-dt"><span class="tw-line" style="--td:.7s;--tc:${a.check.date.length};--tdelay:.8s">🗓 ${a.check.date}</span></div>
+      ${diagLines}
+    </div>
+    <div class="ch-scroll-hint"><span style="font-size:.9rem">↓</span><span>向下滑动</span></div>
+  </div>`;
+
+  // Chapter 3: Surgery - bouncing numbers
+  const ch3 = `
+  <div class="sm-chapter ch-surgery" data-ch="2">
+    <div class="ch-label">Chapter 3 · 手术</div>
+    <div class="scissors-anim">💊</div>
+    <div class="sm-card">
+      <div class="sm-animal-header"><div class="sm-emoji">${a.emoji}</div><div><div class="sm-animal-name">${a.name}</div><div class="sm-animal-meta">手术费用</div></div></div>
+      <div class="surg-type" id="styp-${a._id}">${a.surgery.type}</div>
+      <div class="cost-big"><span class="cost-pre">¥</span><span class="cost-val" id="cval-${a._id}">0</span></div>
+      <div class="surg-break" id="sbrk-${a._id}">${a.surgery.breakdown}</div>
+    </div>
+    <div class="ch-scroll-hint"><span style="font-size:.9rem">↓</span><span>向下滑动</span></div>
+  </div>`;
+
+  // Chapter 4: Recovery - hearts
+  const ch4 = `
+  <div class="sm-chapter ch-recovery" data-ch="3" style="position:relative">
+    <div class="ch-label">Chapter 4 · 康复</div>
+    <div id="hearts-${a._id}" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+    <div class="leaf-anim">🌱</div>
+    <div class="sm-photo" style="width:160px;height:160px"><img src="${a.imgAfter}" alt="${a.name} 康复后"><div class="sm-photo-label" style="background:rgba(91,181,166,.75)">康复后 ✨</div></div>
+    <div class="sm-card">
+      <div class="sm-animal-header"><div class="sm-emoji">${a.emoji}</div><div><div class="sm-animal-name">${a.name}</div><div class="sm-animal-meta">康复进度</div></div></div>
+      <div class="weight-row">
+        <div class="wt-b"><span class="wt-num">${a.recovery.before}</span><span class="wt-label">救助时</span></div>
+        <div class="wt-arrow">→</div>
+        <div class="wt-a"><span class="wt-num">${a.recovery.after}</span><span class="wt-label">现在</span></div>
+      </div>
+      <div class="rec-note" id="rnot2-${a._id}">${a.recovery.note}</div>
+    </div>
+    <div class="ch-scroll-hint"><span style="font-size:.9rem">↓</span><span>向下滑动</span></div>
+  </div>`;
+
+  // Chapter 5: Adoption - freeze fade
+  const ch5 = `
+  <div class="sm-chapter ch-adoption" data-ch="4">
+    <div class="ch-label">Chapter 5 · 领养</div>
+    <div class="stars-wrap" id="stars-${a._id}"></div>
+    <div class="adopt-badge">☁️ 开放云领养</div>
+    <div class="freeze-photo"><img src="${a.imgAfter}" alt="${a.name}" id="freezeImg-${a._id}"></div>
+    <div class="adopt-title" id="atitle-${a._id}">${a.name} ${a.heart}</div>
+    <div class="adopt-note" id="anote-${a._id}">${a.adoption.note}</div>
+    <div class="adopt-chain" id="achain-${a._id}">🔗 已上链 ${a.adoption.chain}</div>
+  </div>`;
+
+  return ch1+ch2+ch3+ch4+ch5;
+}
+
+function openStory(id){
+  const a = {...SM_ANIMALS[id], _id: id};
+  smCurrentAnimal = a;
+  smTriggered = new WeakSet();
+
+  // Build chapters
+  document.getElementById('smScroll').innerHTML = buildChapters(a);
+  document.getElementById('smTitle').textContent = a.name + ' · 救助故事';
+
+  // Reset progress
+  document.querySelectorAll('.sm-prog-dot').forEach((d,i)=>{ d.classList.toggle('active', i===0); d.classList.remove('done'); });
+
+  // Show modal
+  const modal = document.getElementById('storyModal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Trigger chapter 0
+  const scroll = document.getElementById('smScroll');
+  scroll.scrollTop = 0;
+  setTimeout(()=>{
+    const first = scroll.querySelector('[data-ch="0"]');
+    if(first) triggerSmChapter(first, a);
+  }, 100);
+
+  // Observer for subsequent chapters
+  if(smObs) smObs.disconnect();
+  smObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.intersectionRatio>.55) {
+        triggerSmChapter(e.target, a);
+        updateSmProgress(parseInt(e.target.dataset.ch));
+      }
+    });
+  },{threshold:.55, root: scroll});
+  scroll.querySelectorAll('.sm-chapter').forEach(c=>smObs.observe(c));
+}
+
+function closeStory(){
+  document.getElementById('storyModal').classList.remove('open');
+  document.body.style.overflow = '';
+  if(smObs){ smObs.disconnect(); smObs=null; }
+  clearTimeout(smCostTimer);
+  stopStoryMusic();
+}
+
+function closeStoryOnBackdrop(e){
+  if(e.target === document.getElementById('storyModal')) closeStory();
+}
+
+function updateSmProgress(ch){
+  document.querySelectorAll('.sm-prog-dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===ch);
+    d.classList.toggle('done', i<ch);
+  });
+}
+
+// ══════════════════════════════════════════
+//  CHAPTER TRIGGERS
+// ══════════════════════════════════════════
+function triggerSmChapter(scene, a){
+  if(!scene || smTriggered.has(scene)) return;
+  smTriggered.add(scene);
+  const ch = parseInt(scene.dataset.ch);
+  const id = a._id;
+  if(ch===0) triggerSmRescue(id);
+  if(ch===1) triggerSmCheck(id);
+  if(ch===2) triggerSmSurgery(id, a.surgery.cost);
+  if(ch===3) triggerSmRecovery(id);
+  if(ch===4) triggerSmAdoption(id);
+}
+
+function triggerSmRescue(id){
+  document.querySelectorAll(`#rdate-${id} .bw, #rplace-${id} .bw, #rnote-${id} .bw`).forEach(el=>{
+    el.style.animationPlayState='running';
+  });
+}
+
+function triggerSmCheck(id){
+  const scene = document.querySelector(`.sm-chapter.ch-check`);
+  if(!scene) return;
+  scene.querySelectorAll('.tw-line').forEach(el=>{
+    el.style.animationPlayState='running';
+    const delay = parseFloat(el.style.getPropertyValue('--tdelay')||
+      getComputedStyle(el).getPropertyValue('--tdelay')||'0');
+    setTimeout(()=>el.classList.add('done'), delay*1000+2500);
+  });
+}
+
+function triggerSmSurgery(id, finalCost){
+  const styp = document.getElementById('styp-'+id);
+  const sbrk = document.getElementById('sbrk-'+id);
+  if(styp) styp.style.animationPlayState='running';
+  if(sbrk) sbrk.style.animationPlayState='running';
+  const el = document.getElementById('cval-'+id);
+  if(!el) return;
+  let cur=0;
+  const step=Math.ceil(finalCost/55);
+  const iv=setInterval(()=>{
+    cur=Math.min(cur+step,finalCost);
+    el.textContent=cur.toLocaleString();
+    el.classList.remove('cpop');void el.offsetWidth;el.classList.add('cpop');
+    if(cur>=finalCost) clearInterval(iv);
+  },28);
+}
+
+function triggerSmRecovery(id){
+  const rec = document.getElementById('rnot2-'+id);
+  if(rec) rec.style.animationPlayState='running';
+  const wrap = document.getElementById('hearts-'+id);
+  if(!wrap) return;
+  const em=['❤️','🧡','💛','💚','💙','🌸','✨','💖'];
+  for(let i=0;i<14;i++){
+    setTimeout(()=>{
+      const h=document.createElement('span');
+      h.className='heart-p';
+      const dx=(Math.random()-.5)*90;
+      const dy=-(55+Math.random()*75);
+      h.style.cssText=`--hx:${dx}px;--hy:${dy}px;--hd:${2+Math.random()}s;--hdelay:0s;--hs:${.85+Math.random()*.75}rem;left:${15+Math.random()*70}%;top:55%`;
+      h.textContent=em[Math.floor(Math.random()*em.length)];
+      wrap.appendChild(h);
+      setTimeout(()=>h.remove(),3500);
+    },i*180);
+  }
+}
+
+function triggerSmAdoption(id){
+  ['atitle-','anote-','achain-'].forEach(pre=>{
+    const el=document.getElementById(pre+id);
+    if(el) el.style.animationPlayState='running';
+  });
+  const img=document.getElementById('freezeImg-'+id);
+  if(img) img.style.animationPlayState='running';
+  const sw=document.getElementById('stars-'+id);
+  if(!sw) return;
+  const st=['⭐','✨','💫','🌟'];
+  for(let i=0;i<14;i++){
+    const s=document.createElement('span');
+    s.className='star-p';
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sd:${2+Math.random()*2}s;--sdelay:${Math.random()*2}s;--ssz:${.55+Math.random()*.65}rem`;
+    s.textContent=st[Math.floor(Math.random()*st.length)];
+    sw.appendChild(s);
+  }
+}
+
+// ══════════════════════════════════════════
+//  PIANO MUSIC (healing pentatonic)
+// ══════════════════════════════════════════
+let smACtx=null, smMusicOn=false, smMelTimer=null, smMelNodes=[];
+const SM_PENTA=[261.63,293.66,329.63,392,440,523.25,587.33,659.25,783.99,880];
+const SM_MEL=[4,2,0,2,4,4,4,2,2,2,4,7,7,4,2,0,2,4,4,4,4,2,2,4,2,0];
+
+function playSmNote(freq,time,dur,vol=0.1){
+  if(!smACtx) return;
+  const o=smACtx.createOscillator();
+  const g=smACtx.createGain();
+  const f=smACtx.createBiquadFilter();
+  f.type='lowpass';f.frequency.value=1800;
+  o.connect(f);f.connect(g);g.connect(smACtx.destination);
+  o.type='triangle';o.frequency.setValueAtTime(freq,time);
+  g.gain.setValueAtTime(0,time);
+  g.gain.linearRampToValueAtTime(vol,time+.02);
+  g.gain.setValueAtTime(vol*.55,time+dur*.3);
+  g.gain.exponentialRampToValueAtTime(.001,time+dur);
+  o.start(time);o.stop(time+dur+.1);
+  smMelNodes.push(o);
+}
+
+function smMelodyLoop(){
+  if(!smACtx||!smMusicOn) return;
+  const now=smACtx.currentTime;
+  const beat=60/72;
+  SM_MEL.forEach((idx,i)=>{
+    const t=now+i*beat*.5;
+    playSmNote(SM_PENTA[idx%SM_PENTA.length],t,beat*.44,.09);
+    if(i%4===0) playSmNote(SM_PENTA[Math.max(0,idx-4)],t,beat*1.7,.055);
+  });
+  smMelTimer=setTimeout(smMelodyLoop,(SM_MEL.length*beat*.5-.5)*1000);
+}
+
+function toggleStoryMusic(){
+  if(!smACtx) smACtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(smACtx.state==='suspended') smACtx.resume();
+  const btn=document.getElementById('smMusicBtn');
+  if(smMusicOn){
+    smMusicOn=false;clearTimeout(smMelTimer);
+    smMelNodes.forEach(n=>{try{n.stop()}catch(e){}});smMelNodes=[];
+    btn.textContent='♪ 音乐';btn.style.background='';btn.style.color='';
+  } else {
+    smMusicOn=true;smMelodyLoop();
+    btn.textContent='♫ 停止';btn.style.background='var(--mint)';btn.style.color='#fff';
+  }
+}
+
+function stopStoryMusic(){
+  if(!smMusicOn) return;
+  smMusicOn=false;clearTimeout(smMelTimer);
+  smMelNodes.forEach(n=>{try{n.stop()}catch(e){}});smMelNodes=[];
+  const btn=document.getElementById('smMusicBtn');
+  if(btn){btn.textContent='♪ 音乐';btn.style.background='';btn.style.color='';}
+}
+
+// Close modal on ESC
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeStory(); });
+
+</script>
+
+</body>
+</html>
