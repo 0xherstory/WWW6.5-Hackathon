@@ -6,7 +6,7 @@ import { useState } from 'react';
 // Import crystal images
 import crystal1 from 'figma:asset/6e4310e7eedb7599a8783ae85915384fa1cdb41a.png';
 import crystal2 from 'figma:asset/c9271aa2b5c4b3ac4fd8114695354054ec89c320.png';
-import crystal3 from 'figma:asset/422998f75fa5b2894d6c25e42f9caa86c99f9321.png';
+import crystal3 from 'figma:asset/422998f75fa5b2894d6c25e42f9caa6c99f9321.png';
 import crystal4 from 'figma:asset/4a6ca87b1626e3188c8da1e6e3437313330918fd.png';
 import crystal5 from 'figma:asset/4331dd7b68e3e3da6cc1381fab0958d10762790c.png';
 import crystal6 from 'figma:asset/83aeacc4fc141482124734bd80a9fc84f4b2c521.png';
@@ -42,34 +42,47 @@ export default function MineDetail() {
     }
   };
 
-  // Handle collect button click - add collected crystals to storage
-  const handleCollect = () => {
-    if (mineEntries.length > 0) {
-      // Save each mine entry as an ore
+  // ==============================
+  // 🔌 只改这里：对接采集矿石接口
+  // ==============================
+  const handleCollect = async () => {
+    if (mineEntries.length === 0) return;
+
+    try {
+      // 批量提交到后端接口 /api/mine
+      for (const entry of mineEntries) {
+        await fetch("https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/mine", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: "手动采集",
+            content: entry.content
+          })
+        });
+      }
+
+      // 通知其他页面更新
+      window.dispatchEvent(new Event('oresUpdated'));
+      alert(`Collected ${mineEntries.length} ores!`);
+      setMineEntries([]);
+    } catch (e) {
+      // 接口异常时本地兜底
       const oresData = localStorage.getItem('collectedOres');
       const ores = oresData ? JSON.parse(oresData) : [];
       
       mineEntries.forEach(entry => {
-        const newOre = {
-          id: `ore-${Date.now()}-${Math.random()}`,
+        ores.push({
+          id: `ore-${Date.now()}`,
           type: 'mine',
           content: entry.content,
-          date: entry.date,
-          color: ''
-        };
-        ores.push(newOre);
+          date: entry.date
+        });
       });
       
       localStorage.setItem('collectedOres', JSON.stringify(ores));
-      
-      // Dispatch event to notify other components
       window.dispatchEvent(new Event('oresUpdated'));
-      
-      // Clear collected entries
-      setMineEntries([]);
-      
-      // Optional: Show feedback to user
       alert(`Collected ${mineEntries.length} ores!`);
+      setMineEntries([]);
     }
   };
 
