@@ -2,8 +2,12 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const CONTRACT_ADDRESS = '0x88354c1858b6786810f23D4730297fd542d9E7D4';
+
+/** 队友在 Lovable 部署的记忆迷宫（全屏 iframe 嵌入） */
+const MEMORY_MAZE_EXTERNAL_URL = 'https://eternal-maze-quest.lovable.app/';
 const CONTRACT_ABI = [
   { inputs: [{ internalType: 'string', name: '_content', type: 'string' }], name: 'recordMemory', outputs: [], stateMutability: 'nonpayable', type: 'function' },
   { inputs: [], name: 'getMemoryCount', outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }], stateMutability: 'view', type: 'function' },
@@ -46,6 +50,7 @@ export default function EternalGarden() {
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
   const hydratedRef = useRef(false);
 
+  const [showMemoryMazeEmbed, setShowMemoryMazeEmbed] = useState(false);
   const [showConfessionEditor, setShowConfessionEditor] = useState(false);
   const [confessionInput, setConfessionInput] = useState('');
   const [confessions, setConfessions] = useState<Confession[]>([
@@ -103,6 +108,15 @@ export default function EternalGarden() {
       container.appendChild(p);
     }
   }, []);
+
+  useEffect(() => {
+    if (!showMemoryMazeEmbed) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [showMemoryMazeEmbed]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -610,7 +624,27 @@ export default function EternalGarden() {
               </div>
 
               <div className={`tab-content ${activeTab === 'maze' ? 'active' : ''}`}>
-                <div className="maze-container"><div className="absolute w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(184,203,184,0.12),transparent_70%)]" /><div className="relative w-[200px] h-[200px] mb-8"><div className="maze-ring r1" /><div className="maze-ring r2" /><div className="maze-ring r3" /><div className="maze-ring r4" /><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[radial-gradient(circle,rgba(247,231,206,0.9),rgba(212,184,150,0.6))]" /></div><div className="text-white text-2xl mb-2" style={{ fontFamily: 'var(--font-title)' }}>记忆迷宫</div><div className="text-white/60 text-sm mb-8">通过回答关于人生的问题，解锁属于你的记忆碎片，在迷宫深处构建独一无二的数字永生之魂。</div><button className="px-10 py-3 rounded-xl border-2 border-[#D4B896] text-[#F7E7CE]" onClick={() => showToast('🎮 正在加载记忆迷宫...')}>✦ 进入游戏</button></div>
+                <div className="maze-container pb-28">
+                  <div className="pointer-events-none absolute left-0 top-0 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,rgba(184,203,184,0.12),transparent_70%)]" />
+                  <div className="pointer-events-none relative mb-8 h-[200px] w-[200px]">
+                    <div className="maze-ring r1" />
+                    <div className="maze-ring r2" />
+                    <div className="maze-ring r3" />
+                    <div className="maze-ring r4" />
+                    <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(247,231,206,0.9),rgba(212,184,150,0.6))]" />
+                  </div>
+                  <div className="relative z-10 text-white text-2xl mb-2" style={{ fontFamily: 'var(--font-title)' }}>
+                    记忆迷宫
+                  </div>
+                  <div className="relative z-10 mb-8 text-sm text-white/60">通过回答关于人生的问题，解锁属于你的记忆碎片，在迷宫深处构建独一无二的数字永生之魂。</div>
+                  <button
+                    type="button"
+                    className="relative z-20 px-10 py-3 rounded-xl border-2 border-[#D4B896] text-[#F7E7CE] cursor-pointer"
+                    onClick={() => setShowMemoryMazeEmbed(true)}
+                  >
+                    ✦ 进入游戏
+                  </button>
+                </div>
               </div>
 
               <div className={`tab-content ${activeTab === 'funeral' ? 'active' : ''}`}>
@@ -646,6 +680,47 @@ export default function EternalGarden() {
           </nav>
         </div>
       )}
+
+      {typeof window !== 'undefined' &&
+        showMemoryMazeEmbed &&
+        createPortal(
+          <div
+            className="fixed inset-0 flex flex-col bg-[#F9F9F9]"
+            style={{ zIndex: 10000 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="记忆迷宫"
+          >
+            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[#E8E4E0] bg-white/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => setShowMemoryMazeEmbed(false)}
+                className="rounded-full border border-[#D4D4D4] bg-white px-3 py-2 text-xs text-[#555] transition-colors hover:bg-[#F5F5F5]"
+              >
+                ← 返回永恒花园
+              </button>
+              <p className="hidden flex-1 text-center text-xs text-[#B0A8A0] sm:block">记忆迷宫 · 嵌入模式</p>
+              <button
+                type="button"
+                onClick={() => window.open(MEMORY_MAZE_EXTERNAL_URL, '_blank', 'noopener,noreferrer')}
+                className="shrink-0 text-xs text-[#8EAB8E] underline underline-offset-2 hover:text-[#6B8F6B]"
+              >
+                新标签页打开
+              </button>
+            </div>
+            <iframe
+              src={MEMORY_MAZE_EXTERNAL_URL}
+              title="记忆迷宫"
+              className="min-h-0 w-full flex-1 border-0"
+              allow="fullscreen; autoplay; clipboard-read; clipboard-write"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <p className="shrink-0 border-t border-[#EEE] bg-white/90 px-3 py-2 text-center text-[10px] leading-snug text-[#B0A8A0]">
+              若此处长期空白，可能是对方站点禁止被嵌入（安全策略）。请点「新标签页打开」或让队友在部署端允许 iframe 嵌入。
+            </p>
+          </div>,
+          document.body,
+        )}
 
       <div className={`modal-overlay ${showAssetModal ? 'show' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setShowAssetModal(false); }}>
         <div className="modal">

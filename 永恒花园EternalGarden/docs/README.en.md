@@ -2,7 +2,7 @@
 
 > A Web3-native, women-friendly hospice & digital legacy community — **where every life blooms eternally**.
 
-**中文说明:** [README.md](./README.md)
+**中文说明:** [README.md](../README.md)
 
 ---
 
@@ -47,14 +47,14 @@ This repository is an **MVP / demo** implementation: some flows are simulated or
 | Web3 | wagmi, viem, RainbowKit |
 | Chain | Avalanche Fuji (testnet); the plan also mentions L2 / Polygon for future scaling |
 | Styling | Tailwind CSS |
-| Static copy | `static-web/` — plain HTML/CSS/JS for static hosting or teaching |
+| Static copy | `ui/static-web/` — plain HTML/CSS/JS for static hosting or teaching |
 
 ---
 
 ## Local Development
 
 ```bash
-cd 永恒花园EternalGarden
+cd 永恒花园EternalGarden/ui
 npm install
 npm run dev
 ```
@@ -72,7 +72,7 @@ npm start
 
 ## Deployment (Vercel)
 
-If the Git repo is a monorepo, set Vercel **Root Directory** to **`永恒花园EternalGarden`**. See [VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md).
+If the Git repo contains other projects, set Vercel **Root Directory** to **`永恒花园EternalGarden/ui`**. See [VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md).
 
 ---
 
@@ -88,10 +88,22 @@ The full narrative is in the Chinese business plan document: *「永恒花园」
 
 ## Repository Layout
 
+```text
+永恒花园EternalGarden/
+├── README.md
+├── docs/
+├── contracts/
+├── backend/
+└── ui/
+```
+
 | Path | Role |
 |------|------|
-| `app/` | Next.js routes and UI |
-| `static-web/` | Static HTML/JS variant without the Next toolchain |
+| `ui/app/` | Next.js routes and UI |
+| `ui/static-web/` | Static HTML/JS variant without the Next toolchain |
+| `contracts/` | Solidity contracts |
+| `backend/` | Standalone backend (placeholder) |
+| `docs/` | Docs and deployment notes |
 
 ---
 
