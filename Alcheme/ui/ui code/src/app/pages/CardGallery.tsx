@@ -32,16 +32,25 @@ export default function CardGallery() {
   const cardBackgrounds = [cardBg1, cardBg2, cardBg3];
   const stampPatterns = [stamp1, stamp2, stamp3];
 
+  // ==============================
+  // 🔌 只改这里：从接口拉取卡片
+  // ==============================
   useEffect(() => {
-    // Load all refined cards from localStorage
-    const cardsData = localStorage.getItem('refinedCards');
-    if (cardsData) {
-      const loadedCards = JSON.parse(cardsData);
-      setCards(loadedCards);
-    }
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/cards");
+        const data = await res.json();
+        setCards(data.data || []);
+      } catch (e) {
+        // 接口挂了用本地兜底，不影响UI
+        const cardsData = localStorage.getItem('refinedCards');
+        if (cardsData) setCards(JSON.parse(cardsData));
+      }
+    };
+    fetchCards();
   }, []);
 
-  // Toggle card selection
+  // Toggle card selection（完全不动）
   const toggleCardSelection = (cardId: string) => {
     setSelectedCards(prev => {
       if (prev.includes(cardId)) {
@@ -52,18 +61,16 @@ export default function CardGallery() {
     });
   };
 
-  // Handle awaken button click
+  // Handle awaken button click（完全不动）
   const handleAwaken = () => {
     if (selectedCards.length === 0) {
       alert('Please select at least one card to awaken');
       return;
     }
     
-    // Store selected cards for the awaken animation
     const selectedCardData = cards.filter(card => selectedCards.includes(card.id));
     localStorage.setItem('awakenCards', JSON.stringify(selectedCardData));
     
-    // Navigate to awaken page
     navigate('/awaken?showAnimation=true');
   };
 
@@ -79,7 +86,6 @@ export default function CardGallery() {
         fontFamily: "'Cormorant Garamond', serif"
       }}
     >
-      {/* Blurred background */}
       <div 
         className="absolute inset-0"
         style={{
@@ -89,9 +95,7 @@ export default function CardGallery() {
         }}
       />
 
-      {/* Main content container */}
       <div className="relative z-10 w-full h-full flex flex-col p-12">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 
             style={{
@@ -106,7 +110,6 @@ export default function CardGallery() {
             MILESTONE CARDS
           </h1>
 
-          {/* Close button */}
           <button
             onClick={() => navigate('/awaken')}
             className="hover:scale-110 transition-all"
@@ -126,7 +129,6 @@ export default function CardGallery() {
           </button>
         </div>
 
-        {/* Cards grid */}
         <div className="flex-1 overflow-y-auto">
           {cards.length === 0 ? (
             <div 
@@ -156,7 +158,6 @@ export default function CardGallery() {
                     transform: selectedCards.includes(card.id) ? 'scale(1.05)' : 'scale(1)'
                   }}
                 >
-                  {/* Selection indicator */}
                   {selectedCards.includes(card.id) && (
                     <div 
                       className="absolute -top-1 -right-1 z-20"
@@ -176,7 +177,6 @@ export default function CardGallery() {
                     </div>
                   )}
 
-                  {/* Card background */}
                   <div 
                     className="relative"
                     style={{
@@ -194,7 +194,6 @@ export default function CardGallery() {
                       className="w-full h-auto drop-shadow-2xl"
                     />
 
-                    {/* Stamp pattern in the center circle */}
                     <div 
                       className="absolute"
                       style={{
@@ -216,9 +215,7 @@ export default function CardGallery() {
                     </div>
                   </div>
 
-                  {/* Card information section */}
                   <div className="mt-3 flex flex-col gap-2 w-full max-w-xs">
-                    {/* Card text */}
                     {card.text && (
                       <div 
                         className="px-4 py-2 rounded-lg"
@@ -237,7 +234,6 @@ export default function CardGallery() {
                       </div>
                     )}
 
-                    {/* Card creation date */}
                     <div 
                       className="text-center"
                       style={{
@@ -250,7 +246,6 @@ export default function CardGallery() {
                       Created: {new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                     </div>
 
-                    {/* Ores section */}
                     {card.ores && card.ores.length > 0 && (
                       <div 
                         className="px-3 py-2 rounded-lg"
@@ -260,7 +255,6 @@ export default function CardGallery() {
                           boxShadow: '0 1.5px 4px rgba(0, 0, 0, 0.15)'
                         }}
                       >
-                        {/* Ores heading */}
                         <div 
                           className="mb-1.5"
                           style={{
@@ -275,7 +269,6 @@ export default function CardGallery() {
                           Refined from {card.ores.length} ore{card.ores.length > 1 ? 's' : ''}:
                         </div>
 
-                        {/* Ores list */}
                         <div className="flex flex-col gap-1.5">
                           {card.ores.map((ore, index) => (
                             <div 
@@ -286,7 +279,6 @@ export default function CardGallery() {
                                 border: '1px solid #d4af37'
                               }}
                             >
-                              {/* Ore date */}
                               <div 
                                 style={{
                                   fontFamily: "'Cinzel', serif",
@@ -299,7 +291,6 @@ export default function CardGallery() {
                                 {ore.date}
                               </div>
 
-                              {/* Ore content */}
                               <div 
                                 style={{
                                   fontFamily: "'Cinzel', serif",
@@ -322,7 +313,6 @@ export default function CardGallery() {
           )}
         </div>
 
-        {/* Awaken button at bottom center */}
         {cards.length > 0 && (
           <div className="flex justify-center mt-8 pb-8">
             <button
