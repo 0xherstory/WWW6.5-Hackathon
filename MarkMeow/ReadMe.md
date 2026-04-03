@@ -2,6 +2,9 @@
 
 基于区块链的流浪猫绝育登记平台，帮助追踪和管理流浪猫的绝育状态。
 
+## 项目预览
+https://markmeow.lovable.app
+
 ## 项目结构
 
 ```
@@ -68,7 +71,7 @@ npm install
 npm run dev
 ```
 
-访问 `http://localhost:5173`，需安装 MetaMask 并切换到 Avalanche Fuji 测试网。
+访问给出的链接，如 `http://localhost:8080`，需安装 MetaMask 并切换到 Avalanche Fuji 测试网。
 
 ## 获取测试代币
 
