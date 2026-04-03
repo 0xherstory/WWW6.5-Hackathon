@@ -87,23 +87,31 @@ export interface CardIllustrationOptions {
 }
 
 /**
- * 卡片专属提示词
- * 风格固定（魔法水彩美学），场景由 GPT 个性化生成
+ * 卡片专属提示词 — Visual Style Protocol (Arcane Collectible Card Style)
+ * 协议基底固定，[New Assignment] 由 GPT 个性化生成
  */
 function buildCardIllustrationPrompt(illustrationDescription: string): string {
-  return [
-    `A full-bleed magical illustration with no borders, no frames, no decorative edges.`,
-    `Scene: ${illustrationDescription}`,
-    `Art style: soft 3D watercolor painting with luminous magical atmosphere,`,
-    `dreamy pastel tones blended with gentle glowing light effects.`,
-    `Color palette: lavender, rose gold, mint, and warm amber watercolor washes`,
-    `flowing freely across the canvas with no border or frame of any kind.`,
-    `Magical particles, soft light orbs, and watercolor ink blooms fill the scene.`,
-    `If any human figure appears, it must be a young woman with elegant, graceful features.`,
-    `No borders. No frames. No edges. No decorative outlines. Edge-to-edge illustration only.`,
-    `No text, no letters, no numbers anywhere in the image.`,
-    `Ultra high detail, painterly finish, portrait orientation.`,
+  const protocol = [
+    `[Visual Style Protocol: Arcane Collectible Card/Medallion Style]`,
+    `Core Concept: Detailed, illustrative, fantasy game asset.`,
+    `An ornate, 3D-sculpted frame enclosing a themed illustration, presented on a stone surface.`,
+    `Each card must be an isolated, high-definition asset.`,
+    `Frame Material: Heavily detailed materials with HIGH color saturation and vivid brightness: rich jewel-toned bronze (warm amber-gold), vibrant verdigris copper (bright teal-green), luminous polished marble with saturated color veins (cobalt blue, emerald, crimson, violet), glowing gilded wood. The frame must appear richly colored, vibrant, and visually striking — NOT dull, grey, or desaturated. Enhance highlights on raised filigree with brilliant specular shine.`,
+    `The frame shape must be specific (arch-top rectangular) and feature relevant inset symbols (e.g., Tree of Life, gears, constellations, atoms, daggers, a key) and detailed filigree/mechanisms.`,
+    `Central Illustration Style: Watercolor and colored pencil, hand-painted feel. Magical aesthetic with a soft, dreamy pastel palette — lavender mist, rose gold shimmer, mint-teal haze, peach-amber warmth, celestial periwinkle — layered over a parchment texture.`,
+    `Clear linework, not 3D-rendered. Enchanted atmosphere: drifting arcane mist, floating luminous spell particles, ethereal fairy-dust micro-sparkles, and soft prismatic lens flares emanating from magical focal points.`,
+    `Light and Atmosphere: The illustration must radiate its own mystical inner light — soft golden bokeh halos, starlight-connect-dot constellations, gentle arcane glows in purple and teal, and a faint moonlight wash over the entire scene.`,
+    `The frame must be realistically lit by soft, cool-warm ambient light that emphasizes its aged material depth and casts gentle magical reflections inward.`,
+    `Composition: Single vertical-oriented card. The frame occupies the outer edges, leaving the center for the illustration. Icons and filigree must be integrated seamlessly with a gentle glowing outline.`,
+    `CRITICAL: The illustration must be strictly contained within the inner boundary of the frame. Nothing in the illustration — figures, mist, light, particles — may extend beyond or overlap the frame border. The frame acts as a hard clipping boundary.`,
+    `If any human figure appears, it must be a young woman with elegant, graceful features, surrounded by soft magical aura and spell-light.`,
+    `Presentation: Isolated artifact, no UI elements. Set against a clean, checkered transparent background pattern (for easy post-production cutout).`,
+    `Execution: High-quality fantasy asset, focus on material contrast (sculpted stone/metal vs. soft magical watercolor). Evoke a sense of wonder, enchantment, and arcane beauty.`,
+    `Maintain the exact thickness and style of the frames and the overall artifact presentation consistently.`,
+    `No text, no letters, no numbers in the image.`,
   ].join(" ");
+
+  return `${protocol} [New Assignment]: ${illustrationDescription}`;
 }
 
 /**
@@ -125,22 +133,31 @@ export interface BadgeIllustrationOptions {
 }
 
 /**
- * 勋章专属提示词：风格与卡片一致，额外强调进阶/升华感
+ * 勋章专属提示词 — Visual Style Protocol (Arcane Medallion Style)
+ * 圆形勋章版本，强调进阶/升华感，协议基底固定，[New Assignment] 由 GPT 生成
  */
 function buildBadgeIllustrationPrompt(illustrationDescription: string): string {
-  return [
-    `A full-bleed magical evolution illustration with no borders, no frames, no decorative edges.`,
-    `Scene: ${illustrationDescription}`,
-    `Art style: soft 3D watercolor painting with luminous magical atmosphere,`,
-    `dreamy pastel tones blended with radiant ascension light effects.`,
-    `Color palette: deep violet, gold, celestial blue and warm amber watercolor washes`,
-    `flowing freely across the canvas — conveying a sense of power unlocked and new heights reached.`,
-    `Dramatic upward light rays, magical particles of achievement, shimmering aura of evolution.`,
-    `If any human figure appears, it must be a young woman with elegant, graceful features, glowing with power.`,
-    `No borders. No frames. No edges. No decorative outlines. Edge-to-edge illustration only.`,
-    `No text, no letters, no numbers anywhere in the image.`,
-    `Ultra high detail, painterly finish, portrait orientation, epic sense of progression.`,
+  const protocol = [
+    `[Visual Style Protocol: Arcane Collectible Medallion Style]`,
+    `Core Concept: A detailed fantasy game medallion asset.`,
+    `An ornate, 3D-sculpted circular frame enclosing a themed illustration, presented as an isolated high-definition artifact.`,
+    `Frame Material: Heavily detailed materials with HIGH color saturation and vivid brightness: brilliant sunstone marble glowing in warm amber-gold, richly saturated jewel-toned bronze (deep copper-orange, vivid emerald verdigris, royal violet), luminous polished metal with saturated color veins and gem-like inlays. The frame must appear richly colored, vibrant, and visually striking — NOT dull, grey, or desaturated. Enhance raised relief patterns with brilliant specular highlights.`,
+    `The circular frame features inset symbols of achievement, evolution, and ascension (lion, star, wing, flame, spiral, constellation) as well as intricate filigree integrated with the medallion's theme.`,
+    `Central Illustration Style: Watercolor and colored pencil, hand-painted feel. Magical aesthetic with a soft, dreamy pastel palette — lavender mist, rose gold shimmer, mint-teal haze, peach-amber warmth, celestial periwinkle — layered over a parchment texture.`,
+    `Clear linework, not 3D-rendered. Enchanted atmosphere: drifting arcane mist, floating luminous spell particles, ethereal fairy-dust micro-sparkles, and soft prismatic lens flares emanating from magical focal points.`,
+    `Light and Atmosphere: The illustration emits radiant ascending mystical light — soft golden bokeh halos, starlight-connect-dot constellations, gentle arcane glows in purple and teal, upward beams of pearlescent moonlight conveying evolution and breakthrough.`,
+    `The frame is realistically lit by cool-warm ambient light creating 3D depth, highlight ridges, rich shadows, and subtle magical reflections inward.`,
+    `Composition: Single circular medallion. The ornate frame ring occupies the outer area; the illustration fills the center circle.`,
+    `CRITICAL: The illustration must be strictly contained within the inner circular boundary of the frame. Nothing in the illustration — figures, mist, light, particles — may extend beyond or overlap the frame border. The circular frame acts as a hard clipping boundary.`,
+    `If any human figure appears, it must be a young woman with elegant, graceful features, surrounded by soft magical aura and ascending spell-light.`,
+    `Presentation: Isolated artifact, no UI elements. Set against a clean, checkered transparent background pattern (for easy post-production cutout).`,
+    `Execution: High-quality fantasy asset. Focus on material contrast — sculpted metal frame vs. luminous magical watercolor interior. Evoke wonder, enchantment, and arcane beauty.`,
+    `Epic sense of progression and power unlocked.`,
+    `Maintain the exact thickness and style of the frames and the overall artifact presentation consistently.`,
+    `No text, no letters, no numbers in the image.`,
   ].join(" ");
+
+  return `${protocol} [New Assignment]: ${illustrationDescription}`;
 }
 
 /**

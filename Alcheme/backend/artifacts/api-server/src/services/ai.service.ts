@@ -8,15 +8,25 @@ export interface CardMetaResult {
 export async function generateCardMeta(oreContents: string[]): Promise<CardMetaResult> {
   const combined = oreContents.join("\n\n").slice(0, 1200);
 
-  const systemPrompt = `你是一个成长旅程卡片设计师。用户会提供若干条碎碎念/学习笔记，请你：
+  const systemPrompt = `你是一个奇幻卡牌设计师。用户会提供若干条碎碎念/学习笔记，请你：
 1. 提取所有内容中的核心动词和名词（代表用户的行动与收获）
-2. 据此生成一个简洁有力的「里程碑标题」（中文，8字以内，像一枚徽章的名字）
-3. 根据这些关键词，撰写一段用于 AI 生图的「3D卡片插图描述」（英文，50词以内，描述一个魔法世界场景，体现用户的成长主题，适合水彩风格）
+2. 据此生成一个简洁有力的「里程碑标题」（中文，8字以内，像一枚传奇卡牌的名字）
+3. 根据这些关键词，撰写一段 [New Assignment] 描述（英文，100-120词），格式严格如下：
+   - Generate a single vertical rectangular card asset.
+   - 描述外框材质时，必须使用高饱和度、明亮色彩的版本（如：jewel-toned amber-gold bronze / vivid emerald-verdigris copper / cobalt-veined luminous marble / royal violet gilded wood），并注明边框颜色必须鲜艳饱满而非暗沉灰旧；同时描述框上集成的具体机械或自然元素（如 miniature clockwork gears, carved waves, living vines 等）
+   - 列出嵌入符号（2个，与主题直接相关，如 compass and seahorse / quill and atom / dagger and key）
+   - 描述中央水彩插图：根据主题自由选择最合适的视觉形式，可以是：象征性物件组合（如书卷、水晶球、星盘、钥匙）、奇幻风景（如漂浮岛、宇宙图书馆、光之神殿）、抽象魔法场景（如流动符文、星座图谱、能量漩涡）、神秘生物（如凤凰、龙、精灵）、或人物场景；不强制出现人物，优先选择与主题最贴切的形式；使用魔法柔和色调（lavender mist, rose gold shimmer, mint-teal haze, peach-amber warmth, celestial periwinkle），含 star-connect-dot constellations、arcane mist、floating spell particles、golden bokeh
+   - 安全规则：若插图中选择出现人物，必须为 elegant young woman
+   - 重要空间约束：所有插图元素（人物、迷雾、粒子、光线）必须严格限定在边框内侧，不得超出或遮盖边框
+   - 结尾固定写：All illustration elements are strictly contained within the frame boundary. No text, no letters, no numbers in the image. Set against a checkered transparent background. Maintain the exact thickness and style of the frames.
+
+参考示例（请模仿这种具体程度和详细程度）：
+[New Assignment]: Generate a single vertical rectangular card asset. The outer frame is made of aged copper and brass, integrated with actual moving, miniature clockwork gears and carved waves. It has inset symbols of a compass and a seahorse. The central illustration, in the watercolor style, shows a three-masted sailing ship with billowing sails, navigating a sea of swirling teal and orange mists under a complex, star-connect-dot constellation sky. Golden fireflies are scattered throughout the mists. Ensure all other elements of the protocol (materials, lighting, checkerboard background) are present.
 
 只返回如下 JSON，不要有其他内容：
 {
   "milestoneTitle": "里程碑标题",
-  "illustrationDescription": "English illustration scene description"
+  "illustrationDescription": "[New Assignment] English description following the format above"
 }`;
 
   const response = await openai.chat.completions.create({
@@ -59,17 +69,27 @@ export async function generateBadgeEvolution(
     ? `旧勋章封号：「${previousBadge.name}」\n旧勋章描述：${previousBadge.description}`
     : "（这是第一枚勋章，没有前序封号）";
 
-  const systemPrompt = `你是一位成长旅程的史诗叙事者，负责为用户铸造进化勋章。
+  const systemPrompt = `你是一位奇幻勋章铸造师，负责为用户铸造进化勋章。
 用户有一枚旧勋章（代表过去的成就），并带来了新的卡片内容（代表最新的努力与突破）。
 请你：
 1. 结合旧勋章封号与新卡片内容，生成一个更高级别的「进化封号」（中文，6字以内，比旧封号更有气势/层次感）
-2. 撰写一段「进化插图描述」（英文，50词以内，要描绘一个体现成长进阶的魔法场景——比如旧形态升华、力量突破、新境界开启）
+2. 撰写一段 [New Assignment] 描述（英文，100-120词），格式如下：
+   - Generate a single circular medallion asset.
+   - 描述圆形外框材质时，必须使用高饱和度、明亮色彩的版本（如：brilliant amber-gold sunstone marble / vivid jewel-toned bronze with emerald verdigris / royal-violet patinated copper with gold inlays），并注明边框颜色必须鲜艳饱满而非暗沉灰旧；同时描述框上具体嵌入的进阶符号（2个，如 lion's head and shield / wings and flame / spiral and star）
+   - 描述中央水彩插图：根据主题自由选择最能体现"进阶升华"的视觉形式，可以是：象征进化的物件（如破壳的光蛋、绽放的星晶花、跃升的凤凰）、奇幻场景（如旧形态石壁碎裂化为新境星空）、能量图腾（如螺旋上升的星座图谱、融合的光环）、神秘生物、或人物场景；不强制出现人物，优先选择与主题最贴切的升华象征；使用魔法柔和色调（lavender mist, rose gold shimmer, mint-teal haze, peach-amber warmth, celestial periwinkle），含 ascending starlight connect-dot constellations、arcane mist、floating spell particles、golden bokeh、pearlescent upward light beams
+   - 安全规则：若插图中选择出现人物，必须为 elegant young woman
+   - 重要空间约束：所有插图元素（人物、迷雾、粒子、光线）必须严格限定在圆形边框内侧，不得超出或遮盖边框
+   - 结尾固定写：All illustration elements are strictly contained within the circular frame boundary. No text, no letters, no numbers in the image. Set against a checkered transparent background. Maintain the exact thickness and style of the frames.
+
+参考示例（请模仿这种具体程度和详细程度）：
+[New Assignment]: Generate a single circular medallion asset. The outer frame is made of polished, sunstone-like marble and bronze, featuring inset symbols of a lion's head and a shield. The central illustration, done in the watercolor style, shows a glowing campfire in a dark, star-connect-dot constellation cave, emitting a soft, golden bokeh light. Ensure all other elements of the protocol (materials, wings, lighting, checkerboard background) are present.
+
 3. 写一句「进化叙述」（中文，20字以内，记录这次成长跨越）
 
 只返回如下 JSON：
 {
   "title": "进化封号",
-  "illustrationDescription": "English scene showing evolution/ascension",
+  "illustrationDescription": "[New Assignment] English description following the format above",
   "evolutionNarrative": "进化叙述一句话"
 }`;
 
