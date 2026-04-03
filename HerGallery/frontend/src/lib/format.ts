@@ -27,5 +27,5 @@ export function getDisplayName(address: string, username?: string | null): strin
   if (username && username.trim().length > 0) {
     return username.trim();
   }
-  return shortenAddress(address);
+  return '云吃吃';
 }
