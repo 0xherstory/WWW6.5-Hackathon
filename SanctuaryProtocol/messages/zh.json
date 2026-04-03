@@ -1,0 +1,689 @@
+{
+  "metadata": {
+    "title": "疗愈庇护所",
+    "description": "在 Web3 的世界里，种下属于你的疗愈之树"
+  },
+  "brand": {
+    "name": "疗愈庇护所",
+    "tagline": "在 Web3 的世界里，种下属于你的疗愈之树"
+  },
+  "nav": {
+    "launch": "疗愈庇护所",
+    "explore": "探索",
+    "sanctuary": "我的记忆",
+    "timemachine": "时光机",
+    "home": "首页",
+    "back": "返回",
+    "backToHome": "返回首页",
+    "toggleMenu": "切换菜单"
+  },
+  "wallet": {
+    "connect": "连接钱包",
+    "disconnect": "断开连接",
+    "wrongNetwork": "切换网络",
+    "connectFirst": "请先连接钱包"
+  },
+  "home": {
+    "title": "疗愈庇护所",
+    "subtitle": "基于区块链的去中心化疗愈工具与互助社区",
+    "description": "在安全的容器中探索内心，通过艺术与技术获得疗愈支持",
+    "principles": {
+      "privacy": {
+        "title": "隐私保护",
+        "desc": "前端加密 + IPFS存储，链上仅存CID"
+      },
+      "decentralized": {
+        "title": "去中心化",
+        "desc": "智能合约自动托管，无审查发放"
+      },
+      "transparent": {
+        "title": "透明可验证",
+        "desc": "所有交易链上可查，完全透明"
+      }
+    },
+    "services": {
+      "ohcards": {
+        "title": "植物系疗愈 OH 卡",
+        "desc": "通过植物生命轨迹卡牌探索内心"
+      },
+      "counseling": {
+        "title": "心理咨询服务",
+        "desc": "专业心理咨询师一对一陪伴"
+      },
+      "cbt": {
+        "title": "认知行为疗法",
+        "desc": "结构化日记工具改变思维模式"
+      }
+    },
+    "comingSoon": "即将开放",
+    "learnMore": "了解更多",
+    "experienceNow": "立即体验",
+    "features": {
+      "privacy": {
+        "title": "私密",
+        "desc": "链上加密存储"
+      },
+      "growth": {
+        "title": "生长",
+        "desc": "情绪阶段演变"
+      },
+      "connection": {
+        "title": "共鸣",
+        "desc": "集体潜意识连结"
+      }
+    },
+    "cta": {
+      "start": "开始探索",
+      "sanctuary": "查看庇护所"
+    }
+  },
+  "spreads": {
+    "title": "选择探索方式",
+    "subtitle": "每种牌阵都能带给你不同的洞察和启示",
+    "cards": "张卡牌",
+    "backToHome": "返回首页",
+    "types": {
+      "single": {
+        "name": "单卡探索",
+        "description": "抽取一张卡牌，获取当下的指引",
+        "positions": {
+          "center": "当下指引"
+        }
+      },
+      "three": {
+        "name": "过去-现在-未来",
+        "description": "三张卡牌，看见时间的流动",
+        "positions": {
+          "past": "过去的影响",
+          "present": "现在的状态",
+          "future": "未来的可能"
+        }
+      },
+      "five": {
+        "name": "十字牌阵",
+        "description": "深入探索问题的核心与解决之道",
+        "positions": {
+          "center": "现状",
+          "top": "挑战",
+          "left": "过去",
+          "right": "未来",
+          "bottom": "潜在"
+        }
+      },
+      "seven": {
+        "name": "七星探索",
+        "description": "完整的身心灵探索之旅",
+        "positions": {
+          "crown": "王冠",
+          "wisdom": "智慧",
+          "understanding": "理解",
+          "beauty": "美丽",
+          "victory": "胜利",
+          "glory": "荣耀",
+          "kingdom": "王国"
+        }
+      },
+      "ten": {
+        "name": "生命之树",
+        "description": "卡巴拉生命之树，完整的十质点探索",
+        "positions": {
+          "kether": "王冠",
+          "chokmah": "智慧",
+          "binah": "理解",
+          "chesed": "慈悲",
+          "gevurah": "严厉",
+          "tiferet": "美丽",
+          "netzach": "胜利",
+          "hod": "荣耀",
+          "yesod": "基础",
+          "malkuth": "王国"
+        }
+      }
+    }
+  },
+  "select": {
+    "title": "选择卡牌",
+    "imageCards": "图卡",
+    "wordCards": "字卡",
+    "random": "随机选择",
+    "confirm": "确认选择",
+    "selected": "已选择",
+    "instruction": "请分别选择 {count} 张图卡和 {count} 张字卡",
+    "selectedCards": "已选卡牌",
+    "complete": "完成",
+    "randomAll": "全部随机",
+    "reset": "重置",
+    "selectImage": "选图卡",
+    "selectWord": "选字卡",
+    "clickToReplace": "请点击一张卡牌进行更换",
+    "clickToReplaceWord": "请点击一张字卡进行更换",
+    "currentSelection": "当前选择",
+    "card": "卡牌",
+    "wordCard": "字卡",
+    "randomDraw": "随机抽取",
+    "positionActive": "位置 {position} ({name}) 已激活",
+    "continueToJournal": "继续写日记",
+    "doubleClickToView": "双击查看大图",
+    "position": {
+      "center": "当下指引",
+      "past": "过去的影响",
+      "present": "现在的状态",
+      "future": "未来的可能",
+      "top": "挑战",
+      "left": "过去",
+      "right": "未来",
+      "bottom": "潜在",
+      "crown": "王冠",
+      "wisdom": "智慧",
+      "understanding": "理解",
+      "beauty": "美丽",
+      "victory": "胜利",
+      "glory": "荣耀",
+      "kingdom": "王国",
+      "kether": "王冠",
+      "chokmah": "智慧",
+      "binah": "理解",
+      "chesed": "慈悲",
+      "geburah": "严厉",
+      "tiphereth": "美丽",
+      "netzach": "胜利",
+      "hod": "荣耀",
+      "yesod": "基础",
+      "malkuth": "王国"
+    }
+  },
+  "tracks": {
+    "1": {
+      "name": "疗愈复原",
+      "description": "从创伤到释怀的疗愈之旅"
+    },
+    "2": {
+      "name": "潜能突破",
+      "description": "发现内在潜能与力量"
+    },
+    "3": {
+      "name": "自我建构",
+      "description": "探索自我认同与成长"
+    },
+    "4": {
+      "name": "关系演变",
+      "description": "理解人际关系的深层模式"
+    },
+    "5": {
+      "name": "内在秩序",
+      "description": "建立内在的平衡与秩序"
+    },
+    "6": {
+      "name": "生命流转",
+      "description": "拥抱生命的变化与循环"
+    }
+  },
+  "journal": {
+    "title": "记录你的解读",
+    "subtitle": "写下你的感受和洞察",
+    "selectedCards": "你选择的卡牌",
+    "yourInterpretation": "你的解读",
+    "placeholder": "写下你对这些卡牌的解读、感受和洞察...",
+    "characters": "字",
+    "selectWordCard": "选择字卡（可选）",
+    "wordCards": ["平静", "成长", "接纳", "释放", "希望"],
+    "encrypting": "加密中...",
+    "sealOnChain": "封存上链",
+    "emptyContent": "请写下你的想法",
+    "tip1": "你的日记将被加密后存储在 IPFS，区块链上只保存哈希值",
+    "tip2": "只有你能解密并查看内容",
+    "maxChars": "最多 300 字",
+    "txDescription": "疗愈记录 - {spreadType} 牌阵，{wordCount} 字",
+    "txFailed": "区块链交易失败，请检查网络连接和钱包余额后重试",
+    "doubleClickToView": "双击查看大图",
+    "imageCard": "图卡",
+    "encryptingTitle": "正在加密你的日记...",
+    "encryptingDesc": "文字正在变成密码，只有你能看到内容",
+    "uploadingTitle": "正在上传到IPFS...",
+    "uploadingDesc": "永久存储在去中心化网络中",
+    "submittingTitle": "正在提交到区块链...",
+    "submittingDesc": "记录疗愈完成并请求支付",
+    "successTitle": "加密存储成功",
+    "successDesc": "你的日记已安全存储",
+    "errorTitle": "存储失败",
+    "txLabel": "交易",
+    "retry": "重试",
+    "chars": "字符",
+    "words": "词",
+    "autoSave": "自动保存"
+  },
+  "success": {
+    "title": "记录已保存",
+    "subtitle": "你的觉察已被安全地记录在链上",
+    "message": "感谢你的真诚分享。这份记录将成为你疗愈旅程的一部分。",
+    "viewInSanctuary": "在庇护所查看",
+    "exploreMore": "继续探索",
+    "applyClaim": "申请互助资金",
+    "journal": {
+      "title": "本次疗愈记录",
+      "recordTime": "记录时间",
+      "wordCount": "字数",
+      "words": "字",
+      "ipfs": "IPFS存储",
+      "blockchain": "区块链记录",
+      "viewTx": "查看交易",
+      "preview": "日记内容预览"
+    },
+    "claim": {
+      "title": "互助资金领取成功",
+      "amount": "领取金额",
+      "txHash": "交易哈希",
+      "viewTx": "查看交易"
+    },
+    "privacy": {
+      "title": "隐私保护",
+      "desc": "你的日记内容经过 AES 加密后存储在 IPFS，只有持有密钥的你才能解密查看。"
+    },
+    "timeWitness": {
+      "title": "时间见证",
+      "desc": "区块链为这份记录盖上了不可篡改的时间戳，它将成为你成长轨迹的永恒见证。"
+    },
+    "collectiveResonance": {
+      "title": "集体共鸣",
+      "desc": "你的觉察记录将与其他疗愈者的记录一起，构成一幅集体疗愈的图景。"
+    },
+    "tip1": "你可以随时在庇护所查看和下载你的记录",
+    "tip2": "建议定期回顾，观察自己的成长轨迹"
+  },
+  "launch": {
+    "title": "疗愈庇护所互助协议",
+    "subtitle": "基于区块链的去中心化疗愈工具与互助社区",
+    "tagline": "每一份觉察，都是一次自我疗愈",
+    "pool": {
+      "title": "庇护所资金池状态",
+      "balance": "资金池余额",
+      "donors": "捐赠人数",
+      "helped": "已帮助人数",
+      "people": "人",
+      "insufficient": "当前资金池余额不足",
+      "sufficient": "有可用资金"
+    },
+    "flow": {
+      "title": "资金流转机制",
+      "step1": "守护者购买卡牌支持艺术",
+      "step2": "资金进入庇护所池",
+      "step3": "疗愈者完成觉察",
+      "step4": "无审查自动拨付"
+    },
+    "gallery": {
+      "title": "30 张植物生命轨迹 OH 卡",
+      "subtitle": "每张卡牌代表生命的一个阶段，6 条轨迹 × 5 个阶段 = 30 张独特的艺术卡片",
+      "track": "轨迹",
+      "stage": "阶段",
+      "resonance": "已有 {count} 份记忆在此停留"
+    },
+    "modes": {
+      "title": "选择你的模式",
+      "healer": {
+        "name": "疗愈者模式",
+        "tagline": "在安全的容器中探索内心",
+        "desc": "作为一个正在经历心理挑战的个体，我想要一个私密、安全的疗愈空间，在不需要暴露隐私的情况下获得支持。",
+        "processTitle": "体验流程：",
+        "step1": "选择 OH 卡牌阵探索内心",
+        "step2": "写下觉察感受（AES加密 + IPFS存储）",
+        "step3": "完成邮箱验证（可选申请资助）",
+        "step4": "查看疗愈记忆，持续成长",
+        "cta": "开始疗愈之旅"
+      },
+      "guardian": {
+        "name": "守护者模式",
+        "tagline": "支持艺术，也支持公益",
+        "desc": "作为数字艺术收藏家和公益支持者，我想要通过购买 OH 卡艺术品来支持心理疗愈事业，同时获得独特的数字收藏品。",
+        "processTitle": "体验流程：",
+        "step1": "浏览 30 张植物主题 OH 卡艺术",
+        "step2": "选择喜欢的卡牌进行捐赠收藏",
+        "step3": "资金进入庇护所资金池",
+        "step4": "实时查看资金使用透明度",
+        "cta": "进入守护者画廊"
+      },
+      "note": "提示：守护者仅捐赠不可申领，疗愈者仅申领不可捐赠，两种身份互斥"
+    },
+    "stories": {
+      "title": "真实用户故事",
+      "healer": {
+        "role": "疗愈者 · 使用 3 个月",
+        "content": "在最低谷的时候发现了这个庇护所。每天抽一张 OH 卡，写下自己的感受，不需要向任何人解释，却能获得支持。这种被理解但不暴露隐私的感觉，让我慢慢走了出来。"
+      },
+      "guardian": {
+        "role": "守护者 · 捐赠 5 AVAX",
+        "content": "我收藏了 5 张植物卡牌，不仅因为艺术价值，更因为我知道这些资金真的在帮助需要的人。区块链的透明让我能追踪每一笔资金的去向，这种信任是传统公益无法给予的。"
+      }
+    },
+    "principles": {
+      "title": "核心原则",
+      "privacy": {
+        "title": "隐私保护",
+        "desc": "前端加密 + IPFS存储，链上仅存CID"
+      },
+      "decentralized": {
+        "title": "去中心化",
+        "desc": "智能合约自动托管，无审查发放"
+      },
+      "transparent": {
+        "title": "透明可验证",
+        "desc": "所有交易链上可查，完全透明"
+      }
+    },
+    "upcoming": {
+      "title": "即将推出的服务",
+      "soon": "即将开放",
+      "learnMore": "了解更多",
+      "counseling": {
+        "title": "心理咨询服务",
+        "desc": "专业心理咨询师一对一陪伴，安全私密的在线咨询体验"
+      },
+      "cbt": {
+        "title": "CBT认知行为疗法",
+        "desc": "结构化日记工具，帮助识别和改变负面思维模式"
+      }
+    },
+    "donate": {
+      "title": "收藏并支持",
+      "amount": "捐赠金额",
+      "amountPlaceholder": "输入金额",
+      "defaultAmount": "默认 0.01 AVAX，可自定义",
+      "note": "您的资金将进入庇护所资金池，用于支持需要帮助的人",
+      "confirm": "确认收藏",
+      "success": "收藏成功！",
+      "error": "交易失败"
+    }
+  },
+  "guardian": {
+    "title": "守护者画廊",
+    "subtitle": "收藏独特的植物生命轨迹 OH 卡艺术品，支持心理疗愈事业",
+    "description": "您的捐赠将进入庇护所资金池，帮助需要心理支持的人",
+    "tab": {
+      "collect": "收藏卡牌",
+      "collection": "我的收藏 ({count})"
+    },
+    "pool": {
+      "title": "当前资金池状态",
+      "balance": "资金池余额",
+      "reserve": "储备金",
+      "donations": "捐赠次数",
+      "helped": "已帮助人数",
+      "currentClaim": "当前领取金额",
+      "mode": "模式",
+      "modes": {
+        "emergency": "紧急",
+        "low": "低储备",
+        "conservative": "保守",
+        "normal": "正常"
+      }
+    },
+    "select": {
+      "title": "选择您想收藏的卡牌",
+      "hint": "点击选择一张卡牌，然后设置您的捐赠金额"
+    },
+    "donation": {
+      "title": "设置捐赠金额",
+      "amount": "捐赠金额 (AVAX)",
+      "suggestion": "建议金额：0.01 - 1 AVAX",
+      "connectWallet": "请先连接钱包",
+      "processing": "处理中...",
+      "confirm": "确认捐赠 {amount} AVAX",
+      "securityNote": "您的资金将安全地存储在智能合约中，20%作为储备金"
+    },
+    "collection": {
+      "title": "我的收藏"
+    },
+    "benefits": {
+      "title": "守护者权益",
+      "collectible": {
+        "title": "数字收藏品",
+        "desc": "获得独特的植物 OH 卡数字艺术品"
+      },
+      "transparency": {
+        "title": "透明追踪",
+        "desc": "实时查看资金使用情况，完全透明"
+      },
+      "impact": {
+        "title": "公益贡献",
+        "desc": "帮助心理疗愈者获得支持"
+      }
+    },
+    "backToHome": "返回庇护所首页",
+    "transactionDescription": "收藏卡牌「{cardName}」并捐赠 {amount} AVAX",
+    "donateFailed": "捐赠失败，请检查钱包连接和余额",
+    "donateError": "捐赠过程中发生错误"
+  },
+  "sanctuary": {
+    "title": "我的庇护所",
+    "subtitle": "你在这里种下的所有记忆",
+    "empty": {
+      "title": "还没有记忆",
+      "desc": "开始你的第一次探索，种下疗愈之种"
+    },
+    "stats": {
+      "totalMemories": "记忆总数",
+      "latestMemory": "最近记忆"
+    },
+    "memory": {
+      "view": "查看详情",
+      "decrypt": "解密内容",
+      "decryptPlaceholder": "输入解密密钥",
+      "decryptSuccess": "解密成功",
+      "decryptFailed": "解密失败，请检查密钥",
+      "noContent": "内容已加密",
+      "spreadType": "牌阵",
+      "createdAt": "创建时间",
+      "cards": "卡牌"
+    },
+    "actions": {
+      "newMemory": "记录新记忆",
+      "viewAll": "查看全部"
+    },
+    "refreshData": "刷新数据",
+    "connectWalletFirst": "请先连接钱包",
+    "wordCard": "字卡",
+    "decrypting": "正在解密...",
+    "decryptHint": "需要钱包签名来解密内容，签名消息仅用于派生加密密钥",
+    "tabs": {
+      "memories": "我的记忆 ({count})",
+      "transactions": "交易历史 ({count})"
+    },
+    "connectWallet": {
+      "title": "请连接钱包",
+      "desc": "您的记忆和交易历史与钱包地址绑定，请先连接钱包以查看您的个人记录。"
+    },
+    "transactions": {
+      "types": {
+        "journal": "疗愈记录",
+        "claim": "领取资金",
+        "donate": "捐赠",
+        "default": "交易"
+      },
+      "empty": {
+        "title": "暂无交易记录",
+        "desc": "完成疗愈记录、领取资金或捐赠后，交易历史将显示在这里"
+      },
+      "viewTx": "查看交易"
+    }
+  },
+  "timemachine": {
+    "title": "情绪时光机",
+    "subtitle": "查看你的情绪在不同时间维度的演变",
+    "selectTime": "选择时间点",
+    "daysFromToday": "距离今天的天数",
+    "days": "天",
+    "predictionMode": "预测模式",
+    "predictionDesc": "基于{days}天后的植物生长阶段，预测你的情绪状态",
+    "emotionPrediction": "{days}天后的情绪预测",
+    "futureStage": "{days}天后，你的情绪将进入新的阶段",
+    "completeFirstExploration": "完成第一次探索后，这里会显示你的情绪演变轨迹",
+    "comingSoon": "情绪预测功能即将上线",
+    "comingSoonDesc": "我们正在开发基于链上数据的智能情绪分析，帮助你洞察情绪演变趋势。"
+  },
+  "modal": {
+    "closeHint": "按 ESC 或点击任意处关闭"
+  },
+  "errors": {
+    "unknown": "未知错误",
+    "spreadNotFound": "牌阵不存在",
+    "backToSpreads": "返回选择牌阵"
+  },
+  "verification": {
+    "title": "申请互助资金",
+    "intro": "辛苦了，感谢你为自己停留的这二十分钟。",
+    "description": "庇护所的互助资金池里，有一份来自远方的支持在等你。为了确保这份心意不被冷冰冰的自动程序掠夺，我们需要验证你是一个真实的人。",
+    "privacy": {
+      "title": "隐私保护承诺",
+      "desc": "我们使用模拟的 ZK-Email 技术。你的邮箱地址只会在本地处理，永远不会被存储或传输到服务器。我们只保存一个不可逆向的哈希值作为你的匿名通行证。"
+    },
+    "steps": {
+      "input": "第一步：输入你的邮箱",
+      "code": "第二步：输入验证码",
+      "verify": "第三步：生成匿名通行证"
+    },
+    "form": {
+      "emailPlaceholder": "请输入你的 Gmail 邮箱",
+      "emailNote": "目前仅支持 Gmail",
+      "codePlaceholder": "请输入6位验证码",
+      "codeSent": "验证码已发送到 {email}",
+      "sendCode": "发送验证码",
+      "resendCode": "重新发送 ({seconds}s)",
+      "verify": "验证并生成通行证",
+      "verifying": "正在验证..."
+    },
+    "animation": {
+      "disconnecting": "正在断开网络连接，确保数据完全停留在本地...",
+      "reading": "正在读取邮箱服务商的官方签名...",
+      "generating": "正在为你生成绝对匿名的数字存根...",
+      "shredded": "邮箱地址已在本地物理粉碎",
+      "complete": "验证完成！"
+    },
+    "success": {
+      "title": "验证成功！",
+      "desc": "你的匿名通行证已生成。在接下来的24小时内，你可以随时领取互助资金。",
+      "claimNow": "立即领取",
+      "claimLater": "稍后领取"
+    },
+    "error": {
+      "invalidEmail": "请输入有效的邮箱地址",
+      "notGmail": "目前仅支持 Gmail 邮箱",
+      "invalidCode": "验证码格式错误",
+      "codeExpired": "验证码已过期，请重新获取",
+      "sendFailed": "发送验证码失败",
+      "verifyFailed": "验证失败，请重试",
+      "alreadyClaimed": "该邮箱已领取过资金"
+    },
+    "devModeAlert": "【测试模式】您的验证码是: {code}\n\n请在下方输入框中输入此验证码。",
+    "pool": {
+      "insufficient": "当前资金池余额不足",
+      "available": "资金池有可用资金"
+    }
+  },
+  "claim": {
+    "title": "申请互助资金",
+    "intro": "辛苦了，感谢你为自己停留的这二十分钟。",
+    "description": "庇护所的互助资金池里，有一份来自远方的支持在等你。",
+    "pool": {
+      "title": "资金池状态",
+      "balance": "当前余额",
+      "available": "可用",
+      "helped": "已帮助",
+      "people": "人",
+      "guardians": "位守护者支持",
+      "sufficient": "资金充足，可以申请",
+      "reserve": "储备金 ({ratio}%)",
+      "availableBalance": "可用余额",
+      "currentMode": "当前拨付模式",
+      "dynamicAmount": "动态领取金额",
+      "mode": {
+        "normal": "正常",
+        "conservative": "节约",
+        "low": "低余额",
+        "emergency": "紧急"
+      },
+      "insufficient": "资金池暂时枯竭",
+      "waiting": "等待守护者的支持..."
+    },
+    "requirements": {
+      "title": "申请条件",
+      "wallet": "连接钱包",
+      "completed": "完成觉察（选卡+写日记）",
+      "timeSpent": "停留时间 ≥ 3 分钟",
+      "wordCount": "日记字数 ≥ 50 字",
+      "verified": "邮箱验证",
+      "notClaimed": "未领取过互助资金",
+      "hint": "完成一次 OH 卡探索后即可满足申请条件"
+    },
+    "currentClaim": "当前可领取",
+    "actions": {
+      "ready": "我准备好了，生成匿名通行证",
+      "notToday": "我今天不想领资金，仅保存觉察记录",
+      "goVerify": "前往验证",
+      "verifyEmail": "验证邮箱以领取",
+      "claiming": "领取中...",
+      "claim": "领取互助资金"
+    },
+    "error": {
+      "failed": "领取失败，请检查钱包连接和余额",
+      "generic": "领取过程中发生错误"
+    },
+    "txDescription": "领取互助资金 {amount} AVAX",
+    "success": {
+      "title": "申请成功！",
+      "amount": "您已领取",
+      "txHash": "交易哈希",
+      "viewOnExplorer": "在区块浏览器查看",
+      "poolRemaining": "资金池剩余"
+    }
+  },
+  "counselor": {
+    "title": "心理咨询服务",
+    "subtitle": "专业心理咨询师一对一陪伴",
+    "comingSoon": "即将开放，敬请期待",
+    "description": "我们正在与专业心理咨询师团队合作，打造安全、私密的在线咨询体验。服务上线后，受助者可通过庇护所协议免费获得心理支持。",
+    "features": {
+      "matching": {
+        "title": "智能匹配",
+        "desc": "基于需求匹配合适的咨询师"
+      },
+      "privacy": {
+        "title": "隐私保护",
+        "desc": "端到端加密，匿名咨询"
+      },
+      "funding": {
+        "title": "资金拨付",
+        "desc": "通过庇护所协议自动结算"
+      },
+      "verified": {
+        "title": "资质认证",
+        "desc": "所有咨询师均经过严格审核"
+      }
+    }
+  },
+  "cbt": {
+    "title": "CBT认知行为疗法",
+    "subtitle": "结构化日记，重塑思维模式",
+    "comingSoon": "即将开放，敬请期待",
+    "description": "CBT（认知行为疗法）是一种经过科学验证的心理治疗方法。我们正在开发交互式CBT日记工具，帮助用户识别和改变负面思维模式。",
+    "features": {
+      "journal": {
+        "title": "情绪日记",
+        "desc": "记录并追踪情绪变化"
+      },
+      "restructure": {
+        "title": "认知重构",
+        "desc": "识别并改变负面思维模式"
+      },
+      "tracking": {
+        "title": "进度追踪",
+        "desc": "可视化疗愈进展"
+      },
+      "exercises": {
+        "title": "互动练习",
+        "desc": "引导式CBT技巧训练"
+      }
+    }
+  },
+  "guestMode": {
+    "notice": "您正在以访客模式体验。数据仅保存在本地浏览器中，连接钱包可永久保存您的疗愈之旅。"
+  }
+}

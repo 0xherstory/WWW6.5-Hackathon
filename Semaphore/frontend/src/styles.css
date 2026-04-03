@@ -1,0 +1,422 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #1a1a2e;
+  --bg-deep: #050508;
+  --surface: #111120;
+  --surface-raised: #18182a;
+  --line: #22223a;
+  --line-strong: #33334a;
+  --text-primary: #e8e4f0;
+  --text-secondary: #9890a8;
+  --text-muted: #4a4560;
+  --signal: #c4a85a;
+  --resonance: #9b7fd4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--bg-primary);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(155, 127, 212, 0.12), transparent 35%),
+    radial-gradient(circle at 20% 20%, rgba(196, 168, 90, 0.08), transparent 25%),
+    linear-gradient(180deg, #0f0f1a 0%, #09090f 100%);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(196, 168, 90, 0.22);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: transparent;
+}
+
+.font-display {
+  font-family: "Noto Serif SC", serif;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.content-editable:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-muted);
+}
+
+.semaphore-prose p {
+  margin: 0 0 2rem;
+  font-size: 1.125rem;
+  line-height: 2.2;
+  color: rgba(232, 228, 240, 0.82);
+  font-style: italic;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 0 20px rgba(196, 168, 90, 0.1);
+  }
+
+  50% {
+    transform: translateY(-15px);
+    box-shadow: 0 0 40px rgba(196, 168, 90, 0.3);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes hero-orb-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(10px, -14px, 0);
+  }
+
+  50% {
+    transform: translate3d(-8px, -6px, 0);
+  }
+
+  75% {
+    transform: translate3d(6px, 12px, 0);
+  }
+}
+
+@keyframes hero-orb-drift-reverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(-12px, 10px, 0);
+  }
+
+  50% {
+    transform: translate3d(9px, -8px, 0);
+  }
+
+  75% {
+    transform: translate3d(-4px, -16px, 0);
+  }
+}
+
+@keyframes scale-out-fade {
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-fade {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes crane-fly {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(200px, -400px) scale(0.5) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes star-shimmer {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes float-up-out {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer-fade-out {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes threshold-brand-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes threshold-title-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(140px) scale(1.03);
+    filter: blur(18px);
+    text-shadow: 0 28px 90px rgba(196, 168, 90, 0.12);
+  }
+
+  60% {
+    opacity: 0.82;
+    transform: translateY(22px) scale(1);
+    filter: blur(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    text-shadow: 0 0 24px rgba(196, 168, 90, 0.06);
+  }
+}
+
+@keyframes threshold-copy-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(70px);
+    filter: blur(14px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes threshold-cta-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(36px);
+    filter: blur(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes threshold-point-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.48);
+    filter: blur(10px) brightness(0.45);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes threshold-core-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+    box-shadow: 0 0 0 rgba(196, 168, 90, 0);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 26px 9px rgba(196, 168, 90, 0.42);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 18px 6px rgba(196, 168, 90, 0.45);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out;
+}
+
+.animate-orb-breathe {
+  animation: orb-breathe 4s infinite ease-in-out;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 4s infinite ease-in-out;
+}
+
+.animate-hero-orb-drift {
+  animation: hero-orb-drift 10s infinite ease-in-out;
+}
+
+.animate-hero-orb-drift-reverse {
+  animation: hero-orb-drift-reverse 12s infinite ease-in-out;
+}
+
+.animate-scale-out-fade {
+  animation: scale-out-fade 0.8s ease-out forwards;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--signal);
+  animation: particle-fade 0.9s ease-out forwards;
+}
+
+.animate-crane {
+  animation: crane-fly 2.5s ease-in forwards;
+}
+
+.animate-star {
+  animation: star-shimmer 2.5s ease-out forwards;
+}
+
+.animate-float-up-out {
+  animation: float-up-out 2.5s ease-out forwards;
+}
+
+.animate-shimmer-fade-out {
+  animation: shimmer-fade-out 2.5s ease-out forwards;
+}
+
+.animate-threshold-brand-rise {
+  animation: threshold-brand-rise 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.animate-threshold-title-rise {
+  animation: threshold-title-rise 1.35s cubic-bezier(0.18, 0.88, 0.18, 1) both;
+}
+
+.animate-threshold-copy-rise {
+  animation: threshold-copy-rise 1.15s cubic-bezier(0.22, 0.82, 0.2, 1) both;
+}
+
+.animate-threshold-cta-rise {
+  animation: threshold-cta-rise 0.9s cubic-bezier(0.22, 0.82, 0.2, 1) both;
+}
+
+.animate-threshold-point-reveal {
+  animation: threshold-point-reveal 1.8s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+.animate-threshold-core-glow {
+  animation: threshold-core-glow 2.2s ease-out both;
+}

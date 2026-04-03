@@ -1,0 +1,33 @@
+{
+  "name": "rate-my-mentor-backend",
+  "version": "1.0.0",
+  "description": "Rate My Mentor 黑客松项目后端服务",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "build": "tsc --skipLibCheck",
+    "start": "node dist/app.js"
+  },
+  "dependencies": {
+    "@pinata/sdk": "^2.1.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
+    "openai": "^4.52.0",
+    "viem": "^2.16.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/crypto-js": "^4.2.2",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.14.9",
+    "@types/nodemailer": "^6.4.15",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

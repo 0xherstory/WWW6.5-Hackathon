@@ -1,0 +1,186 @@
+@import "@rainbow-me/rainbowkit/styles.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 45, 45, 45;
+  --background-rgb: 250, 248, 243;
+  --accent-rgb: 184, 115, 51;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    color: rgb(var(--foreground-rgb));
+    background-color: rgb(var(--background-rgb));
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  /* 选中文字样式 */
+  ::selection {
+    background-color: rgba(156, 175, 136, 0.3);
+    color: #2D2D2D;
+  }
+}
+
+@layer components {
+  /* 几何装饰边框 */
+  .geometric-border {
+    position: relative;
+    border: 1px solid rgba(184, 115, 51, 0.2);
+  }
+  
+  .geometric-border::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1px solid rgba(184, 115, 51, 0.08);
+    pointer-events: none;
+  }
+
+  /* 角落装饰 */
+  .corner-accent {
+    position: relative;
+  }
+  
+  .corner-accent::before,
+  .corner-accent::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: rgba(184, 115, 51, 0.3);
+    border-style: solid;
+    pointer-events: none;
+  }
+  
+  .corner-accent::before {
+    top: 8px;
+    left: 8px;
+    border-width: 1px 0 0 1px;
+  }
+  
+  .corner-accent::after {
+    bottom: 8px;
+    right: 8px;
+    border-width: 0 1px 1px 0;
+  }
+
+  /* 细线分隔 */
+  .elegant-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(184, 115, 51, 0.3) 20%,
+      rgba(184, 115, 51, 0.3) 80%,
+      transparent 100%
+    );
+  }
+
+  /* 纸张纹理背景 */
+  .paper-texture {
+    background-color: #FAF8F3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+    background-size: 200px 200px;
+  }
+
+  /* 按钮基础样式 */
+  .btn-elegant {
+    @apply relative px-6 py-3 font-medium tracking-wide transition-all duration-300;
+    @apply border border-accent/30 text-text bg-transparent;
+    @apply hover:bg-accent hover:text-light;
+    @apply focus:outline-none focus:ring-1 focus:ring-accent/50;
+  }
+
+  /* 卡片悬停效果 */
+  .card-elegant {
+    @apply relative bg-white transition-all duration-500;
+    @apply border border-secondary/30;
+    @apply hover:border-accent/40 hover:shadow-card-hover;
+  }
+
+  /* 输入框样式 */
+  .input-elegant {
+    @apply w-full px-4 py-3 bg-transparent;
+    @apply border-b-2 border-secondary/50;
+    @apply text-text placeholder:text-muted;
+    @apply focus:outline-none focus:border-accent;
+    @apply transition-colors duration-300;
+  }
+
+  /* 标题装饰线 */
+  .title-accent {
+    @apply relative inline-block;
+  }
+  
+  .title-accent::after {
+    content: '';
+    @apply absolute -bottom-2 left-0 w-12 h-px bg-accent/50;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in-scale {
+    opacity: 0;
+    animation: fadeInScale 0.5s ease-out forwards;
+  }
+
+  .geometric-watermark {
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(156, 175, 136, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(184, 115, 51, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(201, 176, 55, 0.02) 0%, transparent 40%);
+  }
+
+  /* 铜色渐变文字 */
+  .text-gradient-copper {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #B87333 0%, #D4A574 50%, #B87333 100%);
+  }
+
+  /* 细边框 */
+  .border-hairline {
+    border-width: 0.5px;
+  }
+}

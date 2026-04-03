@@ -1,0 +1,12 @@
+frontend/node_modules
+frontend/dist
+backend/cache
+backend/out
+backend/broadcast
+.vite
+.env
+.env.*
+frontend/.env
+frontend/.env.*
+backend/.env
+backend/.env.*

@@ -1,0 +1,735 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>关键功能链</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="334a49b5-c9e7-80e0-b2ce-f9ec3f76b91d" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🪡</span></div><h1 class="page-title" dir="auto">关键功能链</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>offer 提交 / 身份验证</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8009-af82-e67f59df6d27" class="bulleted-list"><li style="list-style-type:disc"><strong>功能目标</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e4-a69a-f7c057784f63" class="bulleted-list"><li style="list-style-type:circle">用户提交 offer（图片/文件）→ 系统做 OCR/真实性判断 → 形成“已验证凭证”（credential），用于后续铸造 SBT / 解锁写评权限。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f5-8d0e-e095e2bccd75" class="bulleted-list"><li style="list-style-type:disc"><strong>当前实现方式（基于现有代码）</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8081-9d4c-d147d5c53539" class="bulleted-list"><li style="list-style-type:circle">后端只有“<strong>OCR 解析 offer 图片</strong>”这一段能力：把 <code>base64Image</code> 发给 OpenAI，让模型抽取 <code>companyName / isValid / expireDate</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80d7-a8ed-c97c43c436c6" class="bulleted-list"><li style="list-style-type:circle"><strong>没有</strong>看到“offer 上传（multer）→ 存储 → 审核/签名 → 发放 credential/signature”的完整链路实现。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8006-8162-eb86189aca9d" class="bulleted-list"><li style="list-style-type:circle">前端目前的 <code>review</code> 页面是“最小链路”调合约，<strong>不包含</strong> offer 提交 UI；它只是提示 signature 需要脚本生成。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8086-8ad7-cc19af1c4085" class="bulleted-list"><li style="list-style-type:disc"><strong>涉及文件</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80be-824e-c27b4f7b3053" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/services/auth.service.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80b5-bea3-d0e5c90f3d48" class="bulleted-list"><li style="list-style-type:square">关键函数：<code>AuthService.extractOfferInfo(base64Image)</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8005-a6ef-dc192ac3db12" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/routes/ai.routes.ts</code></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8077-bcdb-c809f4d8ebce" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/controllers/ai.controller.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f9-adcb-db553169f8eb" class="bulleted-list"><li style="list-style-type:square">相关接口：<code>POST /api/v1/ai/ocr-offer</code>（但实现调用有问题，见下）</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-804f-839f-ce122baac9d8" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/config/openai.ts</code>、<code>backend_/src/config/env.ts</code></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80b1-a6ce-f3c870d5b5a7" class="bulleted-list"><li style="list-style-type:circle">（依赖但缺失）<code>backend_/src/types/auth.types.ts</code>：<code>OfferOCRResult</code> 类型被引用但文件不存在</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8096-a513-fdd40dc8952d" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/app/review/page.tsx</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f6-bbd4-cbd118ae1402" class="bulleted-list"><li style="list-style-type:square">文案提示 signature 需要脚本生成（没有实际 offer 流程）</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-807b-8692-c2486dc7321e" class="bulleted-list"><li style="list-style-type:circle"><code>contracts/scripts/testMintSBT.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e5-8230-e27e429f356d" class="bulleted-list"><li style="list-style-type:square">展示“如何编码并用后台钱包签名”的思路（更像后端签发凭证的雏形）</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80a4-a5a9-cfc9c7ac2cd5" class="bulleted-list"><li style="list-style-type:disc"><strong>问题点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8006-bbcc-ebf1ae25352c" class="bulleted-list"><li style="list-style-type:circle"><strong>接口实现调用错误</strong>：<code>AIController.ocrOffer</code> 调用的是 <code>AIService.extractOfferInfo</code>，但 <code>backend_/src/services/ai.service.ts</code> 并没有这个方法；真正的 OCR 在 <code>AuthService.extractOfferInfo</code>。<div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8040-9343-f3daf4d2138c" class="bulleted-list"><li style="list-style-type:square">文件：<code>backend_/src/controllers/ai.controller.ts</code> + <code>backend_/src/services/ai.service.ts</code> + <code>backend_/src/services/auth.service.ts</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80dd-9521-fdfc685a5694" class="bulleted-list"><li style="list-style-type:circle"><strong>类型缺失</strong>：<code>OfferOCRResult</code> 引用的 <code>backend_/src/types/auth.types</code> 不存在，TS 编译/运行会直接报错。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8013-a352-c6ef5247c27d" class="bulleted-list"><li style="list-style-type:circle"><strong>“身份验证”未闭环</strong>：OCR 只返回“看起来像/不像 offer”，没有把它变成链上可验证的 <code>credentialHash</code>、<code>credentialId</code>、<code>signature</code> 的发放流程。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ca-b217-edfa79e4345b" class="bulleted-list"><li style="list-style-type:disc"><strong>缺失点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-801e-8b53-cfc599485c7e" class="bulleted-list"><li style="list-style-type:circle">offer 上传入口（路由/controller）与文件接收（虽有 <code>multer</code> 依赖，但代码未使用）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8064-8d1a-c8743b4980f0" class="bulleted-list"><li style="list-style-type:circle">OCR 结果的“审核决策/风控规则/人工复核”</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8000-b98b-e44c9eeb373e" class="bulleted-list"><li style="list-style-type:circle">后端签发凭证：生成 <code>credentialId/companyId/credentialHash/expireTime/signature</code></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8072-89d5-cb445d269ab9" class="bulleted-list"><li style="list-style-type:circle">前端 offer 提交页面与调用后端 API 的逻辑</li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><hr id="334a49b5-c9e7-803b-9003-c946d2eace74"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>SBT 铸造</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-809f-8284-c89febca4865" class="bulleted-list"><li style="list-style-type:disc"><strong>功能目标</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-809a-9842-f634ab50e0a9" class="bulleted-list"><li style="list-style-type:circle">只有通过身份验证的用户才能铸造“实习/在职凭证 SBT”，用于后续“能否查看解密内容/能否提交 review”的门控。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8037-9e23-e9175ef8edbe" class="bulleted-list"><li style="list-style-type:disc"><strong>当前实现方式</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8029-9427-d36a1b2ff9ed" class="bulleted-list"><li style="list-style-type:circle"><strong>前端</strong>在 <code>review</code> 页面直接调用合约 <code>mintSBT(...)</code>（wagmi <code>useWriteContract</code>）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8058-8b88-d33e8f6d046c" class="bulleted-list"><li style="list-style-type:circle"><code>mintSBT</code> 参数里包含 <code>_signature</code>，代码/注释明确这是 <strong>off-chain 签名</strong>（通常由后端或签发者生成），用来证明用户的 credential 有效。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8025-ab6f-ddb6b6aea989" class="bulleted-list"><li style="list-style-type:circle">仓库里提供了 <strong>脚本</strong>演示如何生成签名并铸造（<code>contracts/scripts/testMintSBT.ts</code>），但后端并没有“签名发放 API”。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8047-ab82-ed585b84a886" class="bulleted-list"><li style="list-style-type:disc"><strong>涉及文件</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80eb-9031-ed7d8f7aba8a" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/lib/contract.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-800f-8ee9-e8152a43bbcf" class="bulleted-list"><li style="list-style-type:square">关键常量：<code>internSbtAddress</code>、<code>internSbtAbi</code>（包含 <code>mintSBT</code>）</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8000-91e2-e670f72747ba" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/app/review/page.tsx</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8020-964d-c58056c3e727" class="bulleted-list"><li style="list-style-type:square">关键调用：<code>writeContract({ functionName: &quot;mintSBT&quot;, args: [...] })</code></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-802d-b6cd-f091bc43cbcf" class="bulleted-list"><li style="list-style-type:square">关键辅助：<code>bytes32FromTextOrHex()</code>（把输入转成 bytes32：若非 32 字节 hex 则 <code>keccak256(toBytes(v))</code>）</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8093-bf8e-e8d91c521e01" class="bulleted-list"><li style="list-style-type:circle"><code>contracts/scripts/testMintSBT.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f5-8608-ec3b3547e4a3" class="bulleted-list"><li style="list-style-type:square">关键逻辑：对 <code>[&quot;string&quot;,&quot;address&quot;,&quot;string&quot;,&quot;bytes32&quot;,&quot;uint256&quot;]</code> 做 ABI encode → keccak256 → <code>backendWallet.signMessage(bytes(hash))</code> → 调 <code>mintSBT</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ba-863b-c4c062020c1a" class="bulleted-list"><li style="list-style-type:circle"><code>contracts/ignition/deployments/fuji-20260331-v2/deployed_addresses.json</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-800a-a218-eae52ed8c47d" class="bulleted-list"><li style="list-style-type:square">部署地址与前端 <code>contract.ts</code> 一致（Fuji v2）</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e2-9d7b-d5e15eb9adbd" class="bulleted-list"><li style="list-style-type:disc"><strong>当前是否真实可用还是占位/mock</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8098-902a-ce09fa7b1d61" class="bulleted-list"><li style="list-style-type:circle"><strong>链上层面：大概率可用</strong>（有真实部署地址、有脚本可跑、有前端写合约调用）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80fa-a9d7-e09a2c6b5c13" class="bulleted-list"><li style="list-style-type:circle"><strong>产品链路层面：占位/半成品</strong>（signature 的发放目前靠脚本手动生成，缺少“身份验证 → 发放签名”的后端闭环）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80c2-ad9f-e95cee64cba5" class="bulleted-list"><li style="list-style-type:disc"><strong>问题点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80fa-b48c-e07b3bc5dec0" class="bulleted-list"><li style="list-style-type:circle">“后端签发者”缺位：没有 API 给前端拿 <code>_signature</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e6-a366-e8de2c1a7125" class="bulleted-list"><li style="list-style-type:circle"><code>credentialId/companyId/credentialHash/expireTime</code> 的规范/来源未定义（前端目前是手填）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8049-883e-f185f3c17138" class="bulleted-list"><li style="list-style-type:circle">后端的 <code>ContractService</code> 用的是 <code>viem</code> + <code>sepolia</code>（<code>backend_/src/config/contract.ts</code>），而前端/合约部署是 <strong>Avalanche Fuji(43113)</strong>，链配置不一致。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8005-8a0b-fc112edc42b8" class="bulleted-list"><li style="list-style-type:disc"><strong>缺失点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ea-af66-f833b0b70ae3" class="bulleted-list"><li style="list-style-type:circle">后端签名服务（把 offer/OTP 验证结果转成可铸造的签名）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-801d-a039-c05b006bc8df" class="bulleted-list"><li style="list-style-type:circle">Fuji 链读取/校验的后端配置（如果后端也要读链/验 SBT）</li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><hr id="334a49b5-c9e7-8006-907e-cf51f08430a0"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>review 正文上传到 IPFS 并拿到 CID</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-808f-b144-ed7cdfea98a4" class="bulleted-list"><li style="list-style-type:disc"><strong>功能目标</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80b1-93a6-f8e25c179740" class="bulleted-list"><li style="list-style-type:circle">把 review 正文（隐私内容）加密后上传 IPFS（Pinata）→ 返回 CID → 后续上链只存 CID（或 CID 的哈希/bytes32）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80bd-b9f1-e3c52fbe210e" class="bulleted-list"><li style="list-style-type:disc"><strong>当前实现方式</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80d2-a882-cdad718b4003" class="bulleted-list"><li style="list-style-type:circle">后端实现了完整的“<strong>加密 + Pinata pinJSONToIPFS</strong>”逻辑，并能返回 <code>cid</code> 与 <code>ipfsUrl</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8000-8ade-e16d53116d53" class="bulleted-list"><li style="list-style-type:circle">但目前 <strong>没有路由/controller</strong> 对外提供“上传 review → 返回 CID”的 API。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-800b-8467-fe949de1d647" class="bulleted-list"><li style="list-style-type:circle">前端 <code>review</code> 页面里 <code>cidInput</code> 默认是占位字符串，并在上链前被 <code>keccak256</code> 成 bytes32；并没有调用后端 IPFS 上传。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8044-bca9-fccb5bdcc8c6" class="bulleted-list"><li style="list-style-type:disc"><strong>涉及文件</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ac-82ba-c8ddf75f4e12" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/services/ipfs.service.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8075-8b6e-c36fbbb704a8" class="bulleted-list"><li style="list-style-type:square">关键函数：<code>IPFSService.uploadEncryptedReview(rawContent)</code> → <code>pinataClient.pinJSONToIPFS(...)</code> → 返回 <code>uploadResult.IpfsHash</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-801b-b91c-f6c8783d94c0" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/utils/encryption.util.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8092-8acc-d702d4cbeb46" class="bulleted-list"><li style="list-style-type:square">关键函数：<code>encryptContent()</code> / <code>decryptContent()</code>（AES，key 来自 <code>ENCRYPTION_KEY</code>）</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8047-a187-d5471972b962" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/config/pinata.ts</code>、<code>backend_/src/config/env.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-805b-9b44-f5752760e9ce" class="bulleted-list"><li style="list-style-type:square">关键变量：<code>PINATA_API_KEY/PINATA_API_SECRET</code>、<code>ENCRYPTION_KEY</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80d4-8eec-c9591c406252" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/app/review/page.tsx</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ac-b04e-d99e090f2f6c" class="bulleted-list"><li style="list-style-type:square"><code>cidInput</code>（占位）→ <code>cid = bytes32FromTextOrHex(cidInput)</code>（本质是 hash，并非真实 CID bytes32 编码）</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8002-a68e-de237ef8028e" class="bulleted-list"><li style="list-style-type:disc"><strong>当前是否真实可用还是占位/mock</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8038-96a7-d3bba5e13556" class="bulleted-list"><li style="list-style-type:circle"><strong>后端服务代码层面：逻辑可用</strong>（只要 env 配齐且 Node 运行环境支持 <code>fetch</code>）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80ab-bd4a-feb1d01ca3f7" class="bulleted-list"><li style="list-style-type:circle"><strong>项目联调层面：当前不可用/未接通</strong>（无 API 暴露、前端也没调用）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8003-ae56-c2bf6000a4bb" class="bulleted-list"><li style="list-style-type:disc"><strong>问题点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8044-9d71-c7c3e8c44ed2" class="bulleted-list"><li style="list-style-type:circle"><code>getDecryptedReview</code> 直接用 <code>fetch(gateway.pinata.cloud/ipfs/${cid})</code>，运行时依赖 Node 的 <code>fetch</code>（Node18+ 才内置）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80cf-be17-fee45ceb0b79" class="bulleted-list"><li style="list-style-type:circle">加密 key 长度硬要求 32（<code>env.ts</code>），否则启动直接退出。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80c4-8893-ea72b45534e6" class="bulleted-list"><li style="list-style-type:circle">上链使用的是 <code>bytes32 _cid</code>，但后端返回的是 <strong>CID 字符串</strong>；需要一个明确的“CID → bytes32”的规则（现在前端用 keccak256(ipfs://...)，属于“哈希引用”，不是原始 CID）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80dc-b4b2-d76d1b78b333" class="bulleted-list"><li style="list-style-type:disc"><strong>缺失点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80c4-99af-f2b53d753d39" class="bulleted-list"><li style="list-style-type:circle"><code>POST /api/v1/ipfs/upload</code>（或类似）路由/controller</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-800d-a28c-ce11eb386f2a" class="bulleted-list"><li style="list-style-type:circle">“CID(bytes32) 规则”的统一（前端/后端/合约必须一致）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f4-972d-f09d03e77520" class="bulleted-list"><li style="list-style-type:circle">与 submitReview 的打通（上传后把得到的 CID/哈希传给合约调用）</li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><hr id="334a49b5-c9e7-8035-9e3d-c03c1a0a630b"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>submitReview 调用合约并把 CID/哈希写到链上</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-809e-a654-d4a1ede0f6ef" class="bulleted-list"><li style="list-style-type:disc"><strong>功能目标</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8071-bc95-dccd808ecb3b" class="bulleted-list"><li style="list-style-type:circle">用户在持有有效 SBT 的前提下，提交 review：把 target（mentor/company）与评分维度、CID（或其哈希）写到链上，供后续声誉聚合/展示。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e9-8cac-c9aafffd50f7" class="bulleted-list"><li style="list-style-type:disc"><strong>当前实现方式</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8009-9078-da1cbd7c0fe8" class="bulleted-list"><li style="list-style-type:circle"><strong>前端</strong>直接调用 <code>ReviewContract.submitReview(...)</code> 写链。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8098-a4ab-ed2060eb3a32" class="bulleted-list"><li style="list-style-type:circle">CID 在前端被处理为 <code>bytes32</code>：如果不是 32-byte hex，就 <code>keccak256(toBytes(value))</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8066-b129-c9df8901b265" class="bulleted-list"><li style="list-style-type:circle">合约侧真实调用也有脚本验证（<code>contracts/scripts/testSubmitReview.ts</code>）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8011-9d3f-ff1d27d030c6" class="bulleted-list"><li style="list-style-type:disc"><strong>涉及文件</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8066-ac12-f4725841af5c" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/lib/contract.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80c4-812e-e70ecf6414a1" class="bulleted-list"><li style="list-style-type:square">关键 ABI：<code>reviewContractAbi</code>（<code>submitReview(uint256, bytes32, string, uint8, uint8[5], bytes32)</code>）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-800b-ae20-d843e280892a" class="bulleted-list"><li style="list-style-type:square">关键地址：<code>reviewContractAddress</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8013-b122-ddb008349f89" class="bulleted-list"><li style="list-style-type:circle"><code>ui/mentor-review-web3/src/app/review/page.tsx</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80f1-9cd7-da1e7e42b780" class="bulleted-list"><li style="list-style-type:square">关键调用：<code>writeContract({ functionName: &quot;submitReview&quot;, args: [...] })</code></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8063-a673-d8f749bb5fd7" class="bulleted-list"><li style="list-style-type:square">关键处理：<code>targetId</code>、<code>cid</code> 都走 <code>bytes32FromTextOrHex()</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-808f-9712-c73d3f13b22a" class="bulleted-list"><li style="list-style-type:circle"><code>contracts/scripts/testSubmitReview.ts</code><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8075-99a7-f1fe085e7578" class="bulleted-list"><li style="list-style-type:square">关键逻辑：<code>targetId = keccak256(&quot;mentor:0x1234&quot;)</code>、<code>cid = keccak256(&quot;ipfs://QmTest123&quot;)</code> → <code>submitReview(...)</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80e8-bc4c-d47f3a735c90" class="bulleted-list"><li style="list-style-type:circle"><code>backend_/src/services/contract.service.ts</code>（注意：这是“读取链上数据”的服务，并不负责 submitReview）<div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8069-afb7-df0e8f9be554" class="bulleted-list"><li style="list-style-type:square">现状：ABI 是占位注释版 + 函数全是 readContract（无写入）</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8051-b562-d58f46dfafb9" class="bulleted-list"><li style="list-style-type:disc"><strong>当前是否真实可用还是占位/mock</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-803c-95eb-f3cc78c66e70" class="bulleted-list"><li style="list-style-type:circle"><strong>链上写入：可用</strong>（前端/脚本都能发交易，且有真实部署地址）。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8027-b5dd-d04585e42951" class="bulleted-list"><li style="list-style-type:circle"><strong>与 IPFS/后端的完整业务闭环：占位</strong>（CID 目前手填/占位，没有“上传 → 得到 CID → 统一转换 → 上链”的自动链路）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-808d-a9d1-ed4621ae1b71" class="bulleted-list"><li style="list-style-type:disc"><strong>问题点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8010-861a-c926e23bee37" class="bulleted-list"><li style="list-style-type:circle">后端 <code>ContractService</code> 的 ABI/函数名与前端/合约不一致：后端用 <code>hasValidSBT/getUserSBT/getCompanyReviews</code> 这套“字符串 companyName + ipfsCid(string)”接口，更像另一版合约；而前端合约是 <code>isValidCredential</code> / <code>submitReview(bytes32 _cid)</code> 这套。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8077-b544-d3b895be8f3c" class="bulleted-list"><li style="list-style-type:circle">后端链配置是 <code>sepolia</code>（<code>backend_/src/config/contract.ts</code>），与前端 Fuji 不一致。</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80cf-856f-efc59d80891c" class="bulleted-list"><li style="list-style-type:circle"><code>bytes32 _cid</code> 实际存的是“哈希引用”，未来如果要可追溯地还原 CID，需要额外的映射或约定（例如链上存 multihash 的另一种编码/或链下数据库存储）。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80db-84d4-e1e477b24852" class="bulleted-list"><li style="list-style-type:disc"><strong>缺失点</strong><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8059-b0c2-e3503fdca9b6" class="bulleted-list"><li style="list-style-type:circle">统一的“目标 ID / CID bytes32”规范（现在前端用 keccak256 文本，后端 IPFS 返回的是 CID 字符串）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-8096-bf41-e3985524b973" class="bulleted-list"><li style="list-style-type:circle">submitReview 前的前置校验/组装（比如自动填维度分数、从 AI 提取结果映射到 <code>uint8[5]</code>）</li></ul></div><div style="display:contents" dir="auto"><ul id="334a49b5-c9e7-80fa-b042-f6da61bf78ea" class="bulleted-list"><li style="list-style-type:circle">后端（如果要做声誉看板）对 Fuji 链的读取与事件索引/聚合实现（目前 <code>ReputationService</code> 基于另一套合约读取形状）</li></ul></div></li></ul></div></div></details></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

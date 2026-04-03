@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>TeamMatch</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+
+</head>
+
+<body>
+
+    <h2>Connect Wallet</h2>
+    <button onclick="connectWallet()">Connect</button>
+
+    <h2>Create Project</h2>
+
+    <input id="projectName" placeholder="Project Name">
+    <input id="projectDesc" placeholder="Description">
+    <input id="projectTags" placeholder="Tags">
+    <input id="projectDuration" placeholder="Duration Hours">
+
+    <button onclick="createProject()">Create Project</button>
+
+    <h2>Projects</h2>
+
+    <button onclick="loadProjects()">Load Projects</button>
+
+    <ul id="projects"></ul>
+
+    <h2>Register Profile</h2>
+
+    <select id="profileProject"></select>
+
+    <input id="profileName" placeholder="Name">
+    <input id="profileSkills" placeholder="Skills">
+    <input id="profileContact" placeholder="Contact">
+
+    <button onclick="registerProfile()">Register</button>
+
+    <h2>Set Active Profile</h2>
+
+    <select id="activeProject"></select>
+    <!-- Active Profile 自动选择项目第一个 profile -->
+
+    <h2>Create Team</h2>
+
+    <input id="teamName" placeholder="Team Name">
+    <input id="teamDesc" placeholder="Description">
+    <input id="teamSize" placeholder="Max Members">
+
+    <button onclick="createTeam()">Create Team</button>
+
+    <h2>View Teams</h2>
+
+    <button onclick="loadTeams()">Load Teams</button>
+
+    <div id="teams"></div>
+
+    <h2>Participants</h2>
+
+    <button onclick="loadParticipants()">Load Participants</button>
+
+    <div id="participants"></div>
+
+    <h2>Match Requests</h2>
+
+    <button onclick="loadMatchRequests()">Load Match Requests</button>
+
+    <div id="matchRequests"></div>
+
+    <h2>Join Requests</h2>
+
+    <button onclick="loadJoinRequests()">Load Join Requests</button>
+
+    <div id="joinRequests"></div>
+
+</body>
+</html>

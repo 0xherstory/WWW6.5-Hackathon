@@ -1,0 +1,10 @@
+{
+  "network": "fuji",
+  "chainId": "43113",
+  "contracts": {
+    "HerRiseToken": "0x40B58A495F1c5cFaF141FFBf9Ca9F1F24D4FE398",
+    "HerRiseMain": "0xb284C3Cd75a6C65a9Bf4aDa7c81725a25201E8f6"
+  },
+  "deployer": "0x1057B77cDDEd314Bb3A7d8F9E9e345371FA39B2f",
+  "deployedAt": "2026-03-31T12:14:36.493Z"
+}

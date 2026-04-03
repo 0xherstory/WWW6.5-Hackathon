@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la D:/Projects/demo/WWW6.5-Hackathon/Rate-My-Mentor/ui/mentor-review-web3/*.md)"
+    ]
+  }
+}

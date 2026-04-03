@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>爪爪筹 PawLedger</title>
+    <!--
+      GitHub Pages SPA redirect trick.
+      When GH Pages returns 404 for a deep link like /pawledger/cases,
+      this script encodes the path into a query param and redirects to index.html,
+      where the companion script in index.html restores the real URL via history.replaceState.
+    -->
+    <script>
+      var l = window.location;
+      l.replace(
+        l.protocol + "//" + l.host +
+        l.pathname.split("/").slice(0, 2).join("/") +
+        "/?p=" + encodeURIComponent(l.pathname.slice(1) + (l.search ? "&" + l.search.slice(1) : "") + l.hash)
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

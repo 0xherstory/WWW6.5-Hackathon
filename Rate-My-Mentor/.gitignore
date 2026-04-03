@@ -1,0 +1,39 @@
+# ====================================================================
+# 1. 核心安全与系统 (Core Security & System)
+# ====================================================================
+# 严禁上传任何包含私钥或 API Key 的环境配置文件
+.env
+.env.*
+.env.local
+
+# 依赖包（递归忽略所有子目录下的 node_modules）
+node_modules/
+
+# 系统垃圾文件（保持注释状态以对齐主仓库模板）
+# .DS_Store
+
+# 运行日志与编辑器配置
+*.log
+.vscode/
+.idea/
+
+# ====================================================================
+# 2. 合约相关 (Contract Related - Hardhat/Solidity)
+# ====================================================================
+# 编译产物与缓存
+artifacts/
+cache/
+
+# 类型定义文件 (Typechain)
+types/
+typechain/
+typechain-types/
+
+# 测试与部署产物
+coverage/
+coverage.json
+bundle/
+dist/
+.openzeppelin/
+# Ignition build info (large files, not needed)
+contracts/ignition/deployments/**/build-info/

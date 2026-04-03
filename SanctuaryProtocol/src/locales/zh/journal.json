@@ -1,0 +1,10 @@
+{
+  "writeJournal": "书写日记",
+  "placeholder": "在这里记录你的感受...",
+  "encryptAndSave": "加密并保存",
+  "saving": "保存中...",
+  "saved": "已保存",
+  "selectWordCard": "选择一张字卡",
+  "encryptionHint": "你的日记将被加密后存储",
+  "guestModeWarning": "访客模式下数据仅保存在本地"
+}

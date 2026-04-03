@@ -1,0 +1,754 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>“Rate My Mentor”</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="32ba49b5-c9e7-8097-abcb-f7653c3f67b5" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📡</span></div><h1 class="page-title" dir="auto"><em>“Rate My Mentor”</em></h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><div id="334a49b5-c9e7-80eb-acea-d7d35be1f1c8" class="column-list"><div style="display:contents" dir="auto"><div id="334a49b5-c9e7-8008-bc67-e63a3f395311" style="width:50%" class="column"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">里程碑时刻</summary><div class="indented"><div style="display:contents" dir="ltr"><figure id="334a49b5-c9e7-809c-8497-e03d52673ebe" class="link-to-page"><a href="MVP%E5%8A%9F%E8%83%BD%E3%80%90%E6%8F%90%E4%BA%A4%E8%AF%84%E4%BB%B7%E3%80%91%E5%AE%9E%E7%8E%B0%EF%BC%81%20334a49b5c9e7809c8497e03d52673ebe.html"><span class="icon">🎉</span>MVP功能【提交评价】实现！</a></figure></div><div style="display:contents" dir="auto"><p id="334a49b5-c9e7-807a-aeb8-f44845dca5c4" class="">
+</p></div></div></details></div></div></div><div style="display:contents" dir="auto"><div id="334a49b5-c9e7-80d3-9851-d8a1bd75560b" style="width:50%" class="column"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">对齐时刻</summary><div class="indented"><div style="display:contents" dir="ltr"><figure id="32ea49b5-c9e7-80d5-9729-e813fd57094f" class="link-to-page"><a href="%E6%B5%81%E7%A8%8B%E5%9B%BE%2032ea49b5c9e780d59729e813fd57094f.html"><span class="icon">🔦</span>流程图</a></figure></div><div style="display:contents" dir="ltr"><figure id="32ea49b5-c9e7-8093-995a-d55861edc49a" class="link-to-page"><a href="%E8%AF%84%E4%BB%B7%E7%BB%B4%E5%BA%A6%2032ea49b5c9e78093995ad55861edc49a.html"><span class="icon">☑️</span>评价维度</a></figure></div><div style="display:contents" dir="ltr"><figure id="32ea49b5-c9e7-80fe-951c-d9df817d2d1f" class="link-to-page"><a href="AI%E5%8D%8F%E5%8A%A9%E7%BB%93%E6%9E%84%E5%8C%96%E8%AF%84%E5%88%86%2032ea49b5c9e780fe951cd9df817d2d1f.html"><span class="icon">🤖</span>AI协助结构化评分</a></figure></div><div style="display:contents" dir="ltr"><figure id="32ea49b5-c9e7-806f-ae0f-c45ab0fb47bc" class="link-to-page"><a href="%E6%9C%80%E5%B0%8F%E5%AD%97%E6%AE%B5%E8%A1%A8%2032ea49b5c9e7806fae0fc45ab0fb47bc.html"><span class="icon">🤏</span>最小字段表</a></figure></div><div style="display:contents" dir="ltr"><figure id="334a49b5-c9e7-80e0-b2ce-f9ec3f76b91d" class="link-to-page"><a href="%E5%85%B3%E9%94%AE%E5%8A%9F%E8%83%BD%E9%93%BE%20334a49b5c9e780e0b2cef9ec3f76b91d.html"><span class="icon">🪡</span>关键功能链</a></figure></div><div style="display:contents" dir="auto"><p id="334a49b5-c9e7-801b-85ee-f4a9bca10dd2" class="">
+</p></div></div></details></div></div></div></div></div><div style="display:contents" dir="auto"><h3 id="32ea49b5-c9e7-8082-bbfb-d5afa918e113" class="">Github仓库地址：</h3></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-8087-b259-c29af41eaefd" class=""><a href="https://github.com/lilibetti/WWW6.5-Hackathon/tree/main/Rate%20my%20mt">https://github.com/lilibetti/WWW6.5-Hackathon/tree/main/Rate my mt</a></p></div><div style="display:contents" dir="auto"><p id="32fa49b5-c9e7-80c7-9de9-d0cc3952481b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32fa49b5-c9e7-8021-b1a3-c13d917662a1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-8094-b93c-ec647deb5731" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-8034-b084-dcae7cf7187f" class="">一、rate my mentor 是个什么东西？/ 产品阐明、愿景</p></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-8029-bcd9-fb49c83298ec" class="">二、rate my mentor 不是什么东西？/ 产品定性、风险、产品形态（应对技术实现）</p></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-8002-94d3-d14f13ae37ba" class="">三、rate my mentor 怎么造出来？/ MVP、在这两周内，我们为黑客松具体要做什么工作、以及分工</p></div><div style="display:contents" dir="auto"><h1 id="32ba49b5-c9e7-80eb-b8f6-e1ec64fc9215" class="">一、rate my mentor是个什么东西？</h1></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80e2-b345-dc6e15852788" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8019-bb09-e40dff8b427a" class=""><strong>一句话 说清楚产品：</strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8003-ae3e-d93198bdea9b" class="">一个面向<strong> 职场人</strong> 生态 的可验证匿名评价平台，用户可以在证明真实经历后，对公司、团队和 mentor 留下不可被平台随意删除或篡改的反馈。</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80e5-b5d3-d7bfbfaa4a53" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8077-a631-f086bf19cfe6" class=""><strong>一段话 讲明白产品：</strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8003-96b9-d657c080ef0e" class="">一个面向职场人的可验证反馈协议。用户先通过 credential/attestation 证明自己确实参与过某段<strong>供职</strong>经历，再对 mentor、team、项目管理、成长体验等维度提交结构化反馈。系统利用 attestation 和 anti-sybil 机制保证评价来源可信，同时只将证明、哈希和权限关系上链，把敏感文本链下加密存储，构建一个可组合、可迁移、不可被单一平台任意操控的职场声誉层。</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-804d-8cd2-f89d4342c802" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-808f-8f77-d1fde4e3d5e0" class=""><mark class="highlight-default"><strong>核心用法：</strong></mark><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80f5-9481-e82dcdc3f6b7" class="">用户留下对自己<strong>供职</strong>过的 company 具体的组和自己的带教的评价。其它用户可以通过泛化 key words 查找（非推送非阅览）评价。</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8070-9224-d0a5c8ad10ac" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80d4-8020-e0a3cff69b8e" class=""><mark class="highlight-default"><strong>愿景 </strong></mark><mark class="highlight-default"><code>客群痛点focus</code></mark><mark class="highlight-default">：</mark><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8092-95f6-cb9d1df3c019" class="">“用户对公司/组/mentor 的真实反馈，如何在不被删帖、不被平台操控的前提下，留下可信评价？” 这个叙事天然具有 <mark class="highlight-red_background">反中心化平台垄断 </mark>气质，thats why 我觉得适合 Web3 </p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8000-9522-e830c75e99c4" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="32ba49b5-c9e7-806b-9144-d3afdd2170d2" class="">二、rate my mentor不是什么东西？</h1></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-801c-86d5-df45a8db516d" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8049-9f72-dd75087f37fb" class=""><em><strong>产品定性：”可验证经历 + 受控匿名反馈 + 不可随意篡改的声誉层“</strong></em></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8054-b103-c9362daf3da8" class="">
+</p></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">吸引人的项目也注定了其风险性：</summary><div class="indented"><div style="display:contents" dir="auto"><h4 id="32ba49b5-c9e7-80c7-b028-face0e8c1f91" class=""><strong>A. 隐私和法律风险。</strong></h4></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8058-8e63-c117d28242e6" class=""><mark class="highlight-default">要评价的是“具体公司、具体组、具体带教”，非常接近可识别个人/组织声誉信息。链上数据一旦公开、不可篡改，后面想删、想改、想申诉都很麻烦。我们要做的是“Rate My Mentor”，不是“链上永久公开处刑墙”。</mark></p></div><div style="display:contents" dir="auto"><h4 id="32ba49b5-c9e7-8040-9885-ea2d4d717659" class=""><strong>B. 真实性风险</strong>。</h4></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8076-aee8-c6fe353c11da" class="">评价者是不是真的在这家公司/这个组/跟过这个 mentor？如果不能证明这一点，最后得到的就只是一个“抗删帖的匿名喷人系统”。<div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8078-80d3-f740ceb4a7f8" class="">探索方案：用 <strong>attestation / 声明证明</strong> 去处理“某个地址具备某种经历或资格”。Ethereum Attestation Service（EAS）本身就是为这类“关于某件事做可验证声明”设计的基础设施，而且明确把 reputation systems 当成典型用例之一。</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-809b-ac26-cdf4e80d738e" class="">【投票：可信度打分 —— AI 初始打分】</p></div><div style="display:contents" dir="ltr"><figure id="32ba49b5-c9e7-8016-926e-f8a46819e50e" class="link-to-page"><a href="%E5%A3%B0%E6%98%8E%E8%AF%81%E6%98%8E%EF%BC%8C%E5%85%B7%E4%BD%93%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%2032ba49b5c9e78016926ef8a46819e50e.html">声明证明，具体怎么实现</a></figure></div></div></p></div><div style="display:contents" dir="auto"><h4 id="32ba49b5-c9e7-80c6-8cf8-d30ece8af34f" class=""><strong>C. 老登攻击 / 小号刷评价风险</strong></h4></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8072-aeae-df98814a0c88" class="">如果用户开十个钱包刷差评、刷好评，系统会立刻失去真实性。<div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-808c-aebd-fdbbe22ccf3d" class="">探索方案：<strong>sybil resistance</strong>。Human Passport 这类方案就是专门做“地址更像真人还是女巫号”的身份验证和反女老登基础设施，核心目标就是让社区参与更可信。</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8099-a498-ca6bbeb18804" class="">常见的 anti‑sybil 方法：</p></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80a3-80e4-f18b32bd6aad" class="numbered-list" start="1"><li>钱包绑定社交账号（Twitter、GitHub、Discord）</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8015-8c48-e5355a63c546" class="numbered-list" start="2"><li>钱包绑定手机号 / 邮箱（中心化但有效）</li></ol></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8091-ab6a-cf6fc6b6f0b4" class="">（其余去中心化的链上方法用户学习成本太高，暂不考虑）</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80bb-a011-edf564463579" class="">
+</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>产品形态</strong></summary><div class="indented"><div style="display:contents" dir="auto"><h4 id="32ba49b5-c9e7-8070-8f3a-e045b2021b8e" class="">A. 用户不能直接发帖骂 mentor。</h4></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80b5-a54d-f69535d1d229" class="">先获得一个证明：“我确实在 X 公司 / X 项目 / X 时间段有过供职经历”然后基于这个证明，才有资格对某个维度提交反馈。</p></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.125em;line-height:1.3;margin:0">B. 反馈分层：</summary><div class="indented"><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80da-a53f-f0097a27f910" class="numbered-list" start="1"><li><strong>标签化 / 打分型 attestation层</strong>。公开、结构化、低法律风险<div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-805d-9f75-c28c666b6d6e" class="">几个示例：“mentor 是否及时反馈” “组内加班强度” “成长空间” “是否有明确 onboarding”</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80dc-a755-f1327094eec2" class="">可信度 - </p></div></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8087-aeb6-ef9eeb5e277d" class="numbered-list" start="2"><li><strong>详细文本评价</strong>，不直接上链。<div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8036-ba12-fd3920ad9963" class="">链下存储/加密存储，只把哈希、签名、时间戳、权限证明上链。</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80ce-b9d7-d6cb8105ec69" class="">因为 EAS 本身就支持 onchain/offchain attestations 这条思路，重点不是一切都写链上，而是让“证明关系”和“验证能力”成立。</p></div></li></ol></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8069-bfa7-e98f02e133ed" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="32ba49b5-c9e7-8051-8c6e-cc3c0f49a5b2" class="">三、rate my mentor怎么造出来？</h1></div><div style="display:contents" dir="auto"><h2 id="32ba49b5-c9e7-8081-ab1b-d8f5d69d9b6d" class="">MVP</h2></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8016-8881-e3560b4719f3" class="numbered-list" start="1"><li>用户连接钱包</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-803a-9f75-d2e2adc340f2" class="numbered-list" start="2"><li>用某种方式证明自己有真实供职经历 - 邮箱</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80e6-88ba-d93a9fb3a063" class="numbered-list" start="3"><li>系统给ta一个 attestation / credential</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80c4-b222-fde66e098919" class="numbered-list" start="4"><li>用户可以提交结构化评分</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80c7-a803-ff55b1f6f466" class="numbered-list" start="5"><li>评分记录的哈希、提交权限、时间戳、不可抵赖性放链上</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8016-9245-d94755229309" class="numbered-list" start="6"><li> 详细内容链下存储</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80c7-b33e-ec2d41931b04" class="numbered-list" start="7"><li> 前端展示某公司/某组的 aggregated reputation dashboard</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-80e8-aa9e-f96d515b5cac" class="numbered-list" start="8"><li> 加上 anti-sybil 分数、评价权重、时间衰减、申诉机制</li></ol></div><div style="display:contents" dir="auto"><h2 id="32ca49b5-c9e7-805b-a913-d311990611b8" class="">Team / D<strong>ivision of labor四个连续Milestone：</strong></h2></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-80a7-bc49-cd0d6159bfb2" class="">Milestone 1：可信评价资格成立</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-808c-adf6-cba27b3c1bb5" class="">Milestone 2：评价写入与查询链路跑通</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8002-a59d-e9f014c78cfd" class="">Milestone 3：Dashboard 可展示</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80b4-bab4-fe0d8962868d" class="">Milestone 4：权重、申诉、打磨 demo</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8056-a291-d605b5a3bed3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80f2-a941-c81e4727a2ab" class=""><strong>我们有两周，那么by day做什么？</strong></p></div><div style="display:contents" dir="ltr"><table id="32ba49b5-c9e7-8027-bc67-e38306f3855b" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80c5-8a39-d273258dd46e"><th id="MKuA" class="simple-table-header-color simple-table-header">时间</th><th id="HH{A" class="simple-table-header-color simple-table-header">目标</th><th id="?Ncd" class="simple-table-header-color simple-table-header">主责</th><th id="gNpC" class="simple-table-header-color simple-table-header">预计耗时</th><th id="qd?:" class="simple-table-header-color simple-table-header">核心交付</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-803e-8a98-cd43c3320c27"><td id="MKuA" class="">Day 1–2</td><td id="HH{A" class="">冻结 MVP、数据结构、技术栈</td><td id="?Ncd" class="">产品主责，全员参与</td><td id="gNpC" class="">1.5–2 天</td><td id="qd?:" class="">scope doc、流程图、schema</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8000-8402-daf0d0d74e76"><td id="MKuA" class="">Day 3–5</td><td id="HH{A" class="">credential + review permission 跑通</td><td id="?Ncd" class="">合约主责</td><td id="gNpC" class="">2–3 天</td><td id="qd?:" class="">合约、测试、首笔评分</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80a2-ab09-d254be0690c4"><td id="MKuA" class="">Day 6–8</td><td id="HH{A" class="">链下存储 + dashboard 第一版</td><td id="?Ncd" class="">前端/全栈主责</td><td id="gNpC" class="">2–3 天</td><td id="qd?:" class="">可查看 reputation 页面</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80af-aa18-ff1fcb191f16"><td id="MKuA" class="">Day 9–10</td><td id="HH{A" class="">权重、anti-sybil、时间衰减</td><td id="?Ncd" class="">产品/数据逻辑主责</td><td id="gNpC" class="">1.5–2 天</td><td id="qd?:" class="">reputation score 机制</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8018-8a4b-fe4c1b3d94d8"><td id="MKuA" class="">Day 11–12</td><td id="HH{A" class="">appeal 状态闭环</td><td id="?Ncd" class="">合约 + 前端</td><td id="gNpC" class="">1–1.5 天</td><td id="qd?:" class="">disputed / revoked 状态</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8083-9cc2-d0677c098a93"><td id="MKuA" class="">Day 13–14</td><td id="HH{A" class="">联调、demo、pitch</td><td id="?Ncd" class="">全员</td><td id="gNpC" class="">2 天</td><td id="qd?:" class="">稳定 demo + deck + 备份视频</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80ed-a675-c923d6ca409a" class="">我们只有14天，所以请务必牢记：<strong>两周内我们的目标不是做完整平台，而是证明，只有有真实经历的人才能评价，而这些评价可以形成一个可验证、聚合、申诉的声誉层。</strong><br/></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8061-a4b1-e896a0e0482b" class=""><strong>只做</strong></p></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80ea-8509-f9a8e4b404df" class="bulleted-list"><li style="list-style-type:disc">凭证的控制 credential gating</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-805a-8a38-cc89214b1ef3" class="bulleted-list"><li style="list-style-type:disc">结构化审查 structured review</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-8061-9107-dd29f11e247d" class="bulleted-list"><li style="list-style-type:disc">链上证明 and 链下细节 on-chain proof + off-chain detail</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80da-aba4-edccf707699e" class="bulleted-list"><li style="list-style-type:disc">仪表板聚合 dashboard aggregation</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-8047-b172-e9cf216fecc2" class="bulleted-list"><li style="list-style-type:disc">简单加权 simple weighting</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-802d-95dd-d1084923cb51" class="bulleted-list"><li style="list-style-type:disc">简单上诉状态 simple appeal state</li></ul></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80e0-9b6e-db03b2cc0910" class=""><strong>不做</strong></p></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-800e-a30b-e54a7452c651" class="bulleted-list"><li style="list-style-type:disc">开放式长文本公开广场</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80ef-9a44-c18df33b8c45" class="bulleted-list"><li style="list-style-type:disc">复杂仲裁系统</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-802d-881f-e23adab13a08" class="bulleted-list"><li style="list-style-type:disc">真正匿名的零知识证明体系</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-8086-8909-c6341e6e3716" class="bulleted-list"><li style="list-style-type:disc">跨平台 reputation portability</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-8014-9ba6-e2906c3083eb" class="bulleted-list"><li style="list-style-type:disc">完整企业 onboarding 系统</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80fd-904e-e5cffe70a38a" class="bulleted-list"><li style="list-style-type:disc">多链支持</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-8084-a18a-d33929219b1e" class="bulleted-list"><li style="list-style-type:disc">复杂推荐算法</li></ul></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8005-9858-d88aa2cbf75a" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="32ba49b5-c9e7-805d-aa5c-f65dee9a37c6" class="">初步设计的分工方式（适配rate my mt该产品的拆法）</h3></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-806f-be93-df3b02c7fb19" class=""><strong>A｜合约 / 协议 </strong><strong><span class="user">@xisu743@gmai.com</span></strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80de-b458-ea311ac6f2bb" class="">负责 credential、review、appeal 状态、事件、测试、部署</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80a1-8a31-f6b5823740eb" class="">在 Day 3–5 需要投入最多，Day 11–12 次之，其他时间辅助联调</p></div><div style="display:contents" dir="auto"><p id="32ca49b5-c9e7-802d-9887-fed7087dc2d4" class=""><a href="https://www.notion.so/3fd606187c0440f2b8235caa4b8e7577?pvs=21">Ratemymt相关资料 | Inbox | Notion</a></p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80c7-ba97-f74b53ed4449" class=""><strong>B｜前端 / 全栈 </strong><strong><span class="user">@云 屠</span></strong><strong> </strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8013-90f4-fc963ed737d5" class="">负责钱包连接、提交流程、dashboard、链下存储、聚合接口</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8030-a630-f8c1c69a87e0" class="">在 Day 6–8 ，Day 13–14 投入最多</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-800f-a2a4-f464f203c995" class=""><strong>C｜产品 / PM / 数据逻辑 / Pitch </strong><strong><span class="user">@lilibetti</span></strong><strong> </strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80b9-bb60-d07ced5d7694" class="">负责 scope freeze、字段设计、评分维度、权重公式、信息架构、答辩材料、demo story</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-80fd-aea0-d232dfd7111f" class="">在 Day 1–2、Day 9–10、Day 13–14 投入最多</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8025-8d67-ec9e5065430e" class="">如果 C 也会写代码，就优先补前端和数据层，不要分散去写很多边角料</p></div><div style="display:contents" dir="ltr"><figure id="32ba49b5-c9e7-8052-9eb6-d525034af33a" class="link-to-page"><a href="%E6%98%93%E4%B8%BA%E4%B8%A5%E8%82%83%E7%83%A7%E7%83%A4%E4%B8%AD%C2%B7%C2%B7%C2%B7%2032ba49b5c9e780529eb6d525034af33a.html"><span class="icon">💭</span>易为严肃烧烤中···</a></figure></div><div style="display:contents" dir="ltr"><figure id="334a49b5-c9e7-805d-bc32-d01a92c22c77" class="link-to-page"><a href="%E6%98%93%E4%B8%BA%E6%8B%BC%E6%8E%A5%E6%97%B6%E7%9A%84%E7%83%A7%E7%83%A4memo%20334a49b5c9e7805dbc32d01a92c22c77.html"><span class="icon">💭</span>易为拼接时的烧烤memo</a></figure></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8066-ad80-ca76ca195aa7" class=""><strong>D｜后端 / 数据 / 集成 </strong><strong><span class="user">@Shiny fan</span></strong><strong> </strong><div class="indented"><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-8043-977f-cacf54c5dd36" class="">专门负责链下存储、聚合层、anti-sybil 接口尝试、seed data 和测试，这样 B 就能专注 UI 和交互，项目质量会提高</p></div></div></p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-808d-aa4a-deae23ac3b26" class="">
+</p></div><div style="display:contents" dir="auto"><p id="32ba49b5-c9e7-805d-995b-f86ee4fecb1c" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="32ba49b5-c9e7-802e-af91-df681819faef" class="">Links</h2></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80be-926e-f07baf124dd7" class="bulleted-list"><li style="list-style-type:disc">Repo：</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-805f-ad8b-db9f891375ba" class="bulleted-list"><li style="list-style-type:disc">幻灯：</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba49b5-c9e7-80de-93ee-d943ef7d02e9" class="bulleted-list"><li style="list-style-type:disc">Demo：</li></ul></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.125em;line-height:1.3;margin:0">现场演示：</summary><div class="indented"><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8031-87ed-e1a959cff20a" class="numbered-list" start="1"><li>一个用户拿到“曾在某公司供职”的 credential</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-8054-b1cf-f295db5f583c" class="numbered-list" start="2"><li>提交评价</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="32ba49b5-c9e7-805f-ba74-eb0ec8ec7458" class="numbered-list" start="3"><li>前端立刻刷新某 mentor / 某 team / 某公司的可信评分图谱</li></ol></div></div></details></div><div style="display:contents" dir="auto"><h3 id="32ba49b5-c9e7-80b7-8c9b-cadd56a4d8cb" class="">本次黑客松评分规则</h3></div><div style="display:contents" dir="ltr"><table id="32ba49b5-c9e7-806e-b7d6-cc1d347bfc2d" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-803d-b795-ca8573977eb8"><td id="_uaY" class="">评分维度</td><td id="Iwvq" class="">分值上限</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8068-9cab-f5c24abf95a2"><td id="_uaY" class="">技术实现与工程完整度</td><td id="Iwvq" class="">1.5</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80ae-b82e-ee5737af69d9"><td id="_uaY" class="">- 技术架构是否清晰</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8019-a150-e77c2e3783d3"><td id="_uaY" class="">- 逻辑是否严谨</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80f6-93c0-ddb4db1434b2"><td id="_uaY" class="">- 是否成功部署和运行</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-803d-bfb4-f63748474937"><td id="_uaY" class="">创新性与挑战程度</td><td id="Iwvq" class="">4</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8014-9760-d01fd8d16a50"><td id="_uaY" class="">- 技术/产品思路独特性</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80d8-af71-e11f82ba2865"><td id="_uaY" class="">- 针对真实问题的有效方案</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-806e-b15d-f0acf1f9fb25"><td id="_uaY" class="">- 新的实现路径和可能性</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8074-bc3d-e36abc45d775"><td id="_uaY" class="">用户体验与可用性</td><td id="Iwvq" class="">1.5</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80a1-9f4e-df119be6f80c"><td id="_uaY" class="">- 交互流程是否清晰</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8031-9f79-e29f5db480fa"><td id="_uaY" class="">- 操作是否友好易用</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80a6-a024-ed43af6d395c"><td id="_uaY" class="">- 工具复用性及内容输出</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-806d-9399-fa1782379b37"><td id="_uaY" class="">演示效果与交付质量</td><td id="Iwvq" class="">3</td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-80b2-b9ec-ee41edb23d46"><td id="_uaY" class="">- 演示视频逻辑性与清晰度</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-8012-b2f8-c2380138c204"><td id="_uaY" class="">- 项目说明文档结构与表达</td><td id="Iwvq" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="32ba49b5-c9e7-801c-95eb-d11c45a9076e"><td id="_uaY" class="">- 架构图可读性、现场演示流畅性</td><td id="Iwvq" class=""></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="32ea49b5-c9e7-80ca-9b00-fe3036363e3a" class="">四、可参考的现有产品</h1></div><div style="display:contents" dir="auto"><h2 id="32ea49b5-c9e7-80bb-beba-e01db06c4784" class="">Blind(<a href="https://www.teamblind.com/polls">https://www.teamblind.com/polls</a>)</h2></div><div style="display:contents" dir="auto"><p id="32ea49b5-c9e7-80a2-8dc9-f0eba8b50756" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,21 @@
+# 隐私与密钥
+.env
+*.private_key
+secrets.json
+
+# 依赖库
+node_modules/
+jspm_packages/
+
+# 编译与构建产物
+artifacts/
+cache/
+typechain/
+typechain-types/
+dist/
+.next/
+out/
+
+# 操作系统文件
+.DS_Store
+Thumbs.db

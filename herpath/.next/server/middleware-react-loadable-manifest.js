@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"hooks/useGameAudio.ts -> howler\":{\"id\":\"hooks/useGameAudio.ts -> howler\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_howler_dist_howler_js.js\"]}}"

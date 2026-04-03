@@ -1,7 +1,0 @@
-You are building "Menstrual Hut" (月经小屋), a feminine, empowering Web3 dApp on Avalanche Fuji.
-- Use Next.js 15 App Router, TypeScript, Tailwind CSS, shadcn/ui style
-- Warm feminine color: deep pink #c026d3, soft purple #f3e8ff → #ffe4f0 gradient
-- Always support 中英双语 (use next-intl)
-- UI must be gentle, healing, moon-inspired, body-positive
-- For any Web3 part: use thirdweb SDK v5, avalancheFuji chain
-- Components should be accessible and mobile-friendly

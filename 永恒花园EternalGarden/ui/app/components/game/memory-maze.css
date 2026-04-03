@@ -1,0 +1,367 @@
+/**
+ * 记忆迷宫独立主题：与原版 Index（shadcn + hsl(var(--*))）一致
+ * 仅作用于 .memory-maze-root 内，不影响永恒花园主站
+ */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap");
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes petal-drift {
+  0% {
+    transform: translateY(105vh) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.35;
+  }
+  85% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(-8vh) rotate(540deg) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.memory-maze-root {
+  --background: 38 42% 96%;
+  --foreground: 24 18% 22%;
+  --muted-foreground: 25 14% 38%;
+  --primary: 330 26% 52%;
+  --primary-dark: 330 32% 40%;
+  --primary-foreground: 0 0% 100%;
+  --accent-gold: 36 48% 52%;
+  --border: 32 28% 88%;
+  --card: 40 45% 98%;
+  --ring: 330 26% 52%;
+  --year-muted: 30 25% 42%;
+  --maze-play-bg: 330 16% 97%;
+  font-family: "Noto Sans SC", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 介绍页：叠在 SVG 等距迷宫之上，只做轻色罩与暗角，避免与矢量底图抢色 */
+.memory-maze-root .memory-maze-intro-bg {
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 70% at 50% -5%, hsl(330 20% 96% / 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 88% 40%, hsl(280 14% 96% / 0.3) 0%, transparent 50%),
+    linear-gradient(168deg, hsl(42 42% 100% / 0.06) 0%, transparent 45%, hsl(300 12% 96% / 0.12) 100%);
+  box-shadow: inset 0 0 72px 20px hsl(38 16% 96% / 0.28);
+}
+
+/* 细腻点阵：禁止 multiply——乘暗会把粉紫全压成「深藕色」 */
+.memory-maze-root .memory-maze-intro-pattern {
+  background-image:
+    radial-gradient(circle at 22% 28%, hsl(330 22% 94% / 0.55) 0%, transparent 55%),
+    radial-gradient(circle at 88% 18%, hsl(38 36% 94% / 0.45) 0%, transparent 48%),
+    radial-gradient(circle at 78% 82%, hsl(280 18% 94% / 0.4) 0%, transparent 50%),
+    radial-gradient(hsl(330 10% 78% / 0.045) 1px, transparent 1px);
+  background-size: auto, auto, auto, 28px 28px;
+  mix-blend-mode: normal;
+  opacity: 0.55;
+}
+
+.memory-maze-root .intro-bg-blob {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.32;
+}
+.memory-maze-root .intro-bg-blob-tl {
+  width: min(340px, 55vw);
+  height: min(340px, 55vw);
+  top: -12%;
+  left: -6%;
+  background: hsl(330 24% 94% / 0.55);
+}
+.memory-maze-root .intro-bg-blob-br {
+  width: min(300px, 48vw);
+  height: min(300px, 48vw);
+  bottom: -8%;
+  right: -5%;
+  background: hsl(38 32% 94% / 0.5);
+}
+.memory-maze-root .intro-bg-blob-mid {
+  width: min(420px, 70vw);
+  height: min(420px, 70vw);
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: hsl(300 14% 96% / 0.45);
+  filter: blur(80px);
+  opacity: 0.28;
+}
+
+.memory-maze-root .intro-rings {
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, 96vw);
+  height: 200px;
+  opacity: 0.48;
+}
+.memory-maze-root .intro-rings span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+}
+.memory-maze-root .intro-rings span:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  bottom: 16px;
+  border: 1.5px solid hsl(330 22% 68% / 0.48);
+}
+.memory-maze-root .intro-rings span:nth-child(2) {
+  width: 156px;
+  height: 156px;
+  bottom: -22px;
+  border: 1px dashed hsl(330 20% 62% / 0.52);
+}
+.memory-maze-root .intro-rings span:nth-child(3) {
+  width: 240px;
+  height: 240px;
+  bottom: -64px;
+  border: 1px dashed hsl(300 18% 68% / 0.42);
+}
+.memory-maze-root .intro-rings span:nth-child(4) {
+  width: 340px;
+  height: 340px;
+  bottom: -114px;
+  border: 1px dashed hsl(280 16% 72% / 0.38);
+}
+.memory-maze-root .intro-rings span:nth-child(5) {
+  width: 440px;
+  height: 440px;
+  bottom: -164px;
+  border: 1px solid hsl(36 42% 72% / 0.35);
+  filter: drop-shadow(0 0 12px hsl(330 24% 72% / 0.18));
+}
+
+/* 介绍页：独立内容板，与渐变背景分层，避免正文与装饰抢对比度 */
+.memory-maze-root .intro-content-card {
+  isolation: isolate;
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, hsl(40 52% 99% / 0.97) 0%, hsl(38 45% 97% / 0.96) 100%);
+  border: 1px solid hsl(35 40% 100% / 0.85);
+  box-shadow:
+    0 4px 6px hsl(25 30% 50% / 0.04),
+    0 18px 48px hsl(25 25% 40% / 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.memory-maze-root .intro-content-card--rich {
+  border: 1px solid hsl(35 28% 90%);
+  background: linear-gradient(165deg, hsl(42 48% 99.5% / 0.98) 0%, hsl(40 38% 97.5% / 0.97) 55%, hsl(38 32% 96.5% / 0.96) 100%);
+  box-shadow:
+    0 0 0 1px hsl(330 22% 88% / 0.45) inset,
+    0 4px 8px hsl(25 20% 45% / 0.06),
+    0 24px 56px hsl(330 20% 42% / 0.12);
+}
+
+.memory-maze-root .intro-stat-row {
+  border-radius: 1rem;
+  padding: 1.1rem 1rem;
+  background: linear-gradient(180deg, hsl(330 20% 95% / 0.95) 0%, hsl(38 28% 97% / 0.92) 100%);
+  border: 1px solid hsl(330 18% 88% / 0.65);
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.85);
+}
+
+.memory-maze-root .intro-stat-divider {
+  background: linear-gradient(180deg, transparent, hsl(330 18% 78% / 0.85), transparent);
+}
+
+.memory-maze-root .font-title {
+  font-family: "Noto Serif SC", serif;
+}
+
+.memory-maze-root .font-en {
+  font-family: "Lora", serif;
+}
+
+/* 语义色（与 shadcn bg-background / text-foreground 等一致） */
+.memory-maze-root .bg-background {
+  background-color: hsl(var(--background));
+}
+
+.memory-maze-root .text-foreground {
+  color: hsl(var(--foreground));
+}
+
+.memory-maze-root .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.memory-maze-root .text-muted-foreground\/50 {
+  color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.memory-maze-root .text-primary {
+  color: hsl(var(--primary));
+}
+
+.memory-maze-root .text-primary-dark {
+  color: hsl(var(--primary-dark));
+}
+
+.memory-maze-root .text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
+.memory-maze-root .bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+.memory-maze-root .border-primary {
+  border-color: hsl(var(--primary));
+}
+
+.memory-maze-root .border-t-primary {
+  border-top-color: hsl(var(--primary));
+}
+
+.memory-maze-root .border-border {
+  border-color: hsl(var(--border));
+}
+
+.memory-maze-root .bg-border {
+  background-color: hsl(var(--border));
+}
+
+.memory-maze-root .bg-background\/80 {
+  background-color: hsl(var(--background) / 0.8);
+}
+
+.memory-maze-root .bg-background\/90 {
+  background-color: hsl(var(--background) / 0.9);
+}
+
+.memory-maze-root .border-t-primary {
+  border-top-color: hsl(var(--primary));
+}
+
+.memory-maze-root .ring-ring {
+  --tw-ring-color: hsl(var(--ring));
+}
+
+.memory-maze-root .fragment-modal-cta {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+.memory-maze-root .fragment-modal-cta:hover {
+  background-color: hsl(var(--primary) / 0.15);
+}
+
+.memory-maze-root .collection-close:hover {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+.memory-maze-root .text-year-muted {
+  color: hsl(var(--year-muted));
+}
+
+.memory-maze-root .fragment-modal-sage {
+  background: linear-gradient(180deg, #d4b8c0 0%, #c4a8b4 55%, #b498a8 100%);
+  box-shadow:
+    0 4px 14px rgba(140, 100, 120, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.memory-maze-root .mm-play-canvas {
+  background-color: hsl(var(--maze-play-bg));
+}
+
+.memory-maze-root.mm-play-bg {
+  background-color: hsl(var(--maze-play-bg));
+}
+
+/* 通关页：与主站 #F9F9F9 / 雾绿 / 金点缀一致 */
+.memory-maze-root .complete-screen-bg {
+  background: linear-gradient(180deg, hsl(42 40% 99%) 0%, hsl(38 22% 94%) 45%, hsl(35 18% 90%) 100%);
+}
+
+.memory-maze-root .complete-content-card {
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, hsl(42 48% 99.5% / 0.98) 0%, hsl(40 35% 97% / 0.97) 100%);
+  border: 1px solid hsl(35 30% 92%);
+  box-shadow:
+    0 2px 4px hsl(25 20% 50% / 0.04),
+    0 20px 50px hsl(25 15% 40% / 0.08);
+}
+
+/* 底部同心圆（呼应主站记忆迷宫 Tab 的环形意象） */
+.memory-maze-root .complete-rings {
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 92vw);
+  height: 140px;
+  opacity: 0.45;
+}
+.memory-maze-root .complete-rings span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  border: 1px dashed hsl(330 20% 72% / 0.52);
+}
+.memory-maze-root .complete-rings span:nth-child(1) {
+  width: 72px;
+  height: 72px;
+  bottom: 12px;
+}
+.memory-maze-root .complete-rings span:nth-child(2) {
+  width: 140px;
+  height: 140px;
+  bottom: -22px;
+}
+.memory-maze-root .complete-rings span:nth-child(3) {
+  width: 220px;
+  height: 220px;
+  bottom: -62px;
+}
+.memory-maze-root .complete-rings span:nth-child(4) {
+  width: 320px;
+  height: 320px;
+  bottom: -112px;
+}
+

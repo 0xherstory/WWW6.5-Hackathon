@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease;
+}
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 213 40% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 213 40% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 40% 16%;
+
+    --primary: 213 45% 28%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 30% 94%;
+    --secondary-foreground: 213 40% 16%;
+
+    --muted: 213 20% 94%;
+    --muted-foreground: 213 15% 50%;
+
+    --accent: 210 35% 90%;
+    --accent-foreground: 213 40% 16%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 213 20% 88%;
+    --input: 213 20% 88%;
+    --ring: 213 45% 28%;
+
+    --radius: 0.75rem;
+
+    --blush: 210 30% 92%;
+    --blush-foreground: 213 25% 35%;
+    --success: 152 45% 42%;
+    --success-foreground: 0 0% 100%;
+
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  .dark {
+    --background: 213 30% 10%;
+    --foreground: 210 20% 88%;
+
+    --card: 213 28% 13%;
+    --card-foreground: 210 20% 88%;
+
+    --popover: 213 28% 13%;
+    --popover-foreground: 210 20% 88%;
+
+    --primary: 210 40% 55%;
+    --primary-foreground: 213 30% 10%;
+
+    --secondary: 213 25% 18%;
+    --secondary-foreground: 210 20% 88%;
+
+    --muted: 213 25% 16%;
+    --muted-foreground: 213 15% 55%;
+
+    --accent: 213 25% 18%;
+    --accent-foreground: 210 20% 88%;
+
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 213 20% 20%;
+    --input: 213 20% 20%;
+    --ring: 210 40% 55%;
+
+    --blush: 213 20% 16%;
+    --blush-foreground: 210 20% 70%;
+    --success: 152 45% 45%;
+    --success-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+}

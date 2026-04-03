@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --ami-shell-bg: #f6f0e9;
+  --ami-text-primary: #423138;
+  --ami-text-body: #6d5b63;
+  --ami-text-soft: #7c6870;
+  --ami-surface: rgba(255, 252, 249, 0.78);
+  --ami-surface-strong: rgba(255, 255, 255, 0.66);
+  --ami-border-soft: rgba(189, 169, 177, 0.16);
+  --ami-shadow-soft: 0 18px 44px rgba(111, 90, 98, 0.06);
+  --tone-rose-border: rgba(194, 158, 171, 0.18);
+  --tone-rose-bg: rgba(255, 249, 251, 0.82);
+  --tone-rose-text: #8b6474;
+  --tone-sage-border: rgba(168, 190, 160, 0.18);
+  --tone-sage-bg: rgba(247, 252, 245, 0.84);
+  --tone-sage-text: #668063;
+  --tone-lavender-border: rgba(183, 171, 201, 0.18);
+  --tone-lavender-bg: rgba(248, 245, 252, 0.84);
+  --tone-lavender-text: #796a91;
+  --tone-amber-border: rgba(216, 198, 167, 0.18);
+  --tone-amber-bg: rgba(255, 250, 242, 0.86);
+  --tone-amber-text: #927654;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}

@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 7%;
+    --foreground: 210 20% 92%;
+
+    --card: 220 18% 10%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 220 18% 10%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 0 85% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 16%;
+    --secondary-foreground: 210 20% 85%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 220 14% 18%;
+    --accent-foreground: 210 20% 92%;
+
+    --destructive: 0 85% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 0 85% 45%;
+
+    --radius: 0.75rem;
+
+    /* HerGuard custom tokens */
+    --sos-default: 0 85% 43%;
+    --sos-pressing: 32 100% 50%;
+    --sos-success: 142 71% 45%;
+    --sos-offline: 45 93% 58%;
+    --sos-glow: 0 85% 45% / 0.4;
+    --sos-pressing-glow: 32 100% 50% / 0.4;
+    --sos-success-glow: 142 71% 45% / 0.3;
+
+    --wallet-connected: 142 71% 45%;
+    --wallet-warning: 45 93% 58%;
+
+    --nav-active: 0 85% 45%;
+    --nav-inactive: 215 15% 40%;
+
+    --sidebar-background: 220 20% 7%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-primary: 0 85% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 18%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 0 85% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .sos-pulse {
+    animation: sosPulse 2s ease-in-out infinite;
+  }
+  .screen-flash {
+    animation: screenFlash 0.3s ease-out;
+  }
+}
+
+@keyframes sosPulse {
+  0%, 100% { box-shadow: 0 0 30px hsl(var(--sos-glow)), 0 0 60px hsl(var(--sos-glow)); }
+  50% { box-shadow: 0 0 50px hsl(var(--sos-glow)), 0 0 100px hsl(var(--sos-glow)); }
+}
+
+@keyframes screenFlash {
+  0% { opacity: 0; }
+  30% { opacity: 0.6; }
+  100% { opacity: 0; }
+}

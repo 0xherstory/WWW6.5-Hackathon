@@ -1,0 +1,689 @@
+{
+  "metadata": {
+    "title": "Healing Sanctuary",
+    "description": "Plant your healing tree in the Web3 world"
+  },
+  "brand": {
+    "name": "Healing Sanctuary",
+    "tagline": "Plant your healing tree in the Web3 world"
+  },
+  "nav": {
+    "launch": "Healing Sanctuary",
+    "explore": "Explore",
+    "sanctuary": "My Memories",
+    "timemachine": "Time Machine",
+    "home": "Home",
+    "back": "Back",
+    "backToHome": "Back to Home",
+    "toggleMenu": "Toggle menu"
+  },
+  "wallet": {
+    "connect": "Connect Wallet",
+    "disconnect": "Disconnect",
+    "wrongNetwork": "Switch Network",
+    "connectFirst": "Please connect wallet first"
+  },
+  "home": {
+    "title": "Healing Sanctuary",
+    "subtitle": "Decentralized healing tools and mutual aid community on blockchain",
+    "description": "Explore your inner world in a safe container, receive healing support through art and technology",
+    "principles": {
+      "privacy": {
+        "title": "Privacy Protection",
+        "desc": "Frontend encryption + IPFS storage, only CID stored on-chain"
+      },
+      "decentralized": {
+        "title": "Decentralized",
+        "desc": "Smart contract auto-custody, censorship-free distribution"
+      },
+      "transparent": {
+        "title": "Transparent & Verifiable",
+        "desc": "All transactions on-chain, fully transparent"
+      }
+    },
+    "services": {
+      "ohcards": {
+        "title": "Botanical Healing OH Cards",
+        "desc": "Explore your inner world through plant life journey cards"
+      },
+      "counseling": {
+        "title": "Counseling Services",
+        "desc": "One-on-one professional psychological support"
+      },
+      "cbt": {
+        "title": "Cognitive Behavioral Therapy",
+        "desc": "Structured journaling tools to reshape thinking patterns"
+      }
+    },
+    "comingSoon": "Coming Soon",
+    "learnMore": "Learn More",
+    "experienceNow": "Experience Now",
+    "features": {
+      "privacy": {
+        "title": "Private",
+        "desc": "On-chain encrypted storage"
+      },
+      "growth": {
+        "title": "Growth",
+        "desc": "Emotional stage evolution"
+      },
+      "connection": {
+        "title": "Connection",
+        "desc": "Collective subconscious bond"
+      }
+    },
+    "cta": {
+      "start": "Start Exploring",
+      "sanctuary": "Visit Sanctuary"
+    }
+  },
+  "spreads": {
+    "title": "Choose Your Path",
+    "subtitle": "Each spread offers unique insights and revelations",
+    "cards": "cards",
+    "backToHome": "Back to Home",
+    "types": {
+      "single": {
+        "name": "Single Card",
+        "description": "Draw one card for present guidance",
+        "positions": {
+          "center": "Present Guidance"
+        }
+      },
+      "three": {
+        "name": "Past-Present-Future",
+        "description": "Three cards to see the flow of time",
+        "positions": {
+          "past": "Past Influence",
+          "present": "Present State",
+          "future": "Future Possibility"
+        }
+      },
+      "five": {
+        "name": "Cross Spread",
+        "description": "Deep exploration of core issues and solutions",
+        "positions": {
+          "center": "Present",
+          "top": "Challenge",
+          "left": "Past",
+          "right": "Future",
+          "bottom": "Potential"
+        }
+      },
+      "seven": {
+        "name": "Seven Stars",
+        "description": "A complete journey of body-mind-spirit exploration",
+        "positions": {
+          "crown": "Crown",
+          "wisdom": "Wisdom",
+          "understanding": "Understanding",
+          "beauty": "Beauty",
+          "victory": "Victory",
+          "glory": "Glory",
+          "kingdom": "Kingdom"
+        }
+      },
+      "ten": {
+        "name": "Tree of Life",
+        "description": "Kabbalistic Tree of Life, complete Sephiroth exploration",
+        "positions": {
+          "kether": "Kether",
+          "chokmah": "Chokmah",
+          "binah": "Binah",
+          "chesed": "Chesed",
+          "gevurah": "Gevurah",
+          "tiferet": "Tiferet",
+          "netzach": "Netzach",
+          "hod": "Hod",
+          "yesod": "Yesod",
+          "malkuth": "Malkuth"
+        }
+      }
+    }
+  },
+  "select": {
+    "title": "Select Cards",
+    "imageCards": "Image Cards",
+    "wordCards": "Word Cards",
+    "random": "Random Select",
+    "confirm": "Confirm Selection",
+    "selected": "Selected",
+    "instruction": "Please select {count} image cards and {count} word cards",
+    "selectedCards": "Selected Cards",
+    "complete": "Complete",
+    "randomAll": "Random All",
+    "reset": "Reset",
+    "selectImage": "Select Image",
+    "selectWord": "Select Word",
+    "clickToReplace": "Click a card to replace",
+    "clickToReplaceWord": "Click a word card to replace",
+    "currentSelection": "Current Selection",
+    "card": "Card",
+    "wordCard": "Word Card",
+    "randomDraw": "Random Draw",
+    "positionActive": "Position {position} ({name}) is active",
+    "continueToJournal": "Continue to Journal",
+    "doubleClickToView": "Double-click to view",
+    "position": {
+      "center": "Present Guidance",
+      "past": "Past Influence",
+      "present": "Present State",
+      "future": "Future Potential",
+      "top": "Challenge",
+      "left": "Past",
+      "right": "Future",
+      "bottom": "Potential",
+      "crown": "Crown",
+      "wisdom": "Wisdom",
+      "understanding": "Understanding",
+      "beauty": "Beauty",
+      "victory": "Victory",
+      "glory": "Glory",
+      "kingdom": "Kingdom",
+      "kether": "Kether",
+      "chokmah": "Chokmah",
+      "binah": "Binah",
+      "chesed": "Chesed",
+      "geburah": "Geburah",
+      "tiphereth": "Tiphereth",
+      "netzach": "Netzach",
+      "hod": "Hod",
+      "yesod": "Yesod",
+      "malkuth": "Malkuth"
+    }
+  },
+  "tracks": {
+    "1": {
+      "name": "Healing & Recovery",
+      "description": "A journey from trauma to release"
+    },
+    "2": {
+      "name": "Potential Unleashed",
+      "description": "Discover inner potential and strength"
+    },
+    "3": {
+      "name": "Self Construction",
+      "description": "Explore self-identity and growth"
+    },
+    "4": {
+      "name": "Relationship Evolution",
+      "description": "Understand deep patterns in relationships"
+    },
+    "5": {
+      "name": "Inner Order",
+      "description": "Establish inner balance and harmony"
+    },
+    "6": {
+      "name": "Life Cycles",
+      "description": "Embrace the changes and cycles of life"
+    }
+  },
+  "journal": {
+    "title": "Record Your Interpretation",
+    "subtitle": "Write down your feelings and insights",
+    "selectedCards": "Your Selected Cards",
+    "yourInterpretation": "Your Interpretation",
+    "placeholder": "Write your interpretation of these cards, your feelings and insights...",
+    "characters": "characters",
+    "selectWordCard": "Select Word Card (Optional)",
+    "wordCards": ["Calm", "Growth", "Acceptance", "Release", "Hope"],
+    "encrypting": "Encrypting...",
+    "sealOnChain": "🔒 Seal On Chain",
+    "emptyContent": "Please write down your thoughts",
+    "tip1": "💡 Your journal will be encrypted and stored on IPFS, only the hash will be saved on blockchain",
+    "tip2": "Only you can decrypt and view the content",
+    "maxChars": "Max 300 characters",
+    "txDescription": "Journal - {spreadType} spread, {wordCount} words",
+    "txFailed": "Blockchain transaction failed, please check network connection and wallet balance",
+    "doubleClickToView": "Double click to view full image",
+    "imageCard": "Image Card",
+    "encryptingTitle": "Encrypting your journal...",
+    "encryptingDesc": "Text is turning into cipher, only you can see the content",
+    "uploadingTitle": "Uploading to IPFS...",
+    "uploadingDesc": "Permanently stored in decentralized network",
+    "submittingTitle": "Submitting to blockchain...",
+    "submittingDesc": "Recording healing completion and requesting payment",
+    "successTitle": "Encryption Successful",
+    "successDesc": "Your journal has been securely stored",
+    "errorTitle": "Storage Failed",
+    "txLabel": "Transaction",
+    "retry": "Retry",
+    "chars": "chars",
+    "words": "words",
+    "autoSave": "Auto-saving"
+  },
+  "success": {
+    "title": "Record Saved",
+    "subtitle": "Your insights have been securely recorded on chain",
+    "message": "Thank you for your sincere sharing. This record will become part of your healing journey.",
+    "viewInSanctuary": "View in Sanctuary",
+    "exploreMore": "Continue Exploring",
+    "applyClaim": "Apply for Mutual Aid",
+    "journal": {
+      "title": "This Healing Record",
+      "recordTime": "Record Time",
+      "wordCount": "Word Count",
+      "words": "words",
+      "ipfs": "IPFS Storage",
+      "blockchain": "Blockchain Record",
+      "viewTx": "View Transaction",
+      "preview": "Journal Preview"
+    },
+    "claim": {
+      "title": "Mutual Aid Claimed Successfully",
+      "amount": "Claim Amount",
+      "txHash": "Transaction Hash",
+      "viewTx": "View Transaction"
+    },
+    "privacy": {
+      "title": "Privacy Protection",
+      "desc": "Your journal has been encrypted, only you can decrypt and view it"
+    },
+    "timeWitness": {
+      "title": "Time Witness",
+      "desc": "View emotional evolution after 7 days, witness your growth"
+    },
+    "collectiveResonance": {
+      "title": "Collective Resonance",
+      "desc": "Your selected cards have resonated with the energy of other healers"
+    },
+    "tip1": "💡 Tip: Your memory will be permanently saved on IPFS",
+    "tip2": "The blockchain records the timestamp, proving your existence at this moment"
+  },
+  "launch": {
+    "title": "Healing Sanctuary Mutual Aid Protocol",
+    "subtitle": "Decentralized healing tools and mutual aid community on blockchain",
+    "tagline": "Every insight is a step towards self-healing",
+    "pool": {
+      "title": "Sanctuary Pool Status",
+      "balance": "Pool Balance",
+      "donors": "Donors",
+      "helped": "Helped",
+      "people": "people",
+      "insufficient": "Current pool balance insufficient",
+      "sufficient": "Funds available"
+    },
+    "flow": {
+      "title": "Fund Flow Mechanism",
+      "step1": "Guardians purchase cards to support art",
+      "step2": "Funds enter sanctuary pool",
+      "step3": "Healers complete self-reflection",
+      "step4": "Automatic distribution without censorship"
+    },
+    "gallery": {
+      "title": "30 Botanical Life Journey OH Cards",
+      "subtitle": "Each card represents a life stage, 6 tracks × 5 stages = 30 unique art cards",
+      "track": "Track",
+      "stage": "Stage",
+      "resonance": "{count} memories have rested here"
+    },
+    "modes": {
+      "title": "Choose Your Mode",
+      "healer": {
+        "name": "Healer Mode",
+        "tagline": "Explore your inner world in a safe container",
+        "desc": "As someone experiencing psychological challenges, I want a private, safe healing space where I can receive support without exposing my privacy.",
+        "processTitle": "Experience Flow:",
+        "step1": "Select OH Card spread to explore your inner world",
+        "step2": "Write your insights (AES encrypted + IPFS storage)",
+        "step3": "Complete email verification (optional funding application)",
+        "step4": "View healing memories and continue growing",
+        "cta": "Start Healing Journey"
+      },
+      "guardian": {
+        "name": "Guardian Mode",
+        "tagline": "Support art and support public good",
+        "desc": "As a digital art collector and public welfare supporter, I want to support the psychological healing cause by purchasing OH Card artworks while obtaining unique digital collectibles.",
+        "processTitle": "Experience Flow:",
+        "step1": "Browse 30 botanical-themed OH Card artworks",
+        "step2": "Select favorite cards for donation collection",
+        "step3": "Funds enter sanctuary pool",
+        "step4": "View fund usage transparency in real-time",
+        "cta": "Enter Guardian Gallery"
+      },
+      "note": "Note: Guardians can only donate not claim, Healers can only claim not donate — roles are mutually exclusive"
+    },
+    "stories": {
+      "title": "Real User Stories",
+      "healer": {
+        "role": "Healer · 3 months",
+        "content": "I discovered this sanctuary at my lowest point. Drawing an OH Card every day and writing down my feelings, without having to explain to anyone, yet receiving support. This feeling of being understood without exposing privacy helped me slowly recover."
+      },
+      "guardian": {
+        "role": "Guardian · Donated 5 AVAX",
+        "content": "I collected 5 plant cards, not just for their artistic value, but because I know these funds are really helping people in need. Blockchain transparency allows me to track every fund's destination — this trust is something traditional charity cannot provide."
+      }
+    },
+    "principles": {
+      "title": "Core Principles",
+      "privacy": {
+        "title": "Privacy Protection",
+        "desc": "Frontend encryption + IPFS storage, only CID stored on-chain"
+      },
+      "decentralized": {
+        "title": "Decentralized",
+        "desc": "Smart contract automatic custody, censorship-free distribution"
+      },
+      "transparent": {
+        "title": "Transparent & Verifiable",
+        "desc": "All transactions on-chain and fully transparent"
+      }
+    },
+    "upcoming": {
+      "title": "Coming Soon",
+      "soon": "Coming Soon",
+      "learnMore": "Learn More",
+      "counseling": {
+        "title": "Counseling Service",
+        "desc": "Professional counselors providing one-on-one support, safe and private online consultation experience"
+      },
+      "cbt": {
+        "title": "CBT Therapy",
+        "desc": "Structured journaling tools to help identify and change negative thought patterns"
+      }
+    },
+    "donate": {
+      "title": "Collect & Support",
+      "amount": "Donation Amount",
+      "amountPlaceholder": "Enter amount",
+      "defaultAmount": "Default 0.01 AVAX, customizable",
+      "note": "Your funds will enter the sanctuary pool to help those in need",
+      "confirm": "Confirm Collection",
+      "success": "Collection successful!",
+      "error": "Transaction failed"
+    }
+  },
+  "guardian": {
+    "title": "Guardian Gallery",
+    "subtitle": "Collect unique botanical life journey OH Card artworks, support the psychological healing cause",
+    "description": "Your donation will enter the sanctuary pool to help those in need of psychological support",
+    "tab": {
+      "collect": "Collect Cards",
+      "collection": "My Collection ({count})"
+    },
+    "pool": {
+      "title": "Current Pool Status",
+      "balance": "Pool Balance",
+      "reserve": "Reserve",
+      "donations": "Donations",
+      "helped": "Helped",
+      "currentClaim": "Current Claim Amount",
+      "mode": "Mode",
+      "modes": {
+        "emergency": "Emergency",
+        "low": "Low Reserve",
+        "conservative": "Conservative",
+        "normal": "Normal"
+      }
+    },
+    "select": {
+      "title": "Select Cards to Collect",
+      "hint": "Click to select a card, then set your donation amount"
+    },
+    "donation": {
+      "title": "Set Donation Amount",
+      "amount": "Donation Amount (AVAX)",
+      "suggestion": "Suggested: 0.01 - 1 AVAX",
+      "connectWallet": "Please connect wallet first",
+      "processing": "Processing...",
+      "confirm": "Confirm Donation {amount} AVAX",
+      "securityNote": "Your funds will be securely stored in the smart contract, with 20% as reserve"
+    },
+    "collection": {
+      "title": "My Collection"
+    },
+    "benefits": {
+      "title": "Guardian Benefits",
+      "collectible": {
+        "title": "Digital Collectible",
+        "desc": "Receive unique botanical OH Card digital artworks"
+      },
+      "transparency": {
+        "title": "Transparent Tracking",
+        "desc": "Real-time fund usage tracking, fully transparent"
+      },
+      "impact": {
+        "title": "Public Good",
+        "desc": "Help psychological healers receive support"
+      }
+    },
+    "backToHome": "Back to Sanctuary Home",
+    "transactionDescription": "Collected card \"{cardName}\" and donated {amount} AVAX",
+    "donateFailed": "Donation failed, please check wallet connection and balance",
+    "donateError": "Error occurred during donation"
+  },
+  "sanctuary": {
+    "title": "My Sanctuary",
+    "subtitle": "All the memories you've planted here",
+    "empty": {
+      "title": "No memories yet",
+      "desc": "Start your first exploration and plant a healing seed"
+    },
+    "stats": {
+      "totalMemories": "Total Memories",
+      "latestMemory": "Latest Memory"
+    },
+    "memory": {
+      "view": "View Details",
+      "decrypt": "Decrypt Content",
+      "decryptPlaceholder": "Enter decryption key",
+      "decryptSuccess": "Decryption successful",
+      "decryptFailed": "Decryption failed, please check your key",
+      "noContent": "Content encrypted",
+      "spreadType": "Spread",
+      "createdAt": "Created",
+      "cards": "Cards"
+    },
+    "actions": {
+      "newMemory": "New Memory",
+      "viewAll": "View All"
+    },
+    "refreshData": "Refresh Data",
+    "connectWalletFirst": "Please connect wallet first",
+    "wordCard": "Word Card",
+    "decrypting": "Decrypting...",
+    "decryptHint": "Wallet signature required to decrypt content. The signature message is only used to derive encryption keys.",
+    "tabs": {
+      "memories": "My Memories ({count})",
+      "transactions": "Transaction History ({count})"
+    },
+    "connectWallet": {
+      "title": "Please Connect Wallet",
+      "desc": "Your memories and transaction history are bound to your wallet address. Please connect your wallet to view your personal records."
+    },
+    "transactions": {
+      "types": {
+        "journal": "Journal",
+        "claim": "Claim",
+        "donate": "Donate",
+        "default": "Transaction"
+      },
+      "empty": {
+        "title": "No Transactions",
+        "desc": "Transaction history will appear here after completing journals, claims, or donations"
+      },
+      "viewTx": "View Transaction"
+    }
+  },
+  "timemachine": {
+    "title": "Emotion Time Machine",
+    "subtitle": "View the evolution of your emotions across different time dimensions",
+    "selectTime": "Select Time Point",
+    "daysFromToday": "Days from today",
+    "days": "days",
+    "predictionMode": "Prediction Mode",
+    "predictionDesc": "Based on the plant growth stage {days} days later, predict your emotional state",
+    "emotionPrediction": "Emotion prediction for {days} days later",
+    "futureStage": "In {days} days, your emotions will enter a new stage",
+    "completeFirstExploration": "After completing your first exploration, your emotional evolution trajectory will be displayed here",
+    "comingSoon": "Emotion prediction feature coming soon",
+    "comingSoonDesc": "We are developing intelligent emotion analysis based on on-chain data to help you understand emotional evolution trends."
+  },
+  "modal": {
+    "closeHint": "Press ESC or click anywhere to close"
+  },
+  "errors": {
+    "unknown": "Unknown error",
+    "spreadNotFound": "Spread not found",
+    "backToSpreads": "Back to Spreads"
+  },
+  "verification": {
+    "title": "Apply for Mutual Aid Funds",
+    "intro": "Thank you for taking these twenty minutes for yourself.",
+    "description": "In the sanctuary's mutual aid pool, there's support waiting for you from afar. To ensure this kindness isn't exploited by cold automated programs, we need to verify you're a real person.",
+    "privacy": {
+      "title": "Privacy Protection Promise",
+      "desc": "We use simulated ZK-Email technology. Your email address is processed locally only, never stored or transmitted to servers. We only save an irreversible hash as your anonymous pass."
+    },
+    "steps": {
+      "input": "Step 1: Enter your email",
+      "code": "Step 2: Enter verification code",
+      "verify": "Step 3: Generate anonymous pass"
+    },
+    "form": {
+      "emailPlaceholder": "Enter your Gmail address",
+      "emailNote": "Currently only Gmail is supported",
+      "codePlaceholder": "Enter 6-digit code",
+      "codeSent": "Code sent to {email}",
+      "sendCode": "Send Code",
+      "resendCode": "Resend ({seconds}s)",
+      "verify": "Verify & Generate Pass",
+      "verifying": "Verifying..."
+    },
+    "animation": {
+      "disconnecting": "Disconnecting network to ensure data stays local...",
+      "reading": "Reading email provider's official signature...",
+      "generating": "Generating your anonymous digital stub...",
+      "shredded": "Email address has been locally shredded 🗑️",
+      "complete": "Verification complete!"
+    },
+    "success": {
+      "title": "Verification Successful!",
+      "desc": "Your anonymous pass has been generated. You can claim mutual aid funds within the next 24 hours.",
+      "claimNow": "Claim Now",
+      "claimLater": "Claim Later"
+    },
+    "error": {
+      "invalidEmail": "Please enter a valid email address",
+      "notGmail": "Currently only Gmail is supported",
+      "invalidCode": "Invalid verification code format",
+      "codeExpired": "Code expired, please get a new one",
+      "sendFailed": "Failed to send verification code",
+      "verifyFailed": "Verification failed, please try again",
+      "alreadyClaimed": "This email has already claimed funds"
+    },
+    "devModeAlert": "[TEST MODE] Your verification code is: {code}\n\nPlease enter this code in the input field below.",
+    "pool": {
+      "insufficient": "Insufficient pool balance",
+      "available": "Funds available in pool"
+    }
+  },
+  "claim": {
+    "title": "Apply for Mutual Aid Funds",
+    "intro": "Thank you for taking these twenty minutes for yourself.",
+    "description": "In the sanctuary's mutual aid pool, there's support waiting for you from afar.",
+    "pool": {
+      "title": "Pool Status",
+      "balance": "Current Balance",
+      "available": "Available",
+      "helped": "Helped",
+      "people": "people",
+      "guardians": "guardians supporting",
+      "sufficient": "Funds available, ready to apply",
+      "reserve": "Reserve ({ratio}%)",
+      "availableBalance": "Available Balance",
+      "currentMode": "Current Payout Mode",
+      "dynamicAmount": "Dynamic Claim Amount",
+      "mode": {
+        "normal": "Normal",
+        "conservative": "Conservative",
+        "low": "Low Balance",
+        "emergency": "Emergency"
+      },
+      "insufficient": "Pool temporarily depleted",
+      "waiting": "Waiting for guardian support..."
+    },
+    "requirements": {
+      "title": "Requirements",
+      "wallet": "Connect Wallet",
+      "completed": "Completed exploration (card selection + journal)",
+      "timeSpent": "Time spent ≥ 3 minutes",
+      "wordCount": "Journal word count ≥ 50 words",
+      "verified": "Email Verification",
+      "notClaimed": "Haven't claimed mutual aid before",
+      "hint": "Complete an OH Card exploration to meet the application requirements"
+    },
+    "currentClaim": "Current Claim Amount",
+    "actions": {
+      "ready": "I'm ready, generate anonymous pass",
+      "notToday": "Not today, just save my exploration",
+      "goVerify": "Go to Verification",
+      "verifyEmail": "Verify Email to Claim",
+      "claiming": "Claiming...",
+      "claim": "Claim Mutual Aid"
+    },
+    "error": {
+      "failed": "Claim failed, please check wallet connection and balance",
+      "generic": "Error occurred during claim"
+    },
+    "txDescription": "Claimed mutual aid {amount} AVAX",
+    "success": {
+      "title": "Application Successful!",
+      "amount": "You received",
+      "txHash": "Transaction Hash",
+      "viewOnExplorer": "View on Explorer",
+      "poolRemaining": "Pool Remaining"
+    }
+  },
+  "counselor": {
+    "title": "Counseling Service",
+    "subtitle": "One-on-one support from professional counselors",
+    "comingSoon": "Coming Soon",
+    "description": "We are partnering with professional counseling teams to create a safe and private online consultation experience. Once launched, beneficiaries will be able to access free psychological support through the Sanctuary Protocol.",
+    "features": {
+      "matching": {
+        "title": "Smart Matching",
+        "desc": "Match with suitable counselors based on your needs"
+      },
+      "privacy": {
+        "title": "Privacy Protection",
+        "desc": "End-to-end encryption, anonymous consultation"
+      },
+      "funding": {
+        "title": "Fund Disbursement",
+        "desc": "Automatic settlement through Sanctuary Protocol"
+      },
+      "verified": {
+        "title": "Verified Credentials",
+        "desc": "All counselors undergo rigorous verification"
+      }
+    }
+  },
+  "cbt": {
+    "title": "CBT Cognitive Behavioral Therapy",
+    "subtitle": "Structured journaling to reshape thinking patterns",
+    "comingSoon": "Coming soon, stay tuned",
+    "description": "CBT (Cognitive Behavioral Therapy) is a scientifically validated psychotherapy method. We are developing an interactive CBT journaling tool to help users identify and change negative thinking patterns.",
+    "features": {
+      "journal": {
+        "title": "Mood Journal",
+        "desc": "Record and track emotional changes"
+      },
+      "restructure": {
+        "title": "Cognitive Restructuring",
+        "desc": "Identify and change negative thinking patterns"
+      },
+      "tracking": {
+        "title": "Progress Tracking",
+        "desc": "Visualize your healing journey"
+      },
+      "exercises": {
+        "title": "Interactive Exercises",
+        "desc": "Guided CBT technique training"
+      }
+    }
+  },
+  "guestMode": {
+    "notice": "You are experiencing in guest mode. Data is only saved in your local browser. Connect your wallet to permanently save your healing journey."
+  }
+}

@@ -1,239 +1,118 @@
-# BeautyProof — MVP
+# BeautyProof
 
-## Overview | 项目概述
+## Make Trust Verifiable
+## 让信任变得可验证
 
-**BeautyProof** is a lightweight Web3 application that enables users to record and verify aesthetic procedure history on-chain.  
+ Live Demo:
+ https://beautyproof-lovat.vercel.app/
 
-BeautyProof 是一个轻量级 Web3 应用，用于记录和验证医美/轻医疗行为的链上历史。
+### Overview | 项目概述
 
-It transforms personal experiences into **tamper-proof, user-owned, and verifiable records**, addressing trust issues in real-world scenarios.  
+BeautyProof is a lightweight Web3 application that enables users to record and verify aesthetic procedure history on-chain.
 
-它将个人经历转化为**不可篡改、用户持有、可验证的记录**，用于解决现实场景中的信任问题。
+BeautyProof 是一个轻量级 Web3 应用，用于记录与验证医美/轻医疗行为的链上记录。
 
-## Why This Matters | 为什么做这个
+It transforms personal experiences into:
 
-This idea comes from real-world frustration.
+- Tamper-proof records（不可篡改）
+- User-owned data（用户持有）
+- Verifiable history（可验证）
 
-这个想法来源于真实的困惑与经历。
+### Problem | 问题
 
-In aesthetic and light medical scenarios,  
-users often lack control over their own records,  
-and trust relies heavily on institutions.
+As aesthetic procedures become increasingly common, especially among women in their 30s and 40s:
 
-在医美场景中，  
-用户往往无法掌握自己的记录，  
-信任建立在机构之上，而非数据本身。
+随着轻医美逐渐普及，尤其在30+女性人群中：
 
-BeautyProof explores a simple shift:
+- Records are fragmented（记录分散）
+- Data is not owned by users（数据不属于用户）
+- Trust relies on institutions（信任依赖机构）
 
-BeautyProof 想做一个很简单的改变：
+Trust is assumed, not verifiable.
+信任被默认，而非可验证。
 
-> What if users could own their own proof?
+### Solution | 解决方案
 
-如果用户能拥有自己的“证明”呢？
+BeautyProof introduces a minimal on-chain recording system:
 
-Not as a complex system —  
-but as a minimal, verifiable layer.
+BeautyProof 提供一个极简链上记录系统：
 
-不是复杂系统，  
-而是一个最小的、可验证的信任层。
+- Connect wallet（连接钱包）
+- Submit records（记录数据）
+- Query anytime（随时查询）
 
----
+Each record is:
 
-## Problem | 问题背景
+- Immutable（不可篡改）
+- Portable（可携带）
+- Globally accessible（全球可验证）
 
-In aesthetic and light medical industries, users often face:  
+### Why This Matters | 为什么重要
 
-在医美与轻医疗行业中，用户常常面临：
+Trust should not depend on memory.
+It should be verifiable.
 
-- Lack of transparency in procedures and product usage  
-  信息不透明（产品批次、操作记录不可追溯）
+信任不应依赖记忆，
+而应可以被验证。
 
-- Difficulty proving records in dispute scenarios  
-  纠纷难以举证
+BeautyProof is not just about aesthetic procedures.
 
-- No ownership of personal data  
-  数据不属于用户（掌握在机构手中）
+它不仅仅是医美场景工具。
 
-At its core:  
+It explores a broader idea:
 
-本质问题是：
+它在探索一个更底层的问题：
 
-> **Trust is fragile because records are not verifiable or user-controlled.**  
-> **信任脆弱，因为记录不可验证且不属于用户。**
+A portable trust layer for real-world interactions.
+一个可携带的现实世界信任基础设施。
 
----
+### User Flow | 用户流程
 
-## Solution | 解决方案
+### Write（写入）
 
-BeautyProof provides a minimal on-chain recording system where:  
+1. Connect Wallet 连接钱包 →
+2. Submit 填写 →
+3. Confirm 提交 →
+4. On-chain record 链上记录  
 
-BeautyProof 提供一个最小化的链上记录系统：
 
-- Users log their procedure details directly  
-  用户自行记录每次医美行为
+### Read（查询）
 
-- Records are written on-chain (immutable)  
-  数据写入链上（不可篡改）
+1. Input index 输入索引 →
+2. Query 查询 →
+3. Display 展示
 
-- Data can be queried and verified anytime  
-  可随时查询与验证
+### Tech Stack | 技术架构
 
-### Key Properties | 核心特性
+- Frontend: Vite + React + Tailwind
+- Web3: ethers.js
+- Contract: Solidity
+- Network: Avalanche Fuji Testnet
+- Deployment: Vercel
 
-- User-owned data（用户持有数据）  
-- Tamper-proof records（不可篡改）  
-- Verifiable history（可验证历史）  
+### MVP Scope | 当前范围
 
----
+This MVP focuses on validating the core trust mechanism.
 
-## MVP Scope | 功能范围
+本项目仅验证核心信任机制：
 
-This MVP focuses on validating the **core value proposition**.  
+- Wallet connection ✔
+- Record write ✔
+- Record query ✔
 
-本项目专注于验证核心价值，不做过度扩展。
+### Future Directions | 未来方向
 
----
+- Doctor verification（医生签名）
+- Privacy layer（隐私层）
+- Multi-record UI（多记录展示）
+- Identity layer（身份系统）
 
-### Features Implemented | 已实现功能
+### Author | 作者
 
-#### 1. Wallet Connection | 钱包连接
-- MetaMask integration  
-- Network validation (Avalanche Fuji Testnet)
+Ryana Faye Yu（飞飞）
 
----
-
-#### 2. Record Submission (Write) | 数据写入
-
-Users can submit:  
-
-用户可输入：
-
-- Procedure Type（项目类型）  
-- Product Batch（产品批次）  
-- Doctor ID（医生标识）  
-- Notes（备注）  
-
-→ Stored on-chain via `recordProcedure`
-
----
-
-#### 3. Record Query (Read) | 数据查询
-
-- Input record index  
-- Query via `getProcedure`
-
-返回数据包括：
-
-- User address  
-- Procedure type  
-- Product batch  
-- Doctor ID  
-- Notes  
-- Timestamp  
-
----
-
-## User Flow | 用户流程
-
-### Record Flow | 写入流程
-
-Connect Wallet → Fill Form → Submit → Confirm → On-chain record  
-
-连接钱包 → 填写信息 → 提交 → 钱包确认 → 链上记录
-
-Contract deployed on Avalanche Fuji Testnet.
-
----
-
-### Query Flow | 查询流程
-
-Input Index → Query → Display Record  
-
-输入索引 → 查询 → 展示结果
-
----
-
-## Tech Stack | 技术架构
-
-- **Frontend:** HTML + JavaScript  
-- **Web3:** ethers.js  
-- **Wallet:** MetaMask  
-- **Network:** Avalanche Fuji Testnet  
-- **Contract:** Solidity  
-
----
-
-## Design Philosophy | 设计理念
-
-BeautyProof is intentionally minimal.  
-
-BeautyProof 采用极简设计理念：
-
-- Focus on core trust mechanism（只验证核心信任机制）  
-- Avoid unnecessary complexity（避免复杂系统）  
-- Prioritize clarity（强调清晰与直观）  
-
-UI direction:
-
-- Clean & minimal（简洁）  
-- Medical-professional tone（医疗信任感）  
-- Calm and trustworthy（克制与可信）  
-
----
-
-## What This Is Not (Yet) | 当前不包含
-
-To keep MVP focused, the following are not included:  
-
-为了保持 MVP 简洁，暂不包含：
-
-- User accounts（用户系统）  
-- Role permissions（权限体系）  
-- Backend services（后端系统）  
-- Data privacy layer（隐私层）  
-- Institutional integration（机构接入）  
-
----
-
-## Future Directions | 未来方向
-
-- Verified doctor signatures（医生签名）  
-- Institutional collaboration（机构参与）  
-- Encrypted records（隐私记录）  
-- Record list view（多记录展示）  
-- Identity & reputation layer（身份与信誉体系）  
-
----
-
-## Demo Narrative | 项目表达
-
-BeautyProof demonstrates a simple idea:  
-
-BeautyProof 想表达一个核心理念：
-
-> Personal experiences can become verifiable, user-owned data.  
-> 个人经历可以转化为可验证、由用户持有的数据。
-
-It explores how blockchain can act as a **trust layer** in real-world scenarios.  
-
-探索区块链如何成为现实世界中的“信任基础设施”。
-
----
-
-## Project Status | 项目状态
-
-- Smart contract deployed（合约已部署）  
-- Frontend connected（前端已连接）  
-- Write + Read functional（写入 + 查询完成）  
-- UI upgraded（界面优化完成）  
-
----
-
-## Author | 作者
-
-Ryana Faye Yu （ 飞飞 ） 
-Independent Builder | Exploring Web3 × Human-Centered Products
+Exploring:
+Web3 × Trust Systems × Women’s Long-term Self Investment
 
 
 

@@ -1,0 +1,57 @@
+@import "@rainbow-me/rainbowkit/styles.css";
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.home-wallet-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8c42 0%, #ffb347 100%);
+  box-shadow: 0 4px 20px rgba(255, 140, 66, 0.28);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.home-wallet-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(255, 140, 66, 0.34);
+}
+
+.home-wallet-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.home-wallet-button-connected {
+  background: linear-gradient(135deg, #7ecec1 0%, #5bb5a6 100%);
+  box-shadow: 0 4px 20px rgba(126, 206, 193, 0.22);
+}
+
+.home-wallet-button-secondary {
+  background: rgba(255, 255, 255, 0.94);
+  color: #5c3d2e;
+  box-shadow: 0 4px 16px rgba(92, 61, 46, 0.08);
+}

@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-[#050a1b] text-stone-200 antialiased;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* —— 全屏暮光夜空背景（fixed 最底层，与页面内容分离） —— */
+.twilight-bg-root {
+  contain: strict;
+}
+
+.twilight-bg-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #050a1b 0%,
+    #0b1224 28%,
+    #121c33 52%,
+    #1a2744 78%,
+    #1e293b 100%
+  );
+}
+
+.twilight-bg-haze {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      ellipse 95% 70% at 12% 14%,
+      rgba(244, 167, 185, 0.42) 0%,
+      rgba(200, 120, 160, 0.12) 32%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 60% 45% at 0% 0%,
+      rgba(168, 85, 247, 0.08) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+.twilight-bg-nebula {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  /* 仅保留中下部深色雾带，避免右上出现浅色光斑 */
+  background: radial-gradient(
+    ellipse 55% 40% at 45% 72%,
+    rgba(30, 58, 95, 0.38) 0%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+
+.twilight-bg-mountains {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: min(24vh, 200px);
+  min-height: 72px;
+  background: linear-gradient(to top, #020308 0%, #050a12 38%, transparent 100%);
+  clip-path: polygon(
+    0% 100%,
+    0% 58%,
+    6% 68%,
+    12% 48%,
+    18% 62%,
+    24% 44%,
+    30% 58%,
+    36% 40%,
+    42% 54%,
+    48% 36%,
+    54% 50%,
+    60% 32%,
+    66% 48%,
+    72% 38%,
+    78% 52%,
+    84% 42%,
+    90% 56%,
+    96% 46%,
+    100% 62%,
+    100% 100%
+  );
+  box-shadow: 0 -1px 0 rgba(244, 167, 185, 0.06);
+  pointer-events: none;
+}
+
+.twilight-bg-moon-wrap {
+  position: absolute;
+  top: clamp(3.5rem, 10vh, 6rem);
+  left: clamp(0.25rem, 2vw, 1.75rem);
+  z-index: 3;
+}
+
+.twilight-bg-moon {
+  width: min(36vw, 300px);
+  height: min(36vw, 300px);
+  min-width: 140px;
+  min-height: 140px;
+  border-radius: 50%;
+  cursor: default;
+  background: radial-gradient(
+      circle at 32% 28%,
+      #fff5f8 0%,
+      #fcd4de 12%,
+      #f4a7b9 38%,
+      #e895aa 62%,
+      #c86b87 100%
+    ),
+    radial-gradient(circle at 65% 55%, rgba(140, 60, 80, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 48% 70%, rgba(120, 50, 70, 0.18) 0%, transparent 35%);
+  background-blend-mode: normal, multiply, multiply;
+  box-shadow: 0 0 70px 36px rgba(244, 167, 185, 0.48),
+    0 0 120px 70px rgba(244, 167, 185, 0.22),
+    inset -18px -12px 36px rgba(100, 40, 55, 0.2);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.twilight-bg-moon:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 90px 48px rgba(244, 167, 185, 0.62),
+    0 0 140px 88px rgba(244, 167, 185, 0.32),
+    inset -18px -12px 36px rgba(100, 40, 55, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twilight-bg-moon {
+    transition: none;
+  }
+  .twilight-bg-moon:hover {
+    transform: none;
+  }
+}
+
+.twilight-bg-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.twilight-star-hit {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.twilight-star-dot {
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 4px 1px rgba(226, 232, 240, 0.95),
+    0 0 8px 2px rgba(186, 200, 255, 0.35);
+  animation: twilight-star-twinkle ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.twilight-star-dot--md {
+  width: 3px;
+  height: 3px;
+  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.9),
+    0 0 12px 3px rgba(200, 220, 255, 0.45);
+}
+
+.twilight-star-dot--lg {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 0 6px 2px #fff, 0 0 14px 4px rgba(191, 219, 254, 0.55);
+}
+
+.twilight-star-dot--cross {
+  border-radius: 0;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.95), 0 0 10px 2px rgba(200, 220, 255, 0.5);
+  position: relative;
+}
+
+.twilight-star-dot--cross::before,
+.twilight-star-dot--cross::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 1px;
+}
+
+.twilight-star-dot--cross::before {
+  width: 9px;
+  height: 1.5px;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.8);
+}
+
+.twilight-star-dot--cross::after {
+  width: 1.5px;
+  height: 9px;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.8);
+}
+
+.twilight-star-hit:hover .twilight-star-dot {
+  transform: scale(2.4);
+  background: #ffffff;
+  box-shadow: 0 0 14px 4px #fff, 0 0 28px 8px rgba(196, 210, 255, 0.85),
+    0 0 42px 12px rgba(244, 167, 185, 0.35);
+  animation: twilight-star-glow 0.45s ease-in-out infinite alternate;
+}
+
+.twilight-star-hit:hover .twilight-star-dot--cross {
+  animation: twilight-star-glow 0.45s ease-in-out infinite alternate;
+}
+
+.twilight-star-hit:hover .twilight-star-dot--cross::before,
+.twilight-star-hit:hover .twilight-star-dot--cross::after {
+  box-shadow: 0 0 10px 2px #fff, 0 0 20px 4px rgba(200, 220, 255, 0.9);
+}
+
+@keyframes twilight-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  70% {
+    opacity: 0.65;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes twilight-star-glow {
+  0% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twilight-star-dot {
+    animation: none;
+    opacity: 0.85;
+  }
+  .twilight-star-hit:hover .twilight-star-dot {
+    animation: none;
+  }
+}
+
