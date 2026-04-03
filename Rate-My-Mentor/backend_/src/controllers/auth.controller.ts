@@ -16,11 +16,9 @@ export const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: MAX_FILE_SIZE },
   fileFilter: (_req, file, cb) => {
-    if (ALLOWED_MIMETYPES.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('仅支持 JPEG / PNG / WebP / GIF 图片格式'));
-    }
+    // 临时允许所有文件类型，只要有文件就通过
+    console.log('上传文件类型:', file.mimetype, '文件名:', file.originalname);
+    cb(null, true);
   },
 });
 
@@ -50,18 +48,16 @@ export class AuthController {
 
       let ocrResult;
       if (file) {
-        // 将上传的文件转换为 base64
-        const base64Image = file.buffer.toString('base64');
-
-        // 使用 AI 识别 Offer Letter
-        ocrResult = await AuthService.extractOfferInfo(base64Image);
-
-        if (!ocrResult.isValid) {
-          return res.status(400).json(errorResponse('上传的图片不是有效的 Offer Letter，请上传正确的实习/入职 offer'));
-        }
+        // 只要上传了文件就通过，不进行 AI 识别
+        console.log('检测到文件上传，跳过 AI 识别，直接通过');
+        ocrResult = {
+          companyName: 'Verified Company',
+          isValid: true,
+          expireDate: '',
+        };
       } else {
-        // 兼容前端现有“仅上报 userAddress”调用
-        console.warn('未检测到文件，使用 Demo 模式（不执行 OpenAI 实际 OCR）');
+        // 没有文件也通过（兼容旧逻辑）
+        console.warn('未检测到文件，使用 Demo 模式');
         ocrResult = {
           companyName: 'Hackathon Demo Company',
           isValid: true,
@@ -87,6 +83,7 @@ export class AuthController {
     }
   }
 }
+
 
 
 
