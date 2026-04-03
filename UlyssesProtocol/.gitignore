@@ -1,0 +1,24 @@
+<<<<<<< HEAD
+# 依赖目录
+**/node_modules
+
+# 构建输出
+dist
+dist-ssr
+
+# 本地环境文件
+.env
+.env.local
+.env.*.local
+
+# IDE 文件
+.vscode/
+.idea/
+
+# 系统文件
+.DS_Store
+=======
+node_modules/  
+.env  
+database.sqlite 
+>>>>>>> 2dbe07c (feat: 实现冷静期协议后端核心逻辑 (监听+自动化巡逻+惩罚执行))
