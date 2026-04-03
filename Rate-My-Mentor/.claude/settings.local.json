@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs wc:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(cmd.exe /c 'dir D:\\\\Desktop\\\\ /b')",
+      "Bash(powershell.exe -Command \"Get-ChildItem D:\\\\Desktop | Where-Object Name -like ''''*Hackathon*'''' | Select-Object -ExpandProperty Name\")"
+    ]
+  }
+}
