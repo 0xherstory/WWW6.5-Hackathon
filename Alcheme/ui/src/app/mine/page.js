@@ -12,13 +12,12 @@ export default function Mine() {
   useEffect(() => {
     const fetchOres = async () => {
       try {
-        // 调用后端接口获取矿石数据
-        const res = await fetch('/api/ores');
+        // 👉 已加后端域名
+        const res = await fetch('https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/ores');
         const data = await res.json();
-        setOres(data); // 把后端返回的列表渲染到页面
+        setOres(data);
       } catch (error) {
         console.log('获取矿石失败，使用演示数据');
-        // 接口没好之前，用假数据不影响页面显示
         setOres([
           { id: 1, title: '学习 Solidity 3天', dimension: '技术', score: 80 },
         ]);
@@ -36,23 +35,22 @@ export default function Mine() {
     if (!text) return;
 
     try {
-      // 发送用户输入的内容给后端
-      const res = await fetch('/api/mine', {
+      // 👉 已加后端域名
+      const res = await fetch('https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/mine', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: text, // 传给后端的文字
+          content: text,
         }),
       });
 
-      const newOre = await res.json(); // 后端返回生成好的矿石
-      setOres([newOre, ...ores]); // 加到页面列表
+      const newOre = await res.json();
+      setOres([newOre, ...ores]);
       setText('');
       alert('矿石提炼成功！');
     } catch (error) {
-      // 接口没好时，前端模拟不影响演示
       const mockOre = {
         id: ores.length + 1,
         title: text.slice(0, 20) + '...',
@@ -65,7 +63,6 @@ export default function Mine() {
     }
   };
 
-  // —————————— 页面界面 ——————————
   return (
     <main className="min-h-screen bg-black text-white p-6">
       <h1 className="text-2xl font-bold">🔨 灵光采集</h1>
