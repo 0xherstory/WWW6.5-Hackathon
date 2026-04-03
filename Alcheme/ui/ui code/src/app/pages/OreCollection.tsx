@@ -26,18 +26,35 @@ export default function OreCollection() {
 
   const crystalImages = [crystal1, crystal2, crystal3, crystal4, crystal5, crystal6, crystal7];
 
+  // ==============================
+  // 🔌 只改这里：从接口拉取矿石列表
+  // ==============================
   useEffect(() => {
-    // Load all collected ores from localStorage
-    const oresData = localStorage.getItem('collectedOres');
-    if (oresData) {
-      const loadedOres = JSON.parse(oresData);
-      // Assign random crystal image to each ore
-      const oresWithImages = loadedOres.map((ore: any) => ({
-        ...ore,
-        crystalImage: crystalImages[Math.floor(Math.random() * crystalImages.length)]
-      }));
-      setOres(oresWithImages);
-    }
+    const fetchOres = async () => {
+      try {
+        const res = await fetch("https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/ores");
+        const data = await res.json();
+        const loadedOres = data.data || [];
+        
+        const oresWithImages = loadedOres.map((ore: any) => ({
+          ...ore,
+          crystalImage: crystalImages[Math.floor(Math.random() * crystalImages.length)]
+        }));
+        setOres(oresWithImages);
+      } catch (e) {
+        // 接口异常本地兜底
+        const oresData = localStorage.getItem('collectedOres');
+        if (oresData) {
+          const loadedOres = JSON.parse(oresData);
+          const oresWithImages = loadedOres.map((ore: any) => ({
+            ...ore,
+            crystalImage: crystalImages[Math.floor(Math.random() * crystalImages.length)]
+          }));
+          setOres(oresWithImages);
+        }
+      }
+    };
+    fetchOres();
   }, []);
 
   const toggleOreSelection = (oreId: string) => {
@@ -50,24 +67,38 @@ export default function OreCollection() {
     setSelectedOres(newSelected);
   };
 
-  const handleRefine = () => {
-    if (selectedOres.size > 0) {
-      // Get selected ores details
-      const selectedOresDetails = ores.filter(ore => selectedOres.has(ore.id));
-      
-      // Remove selected ores from storage
-      const remainingOres = ores.filter(ore => !selectedOres.has(ore.id));
-      localStorage.setItem('collectedOres', JSON.stringify(remainingOres));
-      
-      // Dispatch event to notify other components
-      window.dispatchEvent(new Event('oresUpdated'));
-      
-      // Navigate to refine page with selected ores details
-      navigate('/refine', { state: { 
+  // ==============================
+  // 🔌 只改这里：精炼后删除后端已消耗的矿石
+  // ==============================
+  const handleRefine = async () => {
+    if (selectedOres.size <= 0) return;
+
+    const selectedOresDetails = ores.filter(ore => selectedOres.has(ore.id));
+    
+    try {
+      // 批量删除后端已精炼的矿石
+      for (const ore of selectedOresDetails) {
+        await fetch(`https://22bcdad4-a6ad-4285-adac-6e7d7e867c52-00-2rkqab45ars9.janeway.replit.dev/api/ores/${ore.id}`, {
+          method: "DELETE"
+        });
+      }
+    } catch (err) {
+      console.log("本地模式删除矿石");
+    }
+
+    // 更新本地列表
+    const remainingOres = ores.filter(ore => !selectedOres.has(ore.id));
+    setOres(remainingOres);
+    setSelectedOres(new Set());
+    window.dispatchEvent(new Event('oresUpdated'));
+
+    // 跳转到精炼页
+    navigate('/refine', { 
+      state: { 
         refiningCount: selectedOres.size,
         selectedOres: selectedOresDetails 
-      } });
-    }
+      } 
+    });
   };
 
   return (
