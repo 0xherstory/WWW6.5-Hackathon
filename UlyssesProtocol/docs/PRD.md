@@ -1,6 +1,4 @@
-# PRD_EN
-
-## Product Requirements Document (PRD): Ulysses Protocol —— On-chain Rationality Anchoring Protocol
+# Product Requirements Document (PRD): Ulysses Protocol —— On-chain Rationality Anchoring Protocol
 
 ---
 
