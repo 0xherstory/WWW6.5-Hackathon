@@ -1,0 +1,108 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+
+dataSources:
+  - kind: ethereum
+    name: HerTimeService
+    network: fuji
+    source:
+      address: "0x8cFc0153324c4221aED6838bCa73B004f28d24a1"
+      abi: HerTimeService
+      startBlock: 53607987
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Service
+        - Member
+      abis:
+        - name: HerTimeService
+          file: ./abis/HerTimeService.json
+      eventHandlers:
+        - event: ServicePosted(indexed bytes32,uint8,uint256,bool)
+          handler: handleServicePosted
+        - event: ServiceMatched(indexed bytes32,indexed address)
+          handler: handleServiceMatched
+        - event: ServiceCompleted(indexed bytes32)
+          handler: handleServiceCompleted
+        - event: ServiceCancelled(indexed bytes32)
+          handler: handleServiceCancelled
+        - event: MemberRegistered(indexed address)
+          handler: handleMemberRegistered
+      file: ./src/service.ts
+
+  - kind: ethereum
+    name: HerTimeToken
+    network: fuji
+    source:
+      address: "0x6dd244E8A21De2a90DF387874a8b4c2BAfCc9098"
+      abi: HerTimeToken
+      startBlock: 53607987
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Member
+        - HRTFlow
+      abis:
+        - name: HerTimeToken
+          file: ./abis/HerTimeToken.json
+      eventHandlers:
+        - event: WelcomeMint(indexed address,uint256)
+          handler: handleWelcomeMint
+        - event: ServiceMint(indexed address,uint256,indexed bytes32)
+          handler: handleServiceMint
+        - event: ServiceBurn(indexed address,uint256,indexed bytes32)
+          handler: handleServiceBurn
+      file: ./src/token.ts
+
+  - kind: ethereum
+    name: HerTimeReputation
+    network: fuji
+    source:
+      address: "0x99A0A1369029AEfd8e0E8dEE3E459CA52Ef11761"
+      abi: HerTimeReputation
+      startBlock: 53607987
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Member
+        - Rating
+      abis:
+        - name: HerTimeReputation
+          file: ./abis/HerTimeReputation.json
+      eventHandlers:
+        - event: RatingSubmitted(indexed bytes32,indexed address)
+          handler: handleRatingSubmitted
+        - event: ReputationUpdated(indexed address,uint256)
+          handler: handleReputationUpdated
+        - event: ServiceRecorded(indexed address,uint8,uint256)
+          handler: handleServiceRecorded
+      file: ./src/reputation.ts
+
+  - kind: ethereum
+    name: HerTimeSkillNFT
+    network: fuji
+    source:
+      address: "0x8761f159FA513aA73BEa467E484dAD723a07e4C2"
+      abi: HerTimeSkillNFT
+      startBlock: 53607987
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SkillBadge
+        - Member
+      abis:
+        - name: HerTimeSkillNFT
+          file: ./abis/HerTimeSkillNFT.json
+      eventHandlers:
+        - event: SkillMinted(indexed address,indexed uint8,uint256)
+          handler: handleSkillMinted
+      file: ./src/skillnft.ts

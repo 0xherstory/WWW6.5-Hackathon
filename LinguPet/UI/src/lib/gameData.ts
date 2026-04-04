@@ -13,6 +13,32 @@ export interface Accessory {
   description: string;
 }
 
+export interface LanguageOption {
+  value: string;
+  label: string;
+  nativeLabel: string;
+}
+
+export const SUPPORTED_LANGUAGES: LanguageOption[] = [
+  { value: "Arabic", label: "Arabic", nativeLabel: "العربية" },
+  { value: "Chinese", label: "Chinese", nativeLabel: "中文" },
+  { value: "English", label: "English", nativeLabel: "English" },
+  { value: "French", label: "French", nativeLabel: "Français" },
+  { value: "Russian", label: "Russian", nativeLabel: "Русский" },
+  { value: "Spanish", label: "Spanish", nativeLabel: "Español" },
+];
+
+export function getLanguageOptions(activeLanguage?: string): LanguageOption[] {
+  if (!activeLanguage || SUPPORTED_LANGUAGES.some((option) => option.value === activeLanguage)) {
+    return SUPPORTED_LANGUAGES;
+  }
+
+  return [
+    ...SUPPORTED_LANGUAGES,
+    { value: activeLanguage, label: activeLanguage, nativeLabel: activeLanguage },
+  ];
+}
+
 export const ACCESSORIES: Accessory[] = [
   { id: "bowtie", name: "Scholar Bowtie", emoji: "🎀", image: bowtieImg, requiredXp: 50, description: "First steps reward" },
   { id: "glasses", name: "Nerd Glasses", emoji: "🤓", image: glassesImg, requiredXp: 150, description: "Bookworm badge" },
@@ -22,6 +48,16 @@ export const ACCESSORIES: Accessory[] = [
 ];
 
 export const QUIZ_WORDS: Record<string, { word: string; answer: string; options: string[] }[]> = {
+  Arabic: [
+    { word: "Hello", answer: "مرحبا", options: ["مرحبا", "شكرا", "مع السلامة", "نعم"] },
+    { word: "Book", answer: "كتاب", options: ["قلم", "كتاب", "بيت", "ماء"] },
+    { word: "Cat", answer: "قطة", options: ["كلب", "قطة", "طائر", "سمكة"] },
+  ],
+  Chinese: [
+    { word: "Hello", answer: "你好", options: ["你好", "谢谢", "再见", "请"] },
+    { word: "Book", answer: "书", options: ["水", "书", "桌子", "学校"] },
+    { word: "Cat", answer: "猫", options: ["狗", "猫", "鸟", "鱼"] },
+  ],
   English: [
     { word: "你好", answer: "Hello", options: ["Hello", "Goodbye", "Thanks", "Sorry"] },
     { word: "谢谢", answer: "Thank you", options: ["Please", "Thank you", "Sorry", "Hello"] },
@@ -38,6 +74,11 @@ export const QUIZ_WORDS: Record<string, { word: string; answer: string; options:
     { word: "Hello", answer: "Bonjour", options: ["Bonjour", "Merci", "Au revoir", "Oui"] },
     { word: "Cat", answer: "Chat", options: ["Chien", "Chat", "Oiseau", "Poisson"] },
     { word: "Book", answer: "Livre", options: ["Stylo", "Livre", "Table", "Chaise"] },
+  ],
+  Russian: [
+    { word: "Hello", answer: "Привет", options: ["Привет", "Спасибо", "Пока", "Да"] },
+    { word: "Cat", answer: "Кошка", options: ["Собака", "Кошка", "Птица", "Рыба"] },
+    { word: "Book", answer: "Книга", options: ["Ручка", "Книга", "Стол", "Стул"] },
   ],
   Spanish: [
     { word: "Hello", answer: "Hola", options: ["Hola", "Adiós", "Gracias", "Por favor"] },

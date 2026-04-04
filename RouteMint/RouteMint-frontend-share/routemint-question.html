@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RouteMint | 问题详情</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./routemint.css" />
+  </head>
+  <body class="rm-body rm-page-question">
+    <div class="rm-shell">
+      <header class="site-header">
+        <a class="brand-mark" href="./routemint.html" aria-label="RouteMint">
+          <span class="brand-logo-view brand-logo-view-header">
+            <img src="./assets/routemint-logo.png" alt="RouteMint" class="brand-logo-img" />
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="./routemint-app.html" data-nav="home">首页</a>
+          <a href="./routemint-ask.html" data-nav="ask">开始提问</a>
+          <a href="./routemint-explore.html" data-nav="browse">看看经历</a>
+          <a href="./routemint-me.html" data-nav="me">我的经验</a>
+        </nav>
+
+        <button class="wallet-pill wallet-pill-minimal" data-open-settings type="button">
+          <span class="wallet-dot"></span>
+          <span id="walletStatePill">未连接</span>
+        </button>
+      </header>
+
+      <main class="page-stack">
+        <div class="detail-banner" id="questionStatusBanner">正在读取这个问题...</div>
+
+        <section class="question-hero-card" id="questionPageLayout">
+          <div class="meta-row">
+            <span class="category-pill" id="questionCategoryText">-</span>
+            <span class="status-pill" id="questionStatusText">-</span>
+          </div>
+          <h1 id="questionTitleText">-</h1>
+          <p class="question-lead" id="questionLeadText">-</p>
+          <div class="question-quiet-meta">
+            <span>提问者 <strong id="questionAskerText">-</strong></span>
+            <span>保证金 <strong id="questionStakeText">0</strong> AVAX</span>
+            <span>奖励池 <strong id="questionRewardText">0</strong> AVAX</span>
+            <span><strong id="questionAnswerCountText">0</strong> 条回答</span>
+          </div>
+        </section>
+
+        <section class="question-layout" id="questionContentLayout">
+          <div class="question-main">
+            <article class="content-card">
+              <div class="section-head">
+                <div>
+                  <h2>问题背景</h2>
+                </div>
+              </div>
+              <div class="body-panel" id="questionBodyText">-</div>
+            </article>
+
+            <article class="content-card answer-section-card">
+              <div class="section-head answer-section-head">
+                <div>
+                  <h2>大家怎么回答</h2>
+                </div>
+                <p class="answer-head-note" id="answerHeadNote">每条回答都会带上经验标签。</p>
+              </div>
+              <div class="answer-stack" id="answerFeed"></div>
+            </article>
+          </div>
+
+          <aside class="question-sidebar">
+            <article class="sidebar-card hidden" id="askerPanel">
+              <h3>如果已经看到有帮助的回答</h3>
+              <p class="support-copy">
+                可以先逐条给反馈。等你觉得够了，再结束这个问题。
+              </p>
+              <button class="btn btn-secondary soft-action" id="closeQuestionBtn" type="button">
+                我已经找到答案了
+              </button>
+            </article>
+
+            <article class="sidebar-card hidden" id="responderPanel">
+              <h3>如果你也经历过类似的事</h3>
+              <p class="support-copy">
+                不用给标准答案，把你当时怎么想、最后怎么选、现在怎么看写下来就行。
+              </p>
+              <form class="step-form" id="submitAnswerForm">
+                <label class="field-label">
+                  经验标签
+                  <input id="answerTagInput" type="text" placeholder="例如：读过研 / 转过行 / 创过业" required />
+                </label>
+                <label class="field-label">
+                  你的回答
+                  <textarea id="answerBodyInput" placeholder="写你当时怎么想、最后怎么选、现在回头看会怎么建议。"></textarea>
+                </label>
+                <details class="optional-details">
+                  <summary>高级设置</summary>
+                  <label class="field-label">
+                    Answer CID（可留空自动生成）
+                    <input id="answerCidInput" type="text" placeholder="bafy-answer-..." />
+                  </label>
+                </details>
+                <button class="btn btn-primary" type="submit">分享你的经历</button>
+              </form>
+            </article>
+
+            <div class="inline-status" id="questionPageStatus">等待加载问题详情。</div>
+          </aside>
+        </section>
+
+        <section class="empty-card hidden" id="questionEmptyState">
+          <h2>没有找到这个问题</h2>
+          <p>确认一下链接里的编号，或者先回到产品首页看看别人的经历。</p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="./routemint-app.html">回到首页</a>
+            <a class="btn btn-secondary" href="./routemint-explore.html">看看经历</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal hidden" id="settingsModal">
+      <div class="modal-backdrop" data-close-settings></div>
+      <div class="modal-dialog">
+        <div class="modal-head">
+          <div>
+            <p class="section-kicker">Chain setup</p>
+            <h3>链上设置</h3>
+          </div>
+          <button class="icon-btn" id="settingsCloseBtn" type="button">×</button>
+        </div>
+
+        <div class="settings-grid">
+          <div class="settings-row">
+            <span>当前钱包</span>
+            <strong id="settingsWalletLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>当前网络</span>
+            <strong id="settingsNetworkLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>合约状态</span>
+            <strong id="settingsContractLine">未配置</strong>
+          </div>
+        </div>
+
+        <label class="field-label">
+          RouteMint 合约地址
+          <input id="settingsContractInput" type="text" placeholder="粘贴你部署在 Avalanche Fuji 的 0x 地址" />
+        </label>
+
+        <div class="button-row">
+          <button class="btn btn-secondary" data-switch-network type="button">切到 Fuji</button>
+          <button class="btn btn-secondary" data-connect-wallet type="button">连接钱包</button>
+          <button class="btn btn-primary" id="settingsSaveBtn" type="button">保存地址</button>
+        </div>
+
+        <p class="inline-status" id="settingsStatus">你可以先连接钱包，再保存合约地址。</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script src="./routemint-core.js"></script>
+    <script src="./routemint-question.js"></script>
+  </body>
+</html>

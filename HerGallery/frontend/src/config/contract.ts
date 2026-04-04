@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = '0x320900FA245b5E44ebab6B5f2006E2187C83e396' as const;
+export const CONTRACT_ADDRESS = '0xb8e2a851B52Ab5887E4e9677C6fe2A3ACa2Dc0BF' as const;
 
 export const AVALANCHE_FUJI = {
   id: 43113,
@@ -13,6 +13,35 @@ export const AVALANCHE_FUJI = {
   testnet: true,
 } as const;
 
+const exhibitionComponents = [
+  { name: 'id', type: 'uint256' },
+  { name: 'curator', type: 'address' },
+  { name: 'title', type: 'string' },
+  { name: 'content', type: 'string' },
+  { name: 'coverHash', type: 'string' },
+  { name: 'tags', type: 'string[]' },
+  { name: 'createdAt', type: 'uint256' },
+  { name: 'stakeWithdrawn', type: 'bool' },
+  { name: 'flagged', type: 'bool' },
+  { name: 'tipPool', type: 'uint256' },
+  { name: 'submissionCount', type: 'uint256' },
+] as const;
+
+const submissionComponents = [
+  { name: 'id', type: 'uint256' },
+  { name: 'exhibitionId', type: 'uint256' },
+  { name: 'creator', type: 'address' },
+  { name: 'contentType', type: 'string' },
+  { name: 'status', type: 'uint8' },
+  { name: 'content', type: 'string' },
+  { name: 'title', type: 'string' },
+  { name: 'description', type: 'string' },
+  { name: 'createdAt', type: 'uint256' },
+  { name: 'recommendCount', type: 'uint256' },
+  { name: 'witnessCount', type: 'uint256' },
+  { name: 'flagged', type: 'bool' },
+] as const;
+
 export const CONTRACT_ABI = [
   {
     inputs: [],
@@ -23,82 +52,64 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [],
+    name: 'MIN_SUBMISSIONS_FOR_STAKE_WITHDRAWAL',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'getAllExhibitions',
-    outputs: [
-      {
-        components: [
-          { name: 'id', type: 'uint256' },
-          { name: 'title', type: 'string' },
-          { name: 'contentHash', type: 'string' },
-          { name: 'coverHash', type: 'string' },
-          { name: 'curator', type: 'address' },
-          { name: 'createdAt', type: 'uint256' },
-          { name: 'isActive', type: 'bool' },
-          { name: 'submissionCount', type: 'uint256' },
-        ],
-        name: '',
-        type: 'tuple[]',
-      },
-    ],
+    outputs: [{ components: exhibitionComponents, name: '', type: 'tuple[]' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ name: '_id', type: 'uint256' }],
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
     name: 'getExhibition',
-    outputs: [
-      {
-        components: [
-          { name: 'id', type: 'uint256' },
-          { name: 'title', type: 'string' },
-          { name: 'contentHash', type: 'string' },
-          { name: 'coverHash', type: 'string' },
-          { name: 'curator', type: 'address' },
-          { name: 'createdAt', type: 'uint256' },
-          { name: 'isActive', type: 'bool' },
-          { name: 'submissionCount', type: 'uint256' },
-        ],
-        name: '',
-        type: 'tuple',
-      },
-    ],
+    outputs: [{ components: exhibitionComponents, name: '', type: 'tuple' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ name: '_exhibitionId', type: 'uint256' }],
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
     name: 'getSubmissions',
-    outputs: [
-      {
-        components: [
-          { name: 'id', type: 'uint256' },
-          { name: 'exhibitionId', type: 'uint256' },
-          { name: 'contentType', type: 'string' },
-          { name: 'contentHash', type: 'string' },
-          { name: 'title', type: 'string' },
-          { name: 'description', type: 'string' },
-          { name: 'creator', type: 'address' },
-          { name: 'recommendCount', type: 'uint256' },
-          { name: 'createdAt', type: 'uint256' },
-        ],
-        name: '',
-        type: 'tuple[]',
-      },
-    ],
+    outputs: [{ components: submissionComponents, name: '', type: 'tuple[]' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ name: '_exhibitionId', type: 'uint256' }],
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
+    name: 'getPendingSubmissions',
+    outputs: [{ components: submissionComponents, name: '', type: 'tuple[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
     name: 'getSubmissionCount',
     outputs: [{ name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'getExhibitionCount',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getTotalSubmissionCount',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      { name: '_exhibitionId', type: 'uint256' },
-      { name: '_submissionId', type: 'uint256' },
+      { name: 'exhibitionId', type: 'uint256' },
+      { name: 'submissionId', type: 'uint256' },
     ],
     name: 'recommend',
     outputs: [],
@@ -106,12 +117,15 @@ export const CONTRACT_ABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { name: '_exhibitionId', type: 'uint256' },
-      { name: '_submissionId', type: 'uint256' },
-      { name: 'user', type: 'address' },
-    ],
+    inputs: [{ name: 'submissionId', type: 'uint256' }, { name: 'user', type: 'address' }],
     name: 'hasRecommended',
+    outputs: [{ name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'submissionId', type: 'uint256' }, { name: 'user', type: 'address' }],
+    name: 'hasWitnessed',
     outputs: [{ name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
@@ -124,10 +138,18 @@ export const CONTRACT_ABI = [
     type: 'function',
   },
   {
+    inputs: [{ name: 'user', type: 'address' }],
+    name: 'hasCreatedExhibition',
+    outputs: [{ name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      { name: '_title', type: 'string' },
-      { name: '_contentHash', type: 'string' },
-      { name: '_coverHash', type: 'string' },
+      { name: 'title', type: 'string' },
+      { name: 'content', type: 'string' },
+      { name: 'coverHash', type: 'string' },
+      { name: 'tags', type: 'string[]' },
     ],
     name: 'createExhibition',
     outputs: [],
@@ -136,11 +158,11 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [
-      { name: '_exhibitionId', type: 'uint256' },
-      { name: '_contentType', type: 'string' },
-      { name: '_contentHash', type: 'string' },
-      { name: '_title', type: 'string' },
-      { name: '_description', type: 'string' },
+      { name: 'exhibitionId', type: 'uint256' },
+      { name: 'contentType', type: 'string' },
+      { name: 'content', type: 'string' },
+      { name: 'title', type: 'string' },
+      { name: 'description', type: 'string' },
     ],
     name: 'submitToExhibition',
     outputs: [],
@@ -148,96 +170,138 @@ export const CONTRACT_ABI = [
     type: 'function',
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'id', type: 'uint256' },
-      { indexed: false, name: 'title', type: 'string' },
-      { indexed: true, name: 'curator', type: 'address' },
-    ],
-    name: 'ExhibitionCreated',
-    type: 'event',
+    inputs: [{ name: 'submissionId', type: 'uint256' }],
+    name: 'approveSubmission',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'user', type: 'address' },
-      { indexed: false, name: 'submissionId', type: 'uint256' },
-    ],
-    name: 'FirstSubmission',
-    type: 'event',
+    inputs: [{ name: 'submissionId', type: 'uint256' }],
+    name: 'rejectSubmission',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'creator', type: 'address' },
-      { indexed: false, name: 'submissionId', type: 'uint256' },
-      { indexed: false, name: 'recommendCount', type: 'uint256' },
-    ],
-    name: 'RecommendMilestone',
-    type: 'event',
+    inputs: [{ name: 'submissionId', type: 'uint256' }],
+    name: 'witness',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'submissionId', type: 'uint256' },
-      { indexed: true, name: 'recommender', type: 'address' },
-      { indexed: false, name: 'newCount', type: 'uint256' },
-    ],
-    name: 'Recommended',
-    type: 'event',
+    inputs: [],
+    name: 'tipPlatform',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'id', type: 'uint256' },
-      { indexed: true, name: 'exhibitionId', type: 'uint256' },
-      { indexed: true, name: 'creator', type: 'address' },
-    ],
-    name: 'SubmissionCreated',
-    type: 'event',
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
+    name: 'tipExhibition',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-    inputs: [{ name: '', type: 'address' }],
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
+    name: 'withdrawTips',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
+    name: 'withdrawStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'submissionId', type: 'uint256' }],
+    name: 'flagSubmission',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'exhibitionId', type: 'uint256' }],
+    name: 'flagExhibition',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'user', type: 'address' }],
     name: 'usernames',
     outputs: [{ name: '', type: 'string' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ name: '', type: 'address' }],
+    inputs: [{ name: 'user', type: 'address' }],
     name: 'hasSetUsername',
     outputs: [{ name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ name: '_username', type: 'string' }],
+    inputs: [{ name: 'username', type: 'string' }],
     name: 'setUsername',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ] as const;
+
+export const CONTENT_TYPE_LABELS: Record<string, string> = {
+  evidence: '存证',
+  creation: '二创',
+  art: '存证',
+  testimony: '存证',
+  screenshot: '存证',
+  link: '存证',
+};
+
+export const SUBMISSION_STATUS_LABELS: Record<number, string> = {
+  0: '待审核',
+  1: '已通过',
+  2: '已拒绝',
+};
 
 export interface Exhibition {
   id: number;
-  title: string;
-  contentHash: string;
-  coverHash: string;
   curator: string;
+  title: string;
+  content: string;
+  coverHash: string;
+  tags: string[];
   createdAt: number;
-  isActive: boolean;
+  stakeWithdrawn: boolean;
+  flagged: boolean;
+  tipPool: number;
   submissionCount: number;
 }
 
 export interface Submission {
   id: number;
   exhibitionId: number;
+  creator: string;
   contentType: string;
-  contentHash: string;
+  status: number;
+  content: string;
   title: string;
   description: string;
-  creator: string;
-  recommendCount: number;
   createdAt: number;
+  recommendCount: number;
+  witnessCount: number;
+  flagged: boolean;
 }

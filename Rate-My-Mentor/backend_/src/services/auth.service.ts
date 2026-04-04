@@ -1,6 +1,6 @@
 import { emailTransporter } from '../config/email';
-import { env } from '../config/env';
-import { openaiClient } from '../config/openai';
+import { env, getAIEnv } from '../config/env';
+import { miniMaxChatCompletion } from '../config/minimax';
 import { OfferOCRResult } from '../types/auth.types';
 import { generateOTP, getOTPExpireTime } from '../utils/otp.util';
 
@@ -53,17 +53,11 @@ export class AuthService {
     return isCodeValid;
   }
 
-  // 3. OCR识别Offer Letter，提取公司信息
+  // 3. OCR识别Offer Letter，提取公司信息（走 MiniMax 原生多模态；OpenAI 兼容层不支持图片）
   static async extractOfferInfo(base64Image: string): Promise<OfferOCRResult> {
-    const response = await openaiClient.chat.completions.create({
-      model: env.OPENAI_MODEL,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: `
+
+    const { MINIMAX_VISION_MODEL } = getAIEnv();
+    const textPrompt = `
                 你是一个专业的Offer Letter识别专家，请识别这张Offer Letter图片，完成以下任务：
                 1. 提取公司全称
                 2. 判断这是不是真实有效的入职/实习Offer Letter
@@ -74,8 +68,15 @@ export class AuthService {
                   "isValid": true/false,
                   "expireDate": "有效期，没有就为空字符串"
                 }
-              `,
-            },
+              `;
+
+    const raw = await miniMaxChatCompletion({
+      model: MINIMAX_VISION_MODEL,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: textPrompt },
             {
               type: 'image_url',
               image_url: { url: `data:image/jpeg;base64,${base64Image}` },
@@ -83,14 +84,14 @@ export class AuthService {
           ],
         },
       ],
-      temperature: 0.2, // 温度越低，结果越稳定
-      response_format: { type: 'json_object' }, // 强制返回JSON
+      temperature: 0.2,
     });
 
-    const result = response.choices[0].message.content;
-    if (!result) throw new Error('OCR识别失败，无返回结果');
+    let jsonStr = raw.trim();
+    const codeBlockMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlockMatch) jsonStr = codeBlockMatch[1].trim();
 
-    return JSON.parse(result) as OfferOCRResult;
+    return JSON.parse(jsonStr) as OfferOCRResult;
   }
 
   // 4. 签发凭证（用于铸造SBT）

@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ethers } from "ethers";
 import { getStage, getUnlockedAccessories } from "@/lib/gameData";
 
 const CONTRACT_ADDRESS = "0x17af32d1E54fF01D55bc57B3af8BDBddc030D2E1";
+const FUJI_RPC_URL = "https://api.avax-test.network/ext/bc/C/rpc";
 const CONTRACT_ABI = [
   "function createPet(string language) external",
   "function logStudy(uint256 studyMinutes) external",
@@ -26,6 +27,12 @@ export interface PetState {
   dailyProgress: number;
 }
 
+type InspectAddressResult = {
+  address: string;
+  status: "new" | "existing";
+  pet: PetState;
+};
+
 const INITIAL_STATE: PetState = {
   created: false,
   language: "",
@@ -46,6 +53,39 @@ function getToday() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function formatWalletLabel(address: string) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
+function getErrorMessage(error: unknown) {
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === "object" && error !== null) {
+    const maybeShortMessage = Reflect.get(error, "shortMessage");
+    if (typeof maybeShortMessage === "string" && maybeShortMessage) return maybeShortMessage;
+    const maybeReason = Reflect.get(error, "reason");
+    if (typeof maybeReason === "string" && maybeReason) return maybeReason;
+  }
+  return "Something went wrong";
+}
+
+function mapOnchainPet(onchain: readonly [bigint, number, string, bigint, boolean]): PetState {
+  const xp = Number(onchain[0]);
+
+  return {
+    ...INITIAL_STATE,
+    created: true,
+    xp,
+    language: onchain[2],
+    totalMinutes: Number(onchain[3]),
+    minted: onchain[4],
+    unlockedAccessories: getUnlockedAccessories(xp).map((accessory) => accessory.id),
+  };
+}
+
+function hasPetOnchain(onchain: readonly [bigint, number, string, bigint, boolean]) {
+  return Number(onchain[0]) > 0 || Number(onchain[3]) > 0 || Boolean(onchain[2]) || onchain[4];
+}
+
 declare global {
   interface Window {
     ethereum?: any;
@@ -54,79 +94,130 @@ declare global {
 
 export function usePetState() {
   const [pet, setPet] = useState<PetState>(INITIAL_STATE);
-  const [wallet, setWallet] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [ownerAddress, setOwnerAddress] = useState<string | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [loading, setLoading] = useState(false);
+  const readContract = useMemo(
+    () => new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, new ethers.JsonRpcProvider(FUJI_RPC_URL)),
+    [],
+  );
 
-  // ── 连接真实钱包 ──────────────────────────────────
-  const connectWallet = useCallback(async () => {
-    if (!window.ethereum) {
-      alert("Please install MetaMask");
-      return "";
-    }
-    await window.ethereum.request({ method: "eth_requestAccounts" });
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const network = await provider.getNetwork();
-    if (network.chainId !== 43113n) {
-      alert("Please switch to Avalanche Fuji Testnet in MetaMask");
-      return "";
-    }
-    const signer = await provider.getSigner();
-    const addr = await signer.getAddress();
-    const c = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-    setWallet(addr.slice(0, 6) + "..." + addr.slice(-4));
-    setContract(c);
+  const wallet = walletAddress ? formatWalletLabel(walletAddress) : null;
+  const isOwnerWallet = Boolean(
+    walletAddress && ownerAddress && walletAddress.toLowerCase() === ownerAddress.toLowerCase(),
+  );
 
-    // 自动读取链上宠物数据
-    try {
-      const onchain = await c.getPet(addr);
-      const onchainXp = Number(onchain[0]);
-      if (onchainXp > 0 || onchain[4]) {
-        setPet((prev) => ({
-          ...prev,
-          created: true,
-          xp: onchainXp,
-          language: onchain[2],
-          totalMinutes: Number(onchain[3]),
-          minted: onchain[4],
-          unlockedAccessories: getUnlockedAccessories(onchainXp).map((a) => a.id),
-        }));
-      }
-    } catch {
-      // 还没有宠物，正常
+  const requireOwnerWallet = useCallback(() => {
+    if (!walletAddress || !contract) {
+      throw new Error("Please connect the owner wallet first");
     }
-    return addr;
-  }, []);
 
-  // ── 创建宠物（写链上）────────────────────────────
-  const createPet = useCallback(async (language: string) => {
-    if (!contract) return;
+    if (!ownerAddress || walletAddress.toLowerCase() !== ownerAddress.toLowerCase()) {
+      throw new Error("Please connect the same wallet as the address you entered");
+    }
+
+    return contract;
+  }, [contract, ownerAddress, walletAddress]);
+
+  const inspectAddress = useCallback(async (address: string): Promise<InspectAddressResult> => {
+    if (!ethers.isAddress(address)) {
+      throw new Error("Please enter a valid wallet address");
+    }
+
+    const normalizedAddress = ethers.getAddress(address);
     setLoading(true);
+
     try {
-      const tx = await contract.createPet(language);
+      const onchain = (await readContract.getPet(normalizedAddress)) as readonly [bigint, number, string, bigint, boolean];
+      const nextPet = hasPetOnchain(onchain) ? mapOnchainPet(onchain) : INITIAL_STATE;
+      const status = nextPet.created ? "existing" : "new";
+
+      setOwnerAddress(normalizedAddress);
+      setPet(nextPet);
+
+      return {
+        address: normalizedAddress,
+        status,
+        pet: nextPet,
+      };
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  }, [readContract]);
+
+  const connectWallet = useCallback(async (expectedAddress?: string) => {
+    if (!window.ethereum) {
+      throw new Error("Please install MetaMask");
+    }
+
+    setLoading(true);
+
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+
+      if (network.chainId !== 43113n) {
+        throw new Error("Please switch to Avalanche Fuji Testnet in MetaMask");
+      }
+
+      const signer = await provider.getSigner();
+      const address = ethers.getAddress(await signer.getAddress());
+      const signerContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+      setWalletAddress(address);
+      setContract(signerContract);
+
+      if (expectedAddress && address.toLowerCase() !== expectedAddress.toLowerCase()) {
+        throw new Error("Connected wallet does not match the address you entered");
+      }
+
+      if (!ownerAddress) {
+        setOwnerAddress(address);
+      }
+
+      return address;
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  }, [ownerAddress]);
+
+  const createPet = useCallback(async (language: string) => {
+    const writableContract = requireOwnerWallet();
+    setLoading(true);
+
+    try {
+      const tx = await writableContract.createPet(language);
       await tx.wait();
+
       setPet({
         ...INITIAL_STATE,
         created: true,
         language,
       });
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
-  }, [contract]);
+  }, [requireOwnerWallet]);
 
-  // ── 记录学习（写链上 + 本地更新喂食/快乐度）───────
   const logStudy = useCallback(async (minutes: number) => {
-    if (!contract) return;
+    const writableContract = requireOwnerWallet();
     setLoading(true);
+
     try {
-      const tx = await contract.logStudy(minutes);
+      const tx = await writableContract.logStudy(minutes);
       await tx.wait();
 
-      // 从链上读最新 XP
-      const signer = contract.runner as ethers.Signer;
+      const signer = writableContract.runner as ethers.Signer;
       const addr = await signer.getAddress();
-      const onchain = await contract.getPet(addr);
+      const onchain = (await writableContract.getPet(addr)) as readonly [bigint, number, string, bigint, boolean];
       const newXp = Number(onchain[0]);
 
       setPet((prev) => {
@@ -154,12 +245,13 @@ export function usePetState() {
           unlockedAccessories: [...new Set([...prevUnlocked, ...newUnlocked])],
         };
       });
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
-  }, [contract]);
+  }, [requireOwnerWallet]);
 
-  // ── 喂食（纯本地，不上链）────────────────────────
   const feedPet = useCallback(() => {
     setPet((prev) => ({
       ...prev,
@@ -168,7 +260,6 @@ export function usePetState() {
     }));
   }, []);
 
-  // ── 玩耍（纯本地）────────────────────────────────
   const playWithPet = useCallback(() => {
     setPet((prev) => ({
       ...prev,
@@ -177,7 +268,6 @@ export function usePetState() {
     }));
   }, []);
 
-  // ── 答题奖励（纯本地）────────────────────────────
   const quizReward = useCallback((correct: boolean) => {
     setPet((prev) => ({
       ...prev,
@@ -192,31 +282,41 @@ export function usePetState() {
     }));
   }, []);
 
-  // ── 装备配件（纯本地）────────────────────────────
   const equipAccessory = useCallback((id: string | null) => {
     setPet((prev) => ({ ...prev, equippedAccessory: id }));
   }, []);
 
-  // ── 铸造 NFT（写链上）────────────────────────────
   const mintNFT = useCallback(async () => {
-    if (!contract) return;
+    const writableContract = requireOwnerWallet();
     setLoading(true);
+
     try {
-      const tx = await contract.mintPetNFT();
+      const tx = await writableContract.mintPetNFT();
       await tx.wait();
       setPet((prev) => ({ ...prev, minted: true }));
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
-  }, [contract]);
+  }, [requireOwnerWallet]);
+
+  const resetPetFlow = useCallback(() => {
+    setOwnerAddress(null);
+    setPet(INITIAL_STATE);
+  }, []);
 
   const stage = getStage(pet.xp);
 
   return {
     pet,
     wallet,
+    walletAddress,
+    ownerAddress,
+    isOwnerWallet,
     stage,
     loading,
+    inspectAddress,
     connectWallet,
     createPet,
     logStudy,
@@ -225,5 +325,6 @@ export function usePetState() {
     quizReward,
     equipAccessory,
     mintNFT,
+    resetPetFlow,
   };
 }

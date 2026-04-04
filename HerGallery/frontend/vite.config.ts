@@ -5,6 +5,15 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: './',
+  build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        // Ensure SPA fallback for GitHub Pages
+      },
+    },
+  },
   server: {
     host: "::",
     port: 8080,

@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 120 20% 98%;
+    --foreground: 150 30% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 15%;
+
+    --primary: 145 60% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 48 80% 55%;
+    --secondary-foreground: 150 30% 15%;
+
+    --muted: 120 15% 92%;
+    --muted-foreground: 150 10% 45%;
+
+    --accent: 48 80% 55%;
+    --accent-foreground: 150 30% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 15% 88%;
+    --input: 120 15% 85%;
+    --ring: 145 60% 40%;
+
+    --radius: 0.75rem;
+
+    --gray-50: 120 15% 98%;
+    --gray-100: 120 15% 96%;
+    --gray-200: 120 12% 90%;
+    --gray-300: 120 10% 83%;
+    --gray-400: 120 5% 64%;
+    --gray-500: 120 5% 45%;
+    --gray-600: 120 5% 40%;
+    --gray-800: 150 15% 18%;
+    --gray-900: 150 20% 12%;
+  }
+
+  .dark {
+    --background: 150 20% 10%;
+    --foreground: 120 20% 85%;
+
+    --card: 150 18% 14%;
+    --card-foreground: 120 20% 85%;
+
+    --popover: 150 18% 14%;
+    --popover-foreground: 120 20% 85%;
+
+    --primary: 145 55% 50%;
+    --primary-foreground: 150 20% 10%;
+
+    --secondary: 48 70% 50%;
+    --secondary-foreground: 150 20% 10%;
+
+    --muted: 150 15% 18%;
+    --muted-foreground: 120 10% 55%;
+
+    --accent: 48 70% 50%;
+    --accent-foreground: 150 20% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 12% 22%;
+    --input: 150 12% 25%;
+    --ring: 145 55% 50%;
+
+    --gray-50: 150 12% 16%;
+    --gray-100: 150 12% 20%;
+    --gray-200: 150 10% 28%;
+    --gray-300: 150 8% 38%;
+    --gray-400: 120 8% 48%;
+    --gray-500: 120 10% 55%;
+    --gray-600: 120 15% 65%;
+    --gray-800: 120 20% 80%;
+  }
+}
+
+@layer utilities {
+  .animate-marquee-rtl {
+    animation: marquee-rtl 40s linear infinite;
+  }
+  
+  .animate-marquee-rtl:hover {
+    animation-play-state: paused;
+  }
+
+  /* Custom styles for react-medium-image-zoom dark mode support */
+  [data-rmiz-modal-overlay] {
+    background-color: hsl(var(--background) / 0.95) !important;
+    backdrop-filter: blur(8px);
+  }
+
+  .dark [data-rmiz-modal-overlay] {
+    background-color: hsl(var(--background) / 0.95) !important;
+  }
+
+  [data-rmiz-modal-img] {
+    border-radius: 0.5rem;
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Global focus styles for keyboard navigation */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Skip to content link */
+  .skip-to-content {
+    @apply absolute left-0 top-0 z-[100] -translate-y-full bg-foreground text-background px-6 py-3 text-sm uppercase tracking-widest;
+    @apply focus:translate-y-0 transition-transform duration-200;
+  }
+}

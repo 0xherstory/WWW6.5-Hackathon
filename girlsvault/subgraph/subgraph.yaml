@@ -1,0 +1,74 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+
+dataSources:
+  - kind: ethereum
+    name: GirlsVaultRegistry
+    network: fuji
+    source:
+      address: "0x69143B1a53d239628821D2F9b5eF66e07c161eA6"  # 部署后由 setup.js 自动替换
+      abi: GirlsVaultRegistry
+      startBlock: 53571645  # 部署后由 setup.js 自动替换
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Project
+      abis:
+        - name: GirlsVaultRegistry
+          file: ./abis/GirlsVaultRegistry.json
+        - name: GirlsVaultProject
+          file: ./abis/GirlsVaultProject.json
+      eventHandlers:
+        - event: ProjectCreated(indexed address,string,indexed address)
+          handler: handleProjectCreated
+      file: ./src/registry.ts
+
+templates:
+  - kind: ethereum
+    name: GirlsVaultProject
+    network: fuji
+    source:
+      abi: GirlsVaultProject
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Project
+        - Donation
+        - ProofSubmission
+        - FundRelease
+        - Challenge
+        - ChallengeVote
+        - ValidatorStake
+        - ProjectEvent
+      abis:
+        - name: GirlsVaultProject
+          file: ./abis/GirlsVaultProject.json
+      eventHandlers:
+        - event: Donated(indexed address,uint256,uint8)
+          handler: handleDonated
+        - event: ProofSubmitted(indexed uint256,indexed address,bytes32,string)
+          handler: handleProofSubmitted
+        - event: MilestoneVerified(indexed uint256)
+          handler: handleMilestoneVerified
+        - event: FundsReleased(indexed uint256,address,uint256)
+          handler: handleFundsReleased
+        - event: MilestoneChallenged(indexed uint256,indexed address,string)
+          handler: handleMilestoneChallenged
+        - event: ChallengeVoted(indexed uint256,indexed address,bool,uint256)
+          handler: handleChallengeVoted
+        - event: ChallengeResolved(indexed uint256,bool,uint256)
+          handler: handleChallengeResolved
+        - event: ValidatorStaked(indexed address,uint256)
+          handler: handleValidatorStaked
+        - event: ValidatorSlashed(indexed address,uint256)
+          handler: handleValidatorSlashed
+        - event: EmergencyVoted(indexed address,uint256,uint256)
+          handler: handleEmergencyVoted
+        - event: EmergencyRefundApproved()
+          handler: handleEmergencyRefundApproved
+      file: ./src/project.ts

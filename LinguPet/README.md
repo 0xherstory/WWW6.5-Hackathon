@@ -3,3 +3,5 @@
 Language skills are a powerful tool for women to achieve independence. LinguPet is a DApp that combines blockchain with language learning. 
 By studying languages, users earn points that can be used to mint virtual pet NFTs. 
 These NFTs serve as an immutable record of a female learner’s growth—a “on-chain badge” of her abilities.
+
+产品流程图 product flowchart：https://www.notion.so/Hackathon-Demo-337cdf84d05680e09ce3ff085dd42346

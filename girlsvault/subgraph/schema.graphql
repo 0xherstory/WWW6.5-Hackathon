@@ -1,0 +1,90 @@
+type Project @entity(immutable: false) {
+  id: ID!                      # project contract address
+  address: String!
+  name: String!
+  creator: String!
+  createdAt: BigInt!
+  totalDonated: BigInt!
+  totalReleased: BigInt!
+  emergencyApproved: Boolean!
+  donations: [Donation!]! @derivedFrom(field: "project")
+  proofSubmissions: [ProofSubmission!]! @derivedFrom(field: "project")
+  fundReleases: [FundRelease!]! @derivedFrom(field: "project")
+  challenges: [Challenge!]! @derivedFrom(field: "project")
+  validatorStakes: [ValidatorStake!]! @derivedFrom(field: "project")
+}
+
+type Donation @entity(immutable: true) {
+  id: ID!
+  project: Project!
+  donor: String!
+  amount: BigInt!
+  tag: Int!
+  timestamp: BigInt!
+  txHash: String!
+}
+
+type ProofSubmission @entity(immutable: true) {
+  id: ID!
+  project: Project!
+  milestoneId: Int!
+  validator: String!
+  proofHash: Bytes!
+  proofUri: String!
+  timestamp: BigInt!
+  txHash: String!
+}
+
+type FundRelease @entity(immutable: true) {
+  id: ID!
+  project: Project!
+  milestoneId: Int!
+  beneficiary: String!
+  amount: BigInt!
+  timestamp: BigInt!
+  txHash: String!
+}
+
+type Challenge @entity(immutable: false) {
+  id: ID!                      # projectAddr-milestoneId
+  project: Project!
+  milestoneId: Int!
+  challenger: String!
+  evidenceCID: String!
+  challengedAt: BigInt!
+  forVotes: BigInt!
+  againstVotes: BigInt!
+  resolved: Boolean!
+  upheld: Boolean!
+  votes: [ChallengeVote!]! @derivedFrom(field: "challenge")
+}
+
+type ChallengeVote @entity(immutable: true) {
+  id: ID!                      # txHash-logIndex
+  challenge: Challenge!
+  voter: String!
+  support: Boolean!
+  weight: BigInt!
+  timestamp: BigInt!
+}
+
+type ValidatorStake @entity(immutable: false) {
+  id: ID!                      # projectAddr-validatorAddr
+  project: Project!
+  validator: String!
+  amount: BigInt!
+  slashed: Boolean!
+  timestamp: BigInt!
+}
+
+# 通知用：所有对捐款人/参与者有意义的项目事件
+type ProjectEvent @entity(immutable: true) {
+  id: ID!                      # txHash-logIndex
+  project: Project!
+  eventType: String!           # MilestoneVerified / MilestoneChallenged / ChallengeResolved / FundsReleased / EmergencyVoted / EmergencyRefundApproved
+  milestoneId: Int!            # 里程碑序号，无关事件填 -1
+  upheld: Boolean!             # 仅 ChallengeResolved 有意义：举报是否成立
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+}

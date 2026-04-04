@@ -1,0 +1,84 @@
+{
+  "protocols": [
+    {
+      "name": "GREEN",
+      "symbol": "GREEN",
+      "current_rating": "AA",
+      "total_score": 80,
+      "target_allocation": 35
+    },
+    {
+      "name": "STEADY",
+      "symbol": "STEADY",
+      "current_rating": "A",
+      "total_score": 68,
+      "target_allocation": 30
+    },
+    {
+      "name": "RISKY",
+      "symbol": "RISKY",
+      "current_rating": "BBB",
+      "total_score": 56,
+      "target_allocation": 20
+    },
+    {
+      "name": "USD",
+      "symbol": "USD",
+      "current_rating": "B",
+      "total_score": 44,
+      "target_allocation": 15
+    }
+  ],
+  "score_history": [
+    {
+      "protocol": "GREEN",
+      "environmental": 21,
+      "social": 27,
+      "governance": 32,
+      "total": 80,
+      "rating": "AA",
+      "calculated_at": "2026-03-31T09:00:00.000Z"
+    },
+    {
+      "protocol": "STEADY",
+      "environmental": 16,
+      "social": 24,
+      "governance": 28,
+      "total": 68,
+      "rating": "A",
+      "calculated_at": "2026-03-31T09:00:00.000Z"
+    },
+    {
+      "protocol": "RISKY",
+      "environmental": 14,
+      "social": 20,
+      "governance": 22,
+      "total": 56,
+      "rating": "BBB",
+      "calculated_at": "2026-03-31T09:00:00.000Z"
+    },
+    {
+      "protocol": "USD",
+      "environmental": 10,
+      "social": 16,
+      "governance": 18,
+      "total": 44,
+      "rating": "B",
+      "calculated_at": "2026-03-31T09:00:00.000Z"
+    }
+  ],
+  "events": [
+    {
+      "protocol": "RISKY",
+      "event_type": "governance_warning",
+      "severity": "medium",
+      "notes": "Audit follow-up requested"
+    },
+    {
+      "protocol": "USD",
+      "event_type": "severe_incident",
+      "severity": "severe",
+      "notes": "Treasury control incident"
+    }
+  ]
+}

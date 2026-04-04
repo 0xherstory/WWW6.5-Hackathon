@@ -83,28 +83,33 @@ $includeDirs = @(
 @("SanctuaryProtocolV2.sol") | ForEach-Object {
     Copy-Item -Path (Join-Path $source "contracts" $_) -Destination (Join-Path $dest "contracts" $_) -Force
 }
+# 注意：必须先删除目标目录再复制，否则 PowerShell Copy-Item 会嵌套
+# 例如：dest\src\ 已存在时，Copy-Item 会创建 dest\src\src\...
 @("interfaces", "plugins") | ForEach-Object {
     $subDir = $_
     $src = Join-Path $source "contracts\$subDir"
     $dst = Join-Path $dest "contracts\$subDir"
     if (Test-Path $src) {
+        if (Test-Path $dst) { Remove-Item -Path $dst -Recurse -Force }
         Copy-Item -Path $src -Destination $dst -Recurse -Force
     }
 }
 
-# 复制其他目录
+# 复制其他目录（同样先删再复制，防止嵌套）
 $includeDirs | ForEach-Object {
     $src = Join-Path $source $_
     $dst = Join-Path $dest $_
     if (Test-Path $src) {
+        if (Test-Path $dst) { Remove-Item -Path $dst -Recurse -Force }
         Copy-Item -Path $src -Destination $dst -Recurse -Force
     }
 }
 
-# Documents 目录映射为 docs
+# Documents 目录映射为 docs（同样先删再复制）
 $docsSrc = Join-Path $source "Documents"
 $docsDst = Join-Path $dest "docs"
 if (Test-Path $docsSrc) {
+    if (Test-Path $docsDst) { Remove-Item -Path $docsDst -Recurse -Force }
     Copy-Item -Path $docsSrc -Destination $docsDst -Recurse -Force
 }
 
@@ -226,6 +231,31 @@ git push
 
 ---
 
+## 常见问题：目录嵌套（重要！）
+
+**症状**：同步后发现路径变成了 `SanctuaryProtocol/src/src/app/`、`public/public/cards/`、`messages/messages/` 等。
+
+**原因**：PowerShell 的 `Copy-Item -Path $src -Destination $dst -Recurse` 在 **目标目录已存在** 时，不会覆盖目标目录的内容，而是把源目录**作为子目录**放进目标目录里。
+
+```
+# 目标不存在时（正确）：
+Copy-Item src/ dest/src/  →  dest/src/app/  ✅
+
+# 目标已存在时（嵌套！）：
+Copy-Item src/ dest/src/  →  dest/src/src/app/  ❌
+```
+
+**解决方案**：复制目录前先删除目标目录。PowerShell 脚本已更新为「先删再复制」模式。
+
+**验证方法**：同步后执行以下检查，确保没有嵌套路径：
+```bash
+# 在黑客松仓库目录下执行
+find SanctuaryProtocol -path "*/src/src" -o -path "*/public/public" -o -path "*/messages/messages"
+# 如果有输出，说明存在嵌套问题
+```
+
+---
+
 ## 给 AI 用的 Prompt
 
 把下面的内容复制给新的 AI 会话，它就知道怎么做：
@@ -266,6 +296,7 @@ git push
    - 必须排除：node_modules, .next, .git, .claude, artifacts, cache, typechain-types, coverage
    - 必须排除：.env.local, .env（包含私钥和敏感信息，绝对不能上传）
    - 必须排除旧版文件：contracts/SanctuaryProtocol.sol, contracts/PlantOHCard.sol, contracts/IVerifier.sol, contracts/ISanctuaryProtocol.sol, scripts/deploy.ts, test/PlantOHCard.test.js, fix-chain.ps1, fix-sanctuary.ps1
+   - ⚠️ **防止目录嵌套**：复制目录时必须先删除目标目录再复制！否则会出现 src/src/、public/public/ 等嵌套路径
 
 3. 特殊映射：源目录的 Documents/ → 目标的 docs/
 

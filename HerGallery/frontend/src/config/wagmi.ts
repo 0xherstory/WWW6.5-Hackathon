@@ -8,7 +8,7 @@ export const config = createConfig({
     injected(),
   ],
   transports: {
-    [avalancheFuji.id]: http('https://api.avax-test.network/ext/bc/C/rpc', {
+    [avalancheFuji.id]: http('https://avalanche-fuji-c-chain.publicnode.com', {
       retryCount: 3,
       timeout: 30000,
     }),

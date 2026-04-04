@@ -1,193 +1,220 @@
 # HerGallery｜她的展厅
 
-链上女性主题策展平台，基于 Avalanche Fuji 测试网。
+**每一个她，都值得一个展厅。**
+**每一次发声，都是一场雨。**
 
-## 项目结构
+[English](./README-en.md) · 中文
 
-```
-HerGallery/
-├── contract/                  # 智能合约（Hardhat）
-│   ├── contracts/
-│   │   └── HerGallery.sol     # 主合约
-│   ├── scripts/
-│   │   └── deploy.js          # 部署脚本
-│   ├── hardhat.config.js
-│   ├── .env                   # 私钥配置
-│   └── package.json
-│
-└── frontend/                  # 前端应用（Vite + React）
-    ├── src/
-    │   ├── config/
-    │   │   ├── contract.ts    # 合约地址、ABI、类型定义
-    │   │   └── wagmi.ts      # wagmi v3 配置
-    │   ├── hooks/
-    │   │   └── useContract.ts # 所有合约交互 Hooks
-    │   ├── components/        # UI 组件
-    │   ├── pages/             # 页面
-    │   └── lib/
-    │       └── format.ts      # 格式化工具
-    ├── vite.config.ts
-    └── package.json
-```
+---
 
-## 前置条件
+## 目录
 
-- **Node.js** >= 18
-- **npm** 或 **bun**
-- **MetaMask** 钱包（或其他支持 injected 的钱包）
-- **Avalanche Fuji 测试网** 添加到 MetaMask：[链 ID: 43113](https://testnet.snowtrace.io/)
-- **测试 AVAX**：从 [Avalanche Fuji Faucet](https://faucet.avax.network/) 领取
+- [云朵与雨](#云朵与雨)
+- [我们为什么出发](#why)
+- [核心价值](#values)
+- [成就徽章](#badges)
+- [打赏机制](#support)
+- [每个人都可以参与](#participate)
+- [工作原理](#how-it-works)
+- [产品立场](#stance)
+- [展厅里有什么](#exhibition-types)
+- [技术背后](#tech)
 
-## 智能合约部署
+---
 
-### 1. 安装依赖
+## 云朵与雨
+
+总有人在问：“发声有什么用？”
+
+但你看天上的云——
+云朵来自江河湖海，是水分子历经蒸腾后的凝聚。
+我们的思想，也像云朵一样，从生活的实践中生成、升腾。
+
+而“发声”，就是下雨。
+
+雨水不是凭空而来，也绝不会毫无用处。
+它会回归大地，再次滋养大地。
+它可以落在脚下，也可以飘向远方。
+
+云朵看似轻柔，实则蕴含雷霆万钧。
+我们的每一个见证、每一次托举，看似轻微，
+实则蕴藏无限生机，正在创造未来。
+
+**愿每一个“云吃吃”，都能继续吞咽世界，继而雷霆万钧——**
+**无论是瓢泼大雨，还是轻柔细雨，都终将滋润大地。**
+
+HerGallery 就是这个下雨的地方。
+
+---
+
+## 我们为什么出发 {#why}
+
+有些声音，稍纵即逝。
+社交媒体的一条帖子、一段证言、一张截图——
+可能今天还在，明天就被删除，仿佛从未存在过。
+
+我们想做的事情很简单，也很固执：
+
+**一是网络帖子的留存。** 在平台随时可以删除内容的大环境下，把证据上链，邀请每一个人都来做见证者、托举者。
+
+**二是维权经验的分享。** 让所有人都能看见并学习姊妹的斗争经验，在线上为她的行为喝彩。
+
+**三是 HerStory。** 女性历史的重新建构与想象，用“不设限”的态度，大胆重新书写女性历史。
+
+**四是女性创作。** 让女性创作者们能够把自己的创作永远铭刻在 WEB3 里。
+
+**五是生活的点点滴滴。** 生活即是当代史，鼓励女性们多多记录，多多分享。
+
+HerGallery 是一个女性主题的链上永久存证与策展平台。
+在这里，你可以记录一段被消音的历史，也可以展示优秀的女性创作。
+我们相信：**每一个她的故事、每一种她的声音，都值得被永远记住。**
+
+所有内容永久上链，无法被删除、无法被篡改。
+
+**在线访问**：https://mumulin-all.github.io/HerGallery/
+
+---
+
+## 核心价值 {#values}
+
+| 价值 | 说明 |
+| --- | --- |
+| 🌊 永久存证 | 所有内容上链，永远在那里，没有人能抹去 |
+| 🌱 社区策展 | 推荐与见证，让真正重要的声音浮出水面 |
+| ☁️ 无需许可 | 任何人都可以发起展厅、提交内容 |
+| ⚡ 前端策展权 | 链上是档案馆，前端是展厅——策展人决定展什么，但销毁档案，没有人能做到 |
+
+---
+
+## 成就徽章 {#badges}
+
+我们为积极参与社区的用户设计了成就徽章体系，见证每一次有意义的行动：
+
+| 徽章 | 名称 | 解锁条件 |
+| --- | --- | --- |
+| 🌸 | 首投者 | 完成第一次投稿——你的第一份记录已永久上链 |
+| ✦ | 推荐里程碑 | 单条投稿获得 10 次推荐——你的托举被社区认可 |
+
+徽章不仅是荣誉，更是链上足迹的见证。每一枚徽章都对应着一次真实的链上行为，无法伪造。
+
+---
+
+## 打赏机制 {#support}
+
+HerGallery 是一个非营利性的社区项目，平台的持续运营依赖于社区的支持。
+
+我们接受用户对平台的小额打赏（使用 AVAX），这些资金将用于：
+- 服务器与 IPFS 存储成本
+- 合约 Gas 费用补贴
+- 社区活动与运营
+
+打赏是完全自愿的，不影响任何功能的使用。我们相信：**每一次善意，都能让这朵云继续飘得更远。**
+
+---
+
+## 每个人都可以参与 {#participate}
+
+- **创建展厅**：为一个事件、一位女性、一种创作，创建一个永久的空间。质押 0.001 AVAX 作为你的链上承诺。
+- **提交存证**：上传图片和文字，让真实发生的事被永远记住。
+- **创作二创**：用文字和图像表达你对女性议题的理解——这里也是优秀女性主义作品的展厅。
+- **推荐**：托举你认同的内容，让真正有价值的存证和创作被更多人看见。
+- **见证**：说出「我知道这件事发生过」——每一个见证都是一份力量。
+- **打赏**：支持你认同的展厅，让策展人有动力继续运营。
+
+---
+
+## 工作原理 {#how-it-works}
+策展人发起展厅 → 质押 0.001 AVAX 作为承诺
+↓
+投稿人提交存证或二创 → 内容永久保存在链上，等待审核
+↓
+策展人审核 → 批准的内容在前端展出，拒绝的内容链上保留但不公开
+↓
+所有人推荐、见证、打赏 → 展厅持续生长
+
+--- 
+
+## 产品立场 {#stance}
+
+HerGallery 记录公共事件和公开发布过的内容，不接受对私人个体未经同意的曝光。
+
+我们不删除任何链上记录。删除从来不是正确答案。
+策展人拥有前端展示权，但销毁档案——没有人能做到。
+
+**链上是档案馆，前端是展厅。**
+
+---
+
+## 展厅里有什么 {#exhibition-types}
+
+### 存证 · 绿色标签
+网络帖子的留存、维权经验的分享、证言截图——让真实发生的事被永远记住。
+
+### 二创 · 紫色标签
+女性创作、HerStory 的重新书写、生活的点点滴滴——让女性的创造力被永远看见。
+
+每一个展厅都有自己的主题，每一位策展人都在守护一个方向。
+
+---
+
+## 技术背后 {#tech}
+
+### 技术栈
+
+| 层 | 技术 |
+|----|------|
+| 智能合约 | Solidity 0.8.19 + Hardhat |
+| 前端 | Vite + React 18 + TypeScript |
+| Web3 | wagmi v3 + viem + RainbowKit |
+| 样式 | TailwindCSS + shadcn/ui |
+| 文件存储 | IPFS |
+| 动画 | Framer Motion |
+
+### 部署网络
+
+- 网络：Avalanche Fuji C-Chain（测试网）
+- 链 ID：43113
+- 合约地址：`0x320900FA245b5E44ebab6B5f2006E2187C83e396`
+- [Snowtrace 浏览器查看](https://testnet.snowtrace.io/address/0x320900FA245b5E44ebab6B5f2006E2187C83e396)
+
+### 本地运行
 
 ```bash
-cd HerGallery/contract
+# 前端
+cd frontend
 npm install
-```
+npm run dev
 
-### 2. 配置环境变量
-
-编辑 `contract/.env`：
-
-```env
-PRIVATE_KEY=your_wallet_private_key_here
-```
-
-### 3. 编译合约
-
-```bash
+# 合约（如需修改）
+cd contract
+npm install
 npm run compile
-```
-
-### 4. 部署到 Fuji 测试网
-
-```bash
 npm run deploy:fuji
 ```
 
-部署成功后会输出合约地址。部署脚本在 `scripts/deploy.js`。
+前置条件
+MetaMask 钱包
 
-### 5. 更新前端合约地址（如有变更）
+Avalanche Fuji 测试网（领取测试币：https://faucet.avax.network/）
 
-如部署到新地址，修改以下文件中的 `CONTRACT_ADDRESS`：
+--- 
 
-```
-frontend/src/config/contract.ts
-```
+云朵终将成雨
+我们见过太多这样的故事——
+女性的声音被消音，证言被抹去，作品被下架。
+社交媒体封号、搜索引擎屏蔽、历史被改写……
 
-## 前端运行
+我们问自己：如果这些记录和创作能够永远保存在一个无法被删除的地方，会怎样？
 
-### 1. 安装依赖
+于是有了 HerGallery。
 
-```bash
-cd HerGallery/frontend
-npm install
-```
+链上是档案馆，前端是展厅。
+策展人决定在这里展示什么，但没有人能够销毁那些档案。
 
-### 2. 启动开发服务器
+每一个见证，都是一滴水。
+每一次托举，都是一场雨。
 
-```bash
-npm run dev
-```
+愿你在这里，做一朵云，也做一场雨。
 
-访问 http://localhost:8080
-
-## 合约交互说明
-
-### 合约地址（Avalanche Fuji）
-
-```
-0x320900FA245b5E44ebab6B5f2006E2187C83e396
-```
-
-[Snowtrace 测试网浏览器查看](https://testnet.snowtrace.io/address/0x320900FA245b5E44ebab6B5f2006E2187C83e396)
-
-### 核心函数
-
-| 函数 | 说明 | 费用 |
-|------|------|------|
-| `createExhibition(title, contentHash, coverHash)` | 创建展厅 | 0.001 AVAX |
-| `submitToExhibition(exhibitionId, contentType, contentHash, title, description)` | 投稿 | 免费 |
-| `recommend(exhibitionId, submissionId)` | 推荐投稿 | 免费 |
-| `setUsername(username)` | 设置昵称（1-20字符） | 免费 |
-
-### 内容类型（contentType）
-
-| 值 | 类型 |
-|----|------|
-| `"0"` | 二创 |
-| `"1"` | 证言 |
-| `"2"` | 截图 |
-| `"3"` | 链接 |
-
-### 读取函数
-
-| 函数 | 说明 |
-|------|------|
-| `getAllExhibitions()` | 获取所有展厅 |
-| `getExhibition(id)` | 获取单个展厅 |
-| `getSubmissions(exhibitionId)` | 获取展厅所有投稿 |
-| `usernames(address)` | 获取用户昵称 |
-| `hasSetUsername(address)` | 查询是否已设置昵称 |
-| `hasRecommended(exhibitionId, submissionId, user)` | 查询用户是否已推荐 |
-| `getRecommendedStatus(exhibitionId, user)` | 批量查询用户的推荐状态 |
-
-### 事件
-
-| 事件 | 触发条件 |
-|------|----------|
-| `ExhibitionCreated` | 创建展厅 |
-| `SubmissionCreated` | 新投稿 |
-| `Recommended` | 被推荐 |
-| `FirstSubmission` | 用户首次投稿 |
-| `RecommendMilestone` | 推荐数达到 10 的倍数 |
-| `UsernameSet` | 用户设置昵称 |
-
-## 前端技术栈
-
-| 技术 | 说明 |
-|------|------|
-| Vite + React 18 | 构建工具 + UI 框架 |
-| TypeScript | 类型安全 |
-| wagmi v3 | 合约交互（useReadContract / useSimulateContract + useWriteContract） |
-| viem | 以太坊交互库 |
-| Tailwind CSS + shadcn/ui | 样式组件库 |
-| framer-motion | 动画 |
-| react-dropzone | 图片上传 |
-| React Router v6 | 路由 |
-
-## 常见问题
-
-**Q: 钱包连接不上？**
-- 确认 MetaMask 已安装且已解锁
-- 确认当前网络为 Avalanche Fuji（链 ID 43113）
-- 尝试刷新页面
-
-**Q: 交易失败？**
-- 确认钱包有足够的 AVAX 测试币（支付创建展厅费用）
-- 确认在 Fuji 测试网上操作
-
-**Q: 内容不显示？**
-- 刷新页面重新读取合约数据
-- 检查浏览器控制台是否有错误
-
-**Q: 如何修改合约地址？**
-- 编辑 `frontend/src/config/contract.ts` 中的 `CONTRACT_ADDRESS`
-- 同时确认 `CONTRACT_ABI` 与部署的合约匹配
-
-**Q: 如何设置昵称？**
-- 连接钱包后，点击右上角"设置昵称"按钮
-- 输入1-20字符的昵称后确认交易
-- 设置成功后，昵称将替代地址显示在策展人/创作者位置
-
-## 有用的链接
-
-| 资源 | 地址 |
-|------|------|
-| Avalanche Fuji 水龙头 | https://faucet.avax.network/ |
-| Snowtrace 测试网浏览器 | https://testnet.snowtrace.io/ |
-| wagmi 文档 | https://wagmi.sh/ |
-| viem 文档 | https://viem.sh/ |
-| React Router | https://reactrouter.com/ |
+--- 
+HerGallery · 她的展厅 · 每个她，都值得一个展厅

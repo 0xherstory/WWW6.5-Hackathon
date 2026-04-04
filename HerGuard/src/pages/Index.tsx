@@ -8,13 +8,13 @@ import OfflineBanner from "@/components/OfflineBanner";
 import BottomNav from "@/components/BottomNav";
 import MapPage from "@/components/MapPage";
 import EvidencePage from "@/components/EvidencePage";
-import DeterrentAudioPanel from "@/components/DeterrentAudioPanel";
+import SettingsPage from "@/components/SettingsPage";
 import { Shield } from "lucide-react";
 
 const CONTRACT_ADDRESS = "0x79B1A83d803213560BA5AF373FDcE54d1e84f18c";
 
 export default function Index() {
-  const [activeTab, setActiveTab] = useState<"sos" | "map" | "evidence">("sos");
+  const [activeTab, setActiveTab] = useState<"sos" | "map" | "evidence" | "settings">("sos");
   const walletHook = useWallet(CONTRACT_ADDRESS);
   const { soundOn, toggleSound, isSilent, voiceDeterrent, customAudioUrl, saveCustomAudio } = useSilentMode();
 
@@ -52,23 +52,21 @@ export default function Index() {
       {/* Main content */}
       <main className="flex flex-1 flex-col pb-16">
         {activeTab === "sos" && (
-          <>
-            <SOSButton
-              contract={wallet.contract}
-              isWalletConnected={wallet.isConnected}
-              isCorrectNetwork={wallet.isCorrectNetwork}
-              isSilent={isSilent}
-              voiceDeterrent={voiceDeterrent}
-              customAudioUrl={customAudioUrl}
-            />
-            <DeterrentAudioPanel
-              customAudioUrl={customAudioUrl}
-              onSaveAudio={saveCustomAudio}
-            />
-          </>
+          <SOSButton
+            contract={wallet.contract}
+            walletAddress={wallet.address}
+            isWalletConnected={wallet.isConnected}
+            isCorrectNetwork={wallet.isCorrectNetwork}
+            isSilent={isSilent}
+            voiceDeterrent={voiceDeterrent}
+            customAudioUrl={customAudioUrl}
+          />
         )}
         {activeTab === "map" && <MapPage contract={wallet.contract} />}
-        {activeTab === "evidence" && <EvidencePage />}
+        {activeTab === "evidence" && <EvidencePage contract={wallet.contract} />}
+        {activeTab === "settings" && (
+          <SettingsPage customAudioUrl={customAudioUrl} onSaveAudio={saveCustomAudio} />
+        )}
       </main>
 
       {/* Bottom nav */}

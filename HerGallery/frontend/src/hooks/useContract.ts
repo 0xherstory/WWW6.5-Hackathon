@@ -1,7 +1,37 @@
-import { useReadContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useReadContract } from 'wagmi';
 import { useAccount, useWalletClient } from 'wagmi';
 import { CONTRACT_ADDRESS, CONTRACT_ABI, Exhibition, Submission } from '@/config/contract';
 import { avalancheFuji } from 'viem/chains';
+import { createPublicClient, http, parseEther } from 'viem';
+
+const publicClient = createPublicClient({
+  chain: avalancheFuji,
+  transport: http('https://avalanche-fuji-c-chain.publicnode.com'),
+});
+
+export interface UserSubmissionRecord extends Submission {
+  exhibitionTitle: string;
+}
+
+export interface UserActivitySummary {
+  submissions: UserSubmissionRecord[];
+  myExhibitions: Exhibition[];
+  hasFirstSubmissionBadge: boolean;
+  hasFirstExhibitionBadge: boolean;
+  milestoneBadges: Array<{
+    submissionId: number;
+    exhibitionId: number;
+    exhibitionTitle: string;
+    recommendCount: number;
+  }>;
+}
+
+export interface HomeExhibitionRecord extends Exhibition {
+  totalRecommends: number;
+  totalWitnesses: number;
+  hotScore: number;
+  recentSubmissions: Submission[];
+}
 
 export function useExhibitions() {
   return useReadContract({
@@ -28,17 +58,37 @@ export function useSubmissions(exhibitionId: number) {
     abi: CONTRACT_ABI,
     functionName: 'getSubmissions',
     args: [BigInt(exhibitionId)],
+    query: { enabled: exhibitionId >= 0, refetchInterval: 5000, staleTime: 0 },
+  });
+}
+
+export function usePendingSubmissions(exhibitionId: number) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'getPendingSubmissions',
+    args: [BigInt(exhibitionId)],
     query: { enabled: exhibitionId >= 0, refetchInterval: 5000 },
   });
 }
 
-export function useHasRecommended(exhibitionId: number, submissionId: number, user: string) {
+export function useHasRecommended(submissionId: number, user: string) {
   return useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: 'hasRecommended',
-    args: [BigInt(exhibitionId), BigInt(submissionId), user as `0x${string}`],
-    query: { enabled: exhibitionId > 0 && submissionId > 0 && !!user },
+    args: [BigInt(submissionId), user as `0x${string}`],
+    query: { enabled: submissionId >= 0 && !!user },
+  });
+}
+
+export function useHasWitnessed(submissionId: number, user: string) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'hasWitnessed',
+    args: [BigInt(submissionId), user as `0x${string}`],
+    query: { enabled: submissionId >= 0 && !!user },
   });
 }
 
@@ -70,14 +120,30 @@ export function useHasSetUsername(address: string) {
   });
 }
 
+export function useHasSubmitted(address: string) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'hasSubmitted',
+    args: [address as `0x${string}`],
+    query: { enabled: !!address },
+  });
+}
+
+export function useHasCreatedExhibition(address: string) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'hasCreatedExhibition',
+    args: [address as `0x${string}`],
+    query: { enabled: !!address },
+  });
+}
+
 // Hook for direct viem transaction
 export function useSetUsername(onSuccess?: () => void) {
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
-
-  const { isLoading: isPending, isSuccess, isError, error } = useWaitForTransactionReceipt({
-    hash: walletClient ? undefined as any : undefined,
-  });
 
   const setUsername = async (username: string) => {
     if (!walletClient || !address) {
@@ -93,18 +159,22 @@ export function useSetUsername(onSuccess?: () => void) {
       chain: avalancheFuji,
     });
 
-    onSuccess?.();
+    // Wait for transaction receipt before calling onSuccess
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
     return hash;
   };
 
-  return { setUsername, isPending, isSuccess, error };
+  return { setUsername };
 }
 
 export function useCreateExhibition(onSuccess?: () => void) {
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
 
-  const createExhibition = async (args: { title: string; contentHash: string; coverHash: string }) => {
+  const createExhibition = async (args: { title: string; content: string; coverHash: string; tags: string[] }) => {
     if (!walletClient || !address) {
       throw new Error('Wallet not connected');
     }
@@ -113,13 +183,16 @@ export function useCreateExhibition(onSuccess?: () => void) {
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: 'createExhibition',
-      args: [args.title, args.contentHash, args.coverHash],
+      args: [args.title, args.content, args.coverHash, args.tags],
       value: BigInt('1000000000000000'), // 0.001 AVAX
       account: address,
       chain: avalancheFuji,
     });
 
-    onSuccess?.();
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
     return hash;
   };
 
@@ -133,7 +206,7 @@ export function useSubmitToExhibition(onSuccess?: () => void) {
   const submitToExhibition = async (args: {
     exhibitionId: number;
     contentType: string;
-    contentHash: string;
+    content: string;
     title: string;
     description: string;
   }) => {
@@ -148,7 +221,7 @@ export function useSubmitToExhibition(onSuccess?: () => void) {
       args: [
         BigInt(args.exhibitionId),
         args.contentType,
-        args.contentHash,
+        args.content,
         args.title,
         args.description,
       ],
@@ -156,7 +229,10 @@ export function useSubmitToExhibition(onSuccess?: () => void) {
       chain: avalancheFuji,
     });
 
-    onSuccess?.();
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
     return hash;
   };
 
@@ -181,23 +257,277 @@ export function useRecommend(onSuccess?: () => void) {
       chain: avalancheFuji,
     });
 
-    onSuccess?.();
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
     return hash;
   };
 
   return { recommend };
 }
 
+export function useWitness(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const witness = async (submissionId: number) => {
+    if (!walletClient || !address) {
+      throw new Error('Wallet not connected');
+    }
+
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'witness',
+      args: [BigInt(submissionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
+    return hash;
+  };
+
+  return { witness };
+}
+
+export function useApproveSubmission(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const approveSubmission = async (submissionId: number) => {
+    if (!walletClient || !address) {
+      throw new Error('Wallet not connected');
+    }
+
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'approveSubmission',
+      args: [BigInt(submissionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
+    return hash;
+  };
+
+  return { approveSubmission };
+}
+
+export function useRejectSubmission(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const rejectSubmission = async (submissionId: number) => {
+    if (!walletClient || !address) {
+      throw new Error('Wallet not connected');
+    }
+
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'rejectSubmission',
+      args: [BigInt(submissionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
+    return hash;
+  };
+
+  return { rejectSubmission };
+}
+
+export function useContractOwner() {
+  return useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'owner',
+  });
+}
+
+export function useWithdrawTips(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const withdrawTips = async (exhibitionId: number) => {
+    if (!walletClient || !address) throw new Error('Wallet not connected');
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'withdrawTips',
+      args: [BigInt(exhibitionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') onSuccess?.();
+    return hash;
+  };
+
+  return { withdrawTips };
+}
+
+export function useWithdrawStake(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const withdrawStake = async (exhibitionId: number) => {
+    if (!walletClient || !address) throw new Error('Wallet not connected');
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'withdrawStake',
+      args: [BigInt(exhibitionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') onSuccess?.();
+    return hash;
+  };
+
+  return { withdrawStake };
+}
+
+export function useFlagSubmission(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const flagSubmission = async (submissionId: number) => {
+    if (!walletClient || !address) throw new Error('Wallet not connected');
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'flagSubmission',
+      args: [BigInt(submissionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') onSuccess?.();
+    return hash;
+  };
+
+  return { flagSubmission };
+}
+
+export function useFlagExhibition(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const flagExhibition = async (exhibitionId: number) => {
+    if (!walletClient || !address) throw new Error('Wallet not connected');
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'flagExhibition',
+      args: [BigInt(exhibitionId)],
+      account: address,
+      chain: avalancheFuji,
+    });
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') onSuccess?.();
+    return hash;
+  };
+
+  return { flagExhibition };
+}
+
+export function useTipExhibition(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const tipExhibition = async (exhibitionId: number, amountInAvax: string) => {
+    if (!walletClient || !address) {
+      throw new Error('Wallet not connected');
+    }
+
+    const normalizedAmount = amountInAvax.trim();
+    if (!normalizedAmount || Number(normalizedAmount) <= 0) {
+      throw new Error('Tip amount must be greater than 0');
+    }
+
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'tipExhibition',
+      args: [BigInt(exhibitionId)],
+      value: parseEther(normalizedAmount),
+      account: address,
+      chain: avalancheFuji,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
+    return hash;
+  };
+
+  return { tipExhibition };
+}
+
+export function useTipPlatform(onSuccess?: () => void) {
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const tipPlatform = async (amountInAvax: string) => {
+    if (!walletClient || !address) {
+      throw new Error('Wallet not connected');
+    }
+
+    const normalizedAmount = amountInAvax.trim();
+    if (!normalizedAmount || Number(normalizedAmount) <= 0) {
+      throw new Error('打赏金额必须大于 0');
+    }
+
+    const hash = await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'tipPlatform',
+      args: [],
+      value: parseEther(normalizedAmount),
+      account: address,
+      chain: avalancheFuji,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === 'success') {
+      onSuccess?.();
+    }
+    return hash;
+  };
+
+  return { tipPlatform };
+}
+
 export function parseExhibition(raw: any): Exhibition | null {
   if (!raw) return null;
   return {
     id: Number(raw.id),
-    title: raw.title,
-    contentHash: raw.contentHash,
-    coverHash: raw.coverHash,
     curator: raw.curator,
+    title: raw.title,
+    content: raw.content,
+    coverHash: raw.coverHash,
+    tags: Array.isArray(raw.tags) ? raw.tags : [],
     createdAt: Number(raw.createdAt),
-    isActive: raw.isActive,
+    stakeWithdrawn: Boolean(raw.stakeWithdrawn),
+    flagged: Boolean(raw.flagged),
+    tipPool: Number(raw.tipPool),
     submissionCount: Number(raw.submissionCount),
   };
 }
@@ -212,17 +542,131 @@ export function parseSubmission(raw: any): Submission | null {
   return {
     id: Number(raw.id),
     exhibitionId: Number(raw.exhibitionId),
+    creator: raw.creator,
     contentType: raw.contentType,
-    contentHash: raw.contentHash,
+    status: Number(raw.status),
+    content: raw.content,
     title: raw.title,
     description: raw.description,
-    creator: raw.creator,
     recommendCount: Number(raw.recommendCount),
     createdAt: Number(raw.createdAt),
+    witnessCount: Number(raw.witnessCount),
+    flagged: Boolean(raw.flagged),
   };
 }
 
 export function parseSubmissions(raw: any): Submission[] {
   if (!raw || !Array.isArray(raw)) return [];
   return raw.map(parseSubmission).filter(Boolean) as Submission[];
+}
+
+export async function fetchUserActivity(address: string): Promise<UserActivitySummary> {
+  const normalizedAddress = address.toLowerCase();
+
+  const [rawExhibitions, rawHasSubmitted, rawHasCreatedExhibition] = await Promise.all([
+    publicClient.readContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'getAllExhibitions',
+    }),
+    publicClient.readContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'hasSubmitted',
+      args: [address as `0x${string}`],
+    }),
+    publicClient.readContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: 'hasCreatedExhibition',
+      args: [address as `0x${string}`],
+    }),
+  ]);
+
+  const exhibitions = parseExhibitions(rawExhibitions);
+  const submissionGroups = await Promise.all(
+    exhibitions.map(async (exhibition) => {
+      const rawSubmissions = await publicClient.readContract({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'getSubmissions',
+        args: [BigInt(exhibition.id)],
+      });
+
+      return {
+        exhibition,
+        submissions: parseSubmissions(rawSubmissions),
+      };
+    })
+  );
+
+  const submissions = submissionGroups
+    .flatMap(({ exhibition, submissions }) =>
+      submissions
+        .filter((submission) => submission.creator.toLowerCase() === normalizedAddress)
+        .map((submission) => ({
+          ...submission,
+          exhibitionTitle: exhibition.title,
+        }))
+    )
+    .sort((left, right) => right.createdAt - left.createdAt);
+
+  const milestoneBadges = submissions
+    .filter((submission) => submission.recommendCount >= 10)
+    .map((submission) => ({
+      submissionId: submission.id,
+      exhibitionId: submission.exhibitionId,
+      exhibitionTitle: submission.exhibitionTitle,
+      recommendCount: submission.recommendCount,
+    }));
+
+  const myExhibitions = exhibitions
+    .filter((exhibition) => exhibition.curator.toLowerCase() === normalizedAddress)
+    .sort((a, b) => b.createdAt - a.createdAt);
+
+  return {
+    submissions,
+    myExhibitions,
+    hasFirstSubmissionBadge: Boolean(rawHasSubmitted),
+    hasFirstExhibitionBadge: Boolean(rawHasCreatedExhibition),
+    milestoneBadges,
+  };
+}
+
+export async function fetchHomeExhibitions(): Promise<HomeExhibitionRecord[]> {
+  const rawExhibitions = await publicClient.readContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'getAllExhibitions',
+  });
+
+  const exhibitions = parseExhibitions(rawExhibitions).filter((exhibition) => !exhibition.flagged);
+
+  const enriched = await Promise.all(
+    exhibitions.map(async (exhibition) => {
+      const rawSubmissions = await publicClient.readContract({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'getSubmissions',
+        args: [BigInt(exhibition.id)],
+      });
+
+      const submissions = parseSubmissions(rawSubmissions).filter(
+        (submission) => submission.status === 1 && !submission.flagged
+      );
+      const recentSubmissions = submissions.slice(0, 3);
+      const totalRecommends = submissions.reduce((sum, submission) => sum + submission.recommendCount, 0);
+      const totalWitnesses = submissions.reduce((sum, submission) => sum + submission.witnessCount, 0);
+
+      return {
+        ...exhibition,
+        totalRecommends,
+        totalWitnesses,
+        hotScore: totalRecommends * 0.7 + exhibition.submissionCount * 0.3,
+        recentSubmissions,
+      };
+    })
+  );
+
+  return enriched;
 }

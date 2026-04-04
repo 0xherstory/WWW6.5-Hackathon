@@ -31,8 +31,8 @@ export function SearchBar() {
         ref={inputRef}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="搜索 Mentor 或企业..."
-        className="h-12 rounded-xl border-border/80 bg-card pl-11 pr-12 shadow-sm focus-visible:ring-2 focus-visible:ring-accent/50"
+        placeholder="搜索企业..."
+        className="h-12 rounded-xl border-[#E5E6EB] bg-card pl-11 pr-12 shadow-sm focus-visible:ring-2 focus-visible:ring-[#165DFF]/50"
       />
       {value && (
         <button

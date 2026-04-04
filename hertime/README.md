@@ -2,6 +2,8 @@
 
 > 那些不被看见的付出，从此有迹可循
 
+**线上预览：[https://hertime.vercel.app/](https://hertime.vercel.app/)**
+
 一个基于区块链的女性互助时间银行。将每一小时的互助服务转化为链上 Token，用不可篡改的记录和声誉体系，让女性群体内部的互助真正可信、可积累、可迁移。
 
 ---
@@ -22,7 +24,11 @@
 
 ## 🌱 项目起源
 
-2024 年，上海时间银行宣布暂停运营。这不是孤例——传统时间银行长期面临一个根本性困境：**时长存在平台，平台说停就停，用户的每一小时付出随时可能归零。**
+随着老龄化加剧，互助养老正在成为无数家庭的真实需求—— 邻里之间的陪伴、就医协助、情绪疏导，这些看不见的付出每天都在发生， 却**缺少一个可信的方式被记录、被承认、被回馈**。
+
+传统的互助平台存在一个结构性问题：积分和记录存在平台的数据库，数据归平台所有，不归用户所有。 平台维护中断、机构换届、资金断档，都可能让用户多年的付出变得无从查证。 上海时间银行近期的暂停维护，让这个问题再次被看见。
+
+HerTime 用智能合约重建这套信任机制：时间 Token 存在你自己的钱包， 声誉记录写在链上永不消失。平台可以倒闭，但你帮助过别人的证明将永远存在。
 
 除此之外，传统时间银行还有一个跨地域的结构性障碍：时间银行往往由各地社区、街道、机构分散管理，彼此之间的积分不互通。这对流动性强的人群尤为不友好——比如，你在上海陪护了邻居的老人，积累了若干时长，但当你希望家在成都的父母也能享受到类似的上门服务时，你在本地积累的时长完全无法兑换，因为两个城市根本不是同一套系统。
 
@@ -54,7 +60,11 @@
 ### 我的主页
 - 查看 HRT 余额、服务均分、技能徽章解锁进度
 - HRT 贡献轨迹折线图（支持日 / 月 / 年切换）
-- 历史服务记录（含图片灯箱、地图、联系方式）
+- 历史服务记录（含图片灯箱、地图、联系方式，双列弹窗布局）
+- **HRT 流水记录**：接入 The Graph 索引，展示每笔收入/支出明细（注册奖励 / 服务收入 / 服务消费 / 转账收入 / 转账支出），附总收入/总支出/净增汇总
+- **HRT 转赠**：直接将 HRT 转给任意地址，支持填写附言（如"妈妈，你留着用"），双方流水自动记录，对方收到站内通知
+- **站内通知系统**：服务被接单、完成、评分、取消、收到转账均推送通知；点击通知自动跳转到对应服务详情
+- 服务取消：进行中的服务双方均可发起取消，填写原因存链下备查
 
 ### 社区排行榜
 - 本周 / 全年 HRT 贡献排名
@@ -97,38 +107,52 @@
 
 ```mermaid
 graph TB
-    subgraph 用户层
-        U[用户 · MetaMask 钱包]
+    subgraph USER["用户层"]
+        U["用户 · MetaMask 钱包"]
     end
 
-    subgraph 前端 React + Vite
-        A[IntroPage 项目介绍]
-        B[BoardTab 需求广场]
-        C[PostTab 发布需求]
-        D[ProfileTab 我的主页]
-        E[LeaderboardTab 排行榜]
-        F[MapPage 附近成员地图]
+    subgraph FE["前端 React + Vite"]
+        A["IntroPage 项目介绍"]
+        B["BoardTab 需求广场"]
+        C["PostTab 发布需求"]
+        D["ProfileTab 我的主页"]
+        E["LeaderboardTab 排行榜"]
+        FM["MapPage 附近成员地图"]
     end
 
-    subgraph 智能合约层 Avalanche Fuji / Hardhat
-        SC1[HerTimeService\n发布·接单·确认·协商时长]
-        SC2[HerTimeToken ERC20\n1 HRT = 1h · 0.1h 精度]
-        SC3[HerTimeReputation\n双盲评分·均分统计]
-        SC4[HerTimeSkillNFT ERC721\nSoulbound 技能徽章]
+    subgraph SC["智能合约层 Avalanche Fuji / Hardhat"]
+        SC1["HerTimeService\n发布·接单·确认·协商时长"]
+        SC2["HerTimeToken ERC20\n1 HRT = 1h · 0.1h 精度"]
+        SC3["HerTimeReputation\n双盲评分·均分统计"]
+        SC4["HerTimeSkillNFT ERC721\nSoulbound 技能徽章"]
     end
 
-    subgraph 链下存储 Firebase Realtime DB
-        F1[service_details\n描述·期望时间]
-        F2[service_images\nCanvas base64 图片]
-        F3[service_locations\n见面地点坐标]
-        F4[locations\n成员实时位置]
-        F5[contacts\n双方联系方式]
-        F6[actual_hours\n协商时长备注]
+    subgraph FB["链下存储 Firebase Realtime DB"]
+        F1["service_details\n描述·期望时间"]
+        F2["service_images\nCanvas base64 图片"]
+        F3["service_locations\n见面地点坐标"]
+        F4["locations\n成员实时位置"]
+        F5["contacts\n双方联系方式"]
+        F6["actual_hours\n协商时长备注"]
+        F7["notifications\n站内通知"]
+        F8["cancel_reasons\n取消原因"]
+        F9["rating_comments\n评价文字"]
     end
 
-    U -->|连接钱包| 前端 React + Vite
-    前端 React + Vite -->|ethers.js v6| 智能合约层 Avalanche Fuji / Hardhat
-    前端 React + Vite -->|读写| 链下存储 Firebase Realtime DB
+    subgraph GR["The Graph Studio"]
+        G1["Service 实体"]
+        G2["Member 实体\nhrtFlows·avgScore"]
+        G3["SkillBadge·Rating·HRTFlow"]
+    end
+
+    U -->|连接钱包| B
+    B -->|ethers.js v6| SC1
+    D -->|ethers.js v6| SC2
+    C -->|读写| F1
+    D -->|读写| F7
+    D -->|GraphQL| G2
+    SC1 -->|事件索引| G1
+    SC2 -->|事件索引| G2
     SC1 -->|mint/burn| SC2
     SC1 -->|unlockRating| SC3
     SC3 -->|颁发 NFT| SC4
@@ -272,6 +296,7 @@ Firebase Storage 需要付费套餐（Blaze Plan）。HerTime 改用**浏览器 
 | `locations` | 成员实时位置（截断至 ±1km） | 公开读 |
 | `contacts` | 双方联系方式 | 仅当事人可见 |
 | `actual_hours` | 协商时长备注 | 仅当事人可见 |
+| `hrt_transfers` | HRT 转账流水（含附言） | 仅本人可见 |
 
 ---
 
@@ -283,6 +308,31 @@ Firebase Storage 需要付费套餐（Blaze Plan）。HerTime 改用**浏览器 
 const mintEvents = await token.queryFilter(token.filters.ServiceMint(address))
 const burnEvents = await token.queryFilter(token.filters.ServiceBurn(address))
 ```
+
+---
+
+#### HRT 流水记录（The Graph 索引）
+
+个人主页新增"HRT 流水"子标签，通过 The Graph Studio 部署的子图索引合约事件，一次 GraphQL 查询即可拿到完整流水历史：
+
+```graphql
+query Member($id: ID!) {
+  member(id: $id) {
+    hrtEarned
+    hrtSpent
+    hrtFlows(orderBy: timestamp, orderDirection: desc, first: 30) {
+      type      # "welcome" | "earn" | "spend"
+      amount
+      serviceId
+      timestamp
+    }
+  }
+}
+```
+
+与直接 `queryFilter` 相比，The Graph 索引响应速度快数倍，且支持跨区块范围聚合，不受 RPC 节点限制。
+
+子图索引 4 个合约（HerTimeService / HerTimeToken / HerTimeReputation / HerTimeSkillNFT），实体包括 Service / Member / SkillBadge / Rating / HRTFlow。
 
 ---
 
@@ -299,8 +349,9 @@ const burnEvents = await token.queryFilter(token.filters.ServiceBurn(address))
 | 数据可视化 | recharts AreaChart | HRT 贡献轨迹折线图（日/月/年） |
 | 地图 | react-leaflet + Leaflet | 附近成员地图、服务地点定位 |
 | 地址搜索 | Nominatim (OpenStreetMap) | 发布需求时关键词搜索地址坐标 |
-| 链下数据库 | Firebase Realtime Database | 图片、描述、联系方式、位置（免费套餐） |
+| 链下数据库 | Firebase Realtime Database | 图片、描述、联系方式、位置、通知、取消原因（免费套餐） |
 | 图片处理 | 浏览器 Canvas API | 图片压缩为 base64 JPEG，替代付费云存储 |
+| 索引查询 | The Graph Studio | HRT 流水记录、成员数据 GraphQL 查询 |
 | 隐私保护 | 坐标截断 + address(0) 隔离 | 位置模糊化 + 匿名身份保护 |
 
 ---
@@ -398,9 +449,14 @@ hertime/
 │   │   └── MapPage.jsx         # 全屏附近成员地图
 │   └── utils/
 │       ├── contracts.js        # ABI + 多网络地址加载（自动按 chainId 切换）
-│       ├── firebase.js         # 链下读写封装（位置/图片/联系方式/时长备注）
+│       ├── firebase.js         # 链下读写封装（位置/图片/联系方式/通知/取消原因）
+│       ├── graphQueries.js     # The Graph GraphQL 查询封装
 │       ├── deployed.localhost.json
 │       └── deployed.fuji.json
+├── subgraph/
+│   ├── subgraph.yaml           # 4 数据源配置（HerTimeService/Token/Reputation/SkillNFT）
+│   ├── schema.graphql          # 5 实体（Service/Member/SkillBadge/Rating/HRTFlow）
+│   └── src/                   # AssemblyScript 映射处理器
 └── hardhat.config.js
 ```
 
@@ -416,3 +472,4 @@ hertime/
 | 坐标截断至小数点后 2 位 | 约 ±1km 误差，能用于距离筛选，同时无法精确定位到用户住所 |
 | 联系方式存 Firebase 不上链 | 降低 gas 成本，且链上数据永久公开，手机号/微信不应上链 |
 | 评分用 `×100` 整数存储 | 避免均分计算引入浮点误差，492 = 4.92 分，前端 ÷100 展示 |
+| HRT 转账记录存 Firebase 而非依赖链上事件 | 子图未索引标准 ERC-20 Transfer 事件；Firebase 同时存储附言，转账完成后双方流水即时可见，无需等待区块确认和索引同步 |

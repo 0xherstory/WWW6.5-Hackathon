@@ -67,7 +67,7 @@ const UsernameModal = ({ isOpen, onClose, onUsernameSet }: Props) => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value.slice(0, 20))}
-            placeholder="输入昵称..."
+            placeholder="输入昵称（当前默认：云吃吃）"
             maxLength={20}
             className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />

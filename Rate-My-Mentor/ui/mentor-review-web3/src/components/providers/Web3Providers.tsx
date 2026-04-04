@@ -1,25 +1,14 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
-
-// 动态导入 RainbowKit，禁用 SSR
-const RainbowKitProvider = dynamic(
-  () => import("@rainbow-me/rainbowkit").then((mod) => mod.RainbowKitProvider),
-  { ssr: false }
-);
-
-// 动态导入 WagmiProvider，禁用 SSR
-const WagmiProvider = dynamic(
-  () => import("wagmi").then((mod) => mod.WagmiProvider),
-  { ssr: false }
-);
+import { useState, useRef, type ReactNode } from "react";
+import { WagmiProvider } from "wagmi";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 
 import { wagmiConfig } from "@/lib/wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
 
-function ProvidersInner({ children }: { children: ReactNode }) {
+export function Web3Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -35,14 +24,16 @@ function ProvidersInner({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider showRecentTransactions>
+        <RainbowKitProvider
+          showRecentTransactions
+          theme={darkTheme({
+            accentColor: '#165DFF',
+            accentColorForeground: 'white',
+          })}
+        >
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
-}
-
-export function Web3Providers({ children }: { children: ReactNode }) {
-  return <ProvidersInner>{children}</ProvidersInner>;
 }

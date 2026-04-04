@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useClaimStore } from "@/stores/claimStore";
+import { useCardStore } from "@/stores/cardStore";
 
 interface JournalRecord {
   cid: string;
@@ -23,6 +24,9 @@ export default function SuccessPage() {
   const [txHash, setTxHash] = useState<string | null>(null);
 
   useEffect(() => {
+    // 清除卡牌选择状态，防止下次进入时读到脏数据
+    useCardStore.getState().clearSelection();
+
     // 从 URL 获取交易哈希
     const urlTx = searchParams.get('tx');
     if (urlTx) {

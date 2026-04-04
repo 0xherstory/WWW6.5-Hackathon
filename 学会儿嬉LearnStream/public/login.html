@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #fce7f3, #f9d5e5);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Floating background elements */
+        .floating-element {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 24px;
+            font-weight: 600;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element.small {
+            font-size: 16px;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg);
+            }
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .login-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .lang-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .login-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 24px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .tab.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+        }
+        
+        .login-form {
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+        }
+        
+        .wallet-login {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+        
+        .wallet-login:hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.1);
+        }
+        
+        .wallet-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e9ecef;
+        }
+        
+        .divider-text {
+            padding: 0 16px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .footer-text {
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .footer-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-tab {
+            display: none;
+        }
+        
+        .form-tab.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating-element" style="top: 10%; left: 10%; animation-delay: 0s;">learn</div>
+    <div class="floating-element small" style="top: 20%; right: 15%; animation-delay: 1s;">grow</div>
+    <div class="floating-element" style="bottom: 15%; left: 20%; animation-delay: 2s;">practice</div>
+    <div class="floating-element small" style="bottom: 25%; right: 10%; animation-delay: 3s;">achieve</div>
+    <div class="floating-element" style="top: 40%; left: 5%; animation-delay: 4s;">connect</div>
+    <div class="floating-element small" style="top: 60%; right: 20%; animation-delay: 5s;">share</div>
+    
+    <div class="login-container">
+        <div class="logo" data-lang-en="LearnStream" data-lang-zh="学会儿嬉">学会儿嬉LearnStream</div>
+        <h1 class="login-title" data-lang-en="Welcome to LearnStream" data-lang-zh="欢迎来到学会儿嬉">Welcome to LearnStream</h1>
+        <p class="login-subtitle" data-lang-en="Learn Share Grow" data-lang-zh="学习、分享、成长">Learn Share Grow</p>
+        
+        <div class="language-switcher">
+            <button id="en-btn" class="lang-btn active">EN</button>
+            <button id="zh-btn" class="lang-btn">中文</button>
+        </div>
+        
+        <div class="login-tabs">
+            <div class="tab active" data-tab="phone" data-lang-en="Phone" data-lang-zh="手机">Phone</div>
+            <div class="tab" data-tab="email" data-lang-en="Email" data-lang-zh="邮箱">Email</div>
+        </div>
+        
+        <div class="mode-switcher" style="display: flex; justify-content: center; margin-bottom: 24px; padding: 12px; background-color: #f9fafb; border-radius: 12px;">
+            <button id="mode-toggle-btn" class="mode-btn" style="padding: 8px 16px; border: 1px solid #e9ecef; border-radius: 20px; background-color: white; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
+                <span id="mode-text" data-lang-en="Switch to Sign Up" data-lang-zh="切换到注册">Switch to Sign Up</span>
+            </button>
+        </div>
+        
+        <div class="login-form">
+            <div class="form-tab active" id="phone-tab">
+                <div class="form-group">
+                    <label class="form-label" data-lang-en="Phone Number" data-lang-zh="手机号码">Phone Number</label>
+                    <input type="tel" id="phone-input" class="form-input" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-lang-en="Password" data-lang-zh="密码">Password</label>
+                    <input type="password" id="phone-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" id="phone-login-btn" data-lang-en="Login" data-lang-zh="登录">Login</button>
+            </div>
+            
+            <div class="form-tab" id="email-tab">
+                <div class="form-group">
+                    <label class="form-label" data-lang-en="Email" data-lang-zh="邮箱">Email</label>
+                    <input type="email" id="email-input" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-lang-en="Password" data-lang-zh="密码">Password</label>
+                    <input type="password" id="email-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" id="email-login-btn" data-lang-en="Login" data-lang-zh="登录">Login</button>
+            </div>
+        </div>
+        
+        <div class="divider">
+            <span class="divider-text" data-lang-en="OR" data-lang-zh="或">OR</span>
+        </div>
+        
+        <div class="wallet-login" id="wallet-login-btn" data-lang-en="Login with Wallet" data-lang-zh="使用钱包登录">
+            <div class="wallet-icon">🪙</div>
+            <div>Login with Wallet</div>
+        </div>
+        
+        <div class="footer-text">
+            <span id="footer-text" data-lang-en="Don't have an account?" data-lang-zh="没有账户？">Don't have an account?</span>
+            <a href="#" id="toggle-mode-link" class="footer-link" data-lang-en="Sign Up" data-lang-zh="注册">Sign Up</a>
+        </div>
+        
+        <div id="error-message" style="color: #ef4444; text-align: center; margin-top: 16px; display: none;"></div>
+    </div>
+    
+    <script src="api.js"></script>
+    <script>
+        let isRegisterMode = false;
+
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            document.getElementById('en-btn').classList.remove('active');
+            document.getElementById('zh-btn').classList.remove('active');
+            document.getElementById(lang + '-btn').classList.add('active');
+            
+            const elements = document.querySelectorAll('[data-lang-en]');
+            elements.forEach(element => {
+                element.textContent = element.getAttribute('data-lang-' + lang);
+            });
+            
+            updateModeText();
+        }
+        
+        function initLanguage() {
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+        }
+        
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector('[data-tab="' + tabId + '"]').classList.add('active');
+            
+            document.querySelectorAll('.form-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId + '-tab').classList.add('active');
+        }
+        
+        function updateModeText() {
+            const lang = localStorage.getItem('language') || 'en';
+            const footerText = document.getElementById('footer-text');
+            const toggleLink = document.getElementById('toggle-mode-link');
+            const loginBtns = document.querySelectorAll('.login-btn');
+            const modeText = document.getElementById('mode-text');
+            
+            if (isRegisterMode) {
+                footerText.textContent = lang === 'zh' ? '已有账户？' : 'Already have an account?';
+                toggleLink.textContent = lang === 'zh' ? '登录' : 'Login';
+                modeText.textContent = lang === 'zh' ? '切换到登录' : 'Switch to Login';
+                loginBtns.forEach(btn => {
+                    btn.textContent = lang === 'zh' ? '注册' : 'Sign Up';
+                });
+            } else {
+                footerText.textContent = lang === 'zh' ? '没有账户？' : "Don't have an account?";
+                toggleLink.textContent = lang === 'zh' ? '注册' : 'Sign Up';
+                modeText.textContent = lang === 'zh' ? '切换到注册' : 'Switch to Sign Up';
+                loginBtns.forEach(btn => {
+                    btn.textContent = lang === 'zh' ? '登录' : 'Login';
+                });
+            }
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('error-message');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        async function handleEmailLogin() {
+            const email = document.getElementById('email-input').value.trim();
+            const password = document.getElementById('email-password').value;
+            
+            if (!email || !password) {
+                showError('Please enter email and password');
+                return;
+            }
+            
+            try {
+                let response;
+                if (isRegisterMode) {
+                    response = await api.register({
+                        username: email.split('@')[0],
+                        email: email,
+                        password: password
+                    });
+                } else {
+                    response = await api.login({ email, password });
+                }
+                
+                if (response.success) {
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        
+        async function handlePhoneLogin() {
+            const phone = document.getElementById('phone-input').value.trim();
+            const password = document.getElementById('phone-password').value;
+            
+            if (!phone || !password) {
+                showError('Please enter phone number and password');
+                return;
+            }
+            
+            try {
+                let response;
+                if (isRegisterMode) {
+                    response = await api.register({
+                        username: 'user_' + phone.slice(-4),
+                        phone: phone,
+                        email: phone + '@phone.temp',
+                        password: password
+                    });
+                } else {
+                    response = await api.login({ phone, password });
+                }
+                
+                if (response.success) {
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        
+        async function handleWalletLogin() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const walletAddress = accounts[0];
+                    
+                    const response = await api.walletLogin(walletAddress);
+                    
+                    if (response.success) {
+                        window.location.href = 'index.html';
+                    }
+                } catch (error) {
+                    showError(error.message);
+                }
+            } else {
+                showError('Please install MetaMask to use wallet login');
+            }
+        }
+        
+        document.getElementById('en-btn').addEventListener('click', () => setLanguage('en'));
+        document.getElementById('zh-btn').addEventListener('click', () => setLanguage('zh'));
+        
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.getAttribute('data-tab'));
+            });
+        });
+        
+        document.getElementById('email-login-btn').addEventListener('click', handleEmailLogin);
+        document.getElementById('phone-login-btn').addEventListener('click', handlePhoneLogin);
+        document.getElementById('wallet-login-btn').addEventListener('click', handleWalletLogin);
+        
+        document.getElementById('toggle-mode-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            isRegisterMode = !isRegisterMode;
+            updateModeText();
+        });
+        
+        document.getElementById('mode-toggle-btn').addEventListener('click', () => {
+            isRegisterMode = !isRegisterMode;
+            updateModeText();
+        });
+        
+        document.getElementById('email-password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleEmailLogin();
+        });
+        
+        document.getElementById('phone-password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handlePhoneLogin();
+        });
+        
+        if (api.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+        
+        window.addEventListener('DOMContentLoaded', initLanguage);
+    </script>
+</body>
+</html>

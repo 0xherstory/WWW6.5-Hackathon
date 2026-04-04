@@ -9,6 +9,8 @@ import CheckInAction from "@/components/CheckInAction";
 import PageWalletBar from "@/components/PageWalletBar";
 import { CHECKIN_CONTRACT_ADDRESS } from "@/contracts/checkinConfig";
 import { checkinAbi } from "@/contracts/checkinAbi";
+import MusicFloatingToggle from "@/components/MusicFloatingToggle";
+import { useBackgroundAudio } from "@/components/BackgroundAudioProvider";
 
 type Phase = "Engage" | "Hold" | "Release";
 type SessionState = "idle" | "active" | "paused" | "complete";
@@ -190,6 +192,7 @@ function PostureIcon({
 export default function KegelPage() {
   const router = useRouter();
   const { address } = useAccount();
+  useBackgroundAudio();
   const dailyWhisper = getDailyWhisper();
 
   const [sessionState, setSessionState] = useState<SessionState>("idle");
@@ -223,6 +226,8 @@ export default function KegelPage() {
       enabled: !!address && sessionState === "complete",
     },
   });
+
+  const checkedInToday = sessionState === "complete" && hasCheckedInToday === true;
 
   useEffect(() => {
     if (sessionState !== "active") return;
@@ -497,6 +502,7 @@ export default function KegelPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,rgba(236,240,233,0.96),rgba(245,242,238,0.98)_40%,rgba(239,236,232,1)_100%)] text-[#576158]">
       <PageWalletBar />
+      <MusicFloatingToggle track="home" />
 
       <section className="relative mx-auto flex min-h-screen w-full max-w-[1560px] flex-col px-8 py-5 md:px-12 md:py-6 lg:px-16 xl:px-20">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -663,26 +669,27 @@ export default function KegelPage() {
                       </p>
 
                       <p className="text-[15px] font-normal text-[#8d9790] md:text-[18px]">
-                        身体会慢慢记住这种细微而稳定的支持感
+                        身体会慢慢记住这种支持感
                       </p>
                     </div>
                   </div>
                 )}
+
               </div>
             </div>
 
             {sessionState === "complete" && (
               <div className="mt-4 flex flex-col items-center gap-3">
                 <div className="max-w-[340px] text-center">
-                  <p className="text-[18px] leading-8 text-[#6f786f] md:text-[20px]">
-                    {dailyWhisper.text}
-                  </p>
-                  <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-[#a1aa9f]">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-[#a1aa9f]">
                     {dailyWhisper.label}
+                  </p>
+                  <p className="mt-2 text-[18px] leading-8 text-[#6f786f] md:text-[20px]">
+                    {dailyWhisper.text}
                   </p>
                 </div>
 
-                {hasCheckedInToday ? (
+                {checkedInToday ? (
                   <button
                     onClick={() => router.push("/checkin")}
                     className="rounded-full border border-white/30 bg-[#eef3eb] px-6 py-2.5 text-sm tracking-[0.03em] text-[#33413a] shadow-[0_10px_22px_rgba(97,122,101,0.08),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#e8efe5] hover:shadow-[0_16px_30px_rgba(97,122,101,0.12)]"
@@ -732,12 +739,16 @@ export default function KegelPage() {
                 </button>
               )}
 
-              <button
-                onClick={reset}
-                className="rounded-full border border-white/34 bg-white/72 px-7 py-3 text-sm tracking-[0.03em] text-[#7a827a] shadow-[0_10px_22px_rgba(122,132,122,0.07),inset_0_1px_0_rgba(255,255,255,0.34)] backdrop-blur-md transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.018] hover:bg-white/88 hover:shadow-[0_16px_28px_rgba(122,132,122,0.10)] active:scale-[0.988]"
-              >
-                重置
-              </button>
+              {sessionState === "paused" && (
+                <button
+                  onClick={reset}
+                  className="rounded-full border border-white/34 bg-white/72 px-7 py-3 text-sm tracking-[0.03em] text-[#7a827a] shadow-[0_10px_22px_rgba(122,132,122,0.07),inset_0_1px_0_rgba(255,255,255,0.34)] backdrop-blur-md transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.018] hover:bg-white/88 hover:shadow-[0_16px_28px_rgba(122,132,122,0.10)] active:scale-[0.988]"
+               >
+                  重置
+                </button>
+              )}
+
+
             </div>
           </div>
 

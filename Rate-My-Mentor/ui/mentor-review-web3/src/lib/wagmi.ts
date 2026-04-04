@@ -8,7 +8,7 @@ export const wagmiConfig = getDefaultConfig({
   appName: "Rate My Mentor",
   projectId,
   chains: [avalancheFuji],
-  ssr: true,
+  ssr: false,
 });
 
 

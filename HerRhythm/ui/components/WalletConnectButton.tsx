@@ -21,8 +21,8 @@ export default function WalletConnectButton() {
 
   const preferredConnector = useMemo(() => {
     return (
-      connectors.find((connector) => connector.name === 'MetaMask') ??
-      connectors.find((connector) => connector.name === 'Injected') ??
+      connectors.find((connector) => connector.id === 'metaMask') ??
+      connectors.find((connector) => connector.id === 'injected') ??
       connectors[0]
     )
   }, [connectors])
@@ -46,11 +46,15 @@ export default function WalletConnectButton() {
   }
 
   if (!preferredConnector) {
-    return <p className="text-sm text-[#b26b6b]">No wallet connector found.</p>
+    return (
+      <p className="text-center text-sm text-[#b26b6b]">
+        No wallet connector found.
+      </p>
+    )
   }
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-center gap-2">
       <button
         onClick={() => connect({ connector: preferredConnector })}
         className="rounded-full border border-white/40 bg-white/68 px-5 py-3 text-sm text-[#556157] shadow-[0_10px_28px_rgba(118,130,112,0.10),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f3f6f0] active:scale-[0.985] disabled:cursor-not-allowed disabled:opacity-60"
@@ -60,8 +64,8 @@ export default function WalletConnectButton() {
       </button>
 
       {error && (
-        <p className="max-w-[220px] text-right text-xs text-[#b26b6b]">
-          Connection failed
+        <p className="max-w-[260px] text-center text-xs text-[#b26b6b]">
+          {error.message || 'Connection failed'}
         </p>
       )}
     </div>

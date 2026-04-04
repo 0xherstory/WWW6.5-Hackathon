@@ -21,5 +21,8 @@ System 系统做什么？
 Goal 我们的目标:
 > build a trustable, non-manipulable reputation layer for workplace experience  为我们的职场体验建立一个可信的、不可操纵的 带教/所在组 声誉场
 
+部署地址：
+前端：https://rate-my-mentor-theta.vercel.app
+后端：www65-hackathon-production.up.railway.app
 
 

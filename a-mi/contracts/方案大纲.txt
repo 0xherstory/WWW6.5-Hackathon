@@ -1,0 +1,119 @@
+总原则
+
+你现在按单人推进来做，优先级是：
+
+先把前端 demo 做出来
+再决定要不要接一点合约
+最后做 PPT 和 demo script
+
+目标不是完整 dApp，而是一个能展示、能讲清楚、流程跑得通的 demo。
+
+周二
+原计划目标
+
+把前端骨架搭起来
+
+原计划任务
+做 Home 页面
+做 Create Commitment 页面
+打通 Home → Create 跳转
+确定整体风格和基础文案
+原计划完成标准
+首页能打开
+Create 页面能打开
+能从首页点进 Create
+周三
+原计划目标
+
+跑通完整前端流程
+
+原计划任务
+做 Profile / Result 页面
+让 Create 提交后跳到 Profile
+用 mock 数据展示 commitment
+补上 witness / support 展示区块
+原计划完成标准
+能完整走一遍：
+Home → Create → Profile
+页面已经像一个可演示产品
+周四
+原计划目标
+
+决定 Web3 加到哪一层
+
+如果前端还不稳
+修页面 bug
+调整 UI
+优化按钮和跳转
+让 support / witness 展示更完整
+如果前端已经稳了
+尝试接 Connect Wallet
+如果顺利，再尝试接最小链上动作
+原计划完成标准
+
+二选一：
+
+前端更完整更稳定
+或
+钱包连接成功 / 有一点链上痕迹
+周五
+原计划目标
+
+锁 demo 版本
+
+原计划任务
+调整页面文案和排版
+明确哪些功能是 真 的，哪些是 mock
+写 1 分钟项目介绍
+写 demo 路径
+原计划完成标准
+已经有一个“可展示版本”
+自己知道怎么讲
+不再新增功能
+周六
+原计划目标
+
+冲刺 + 做展示材料
+
+原计划任务
+如果还有余力，补一点钱包 / 合约
+做 4–6 页 PPT
+写 demo script
+彩排 2 遍
+录一版备份视频
+截几张关键页面图
+原计划完成标准
+网页 demo ready
+PPT ready
+讲稿 ready
+录屏备份 ready
+后来根据你和合约队友开会后的调整版
+
+后面你们讨论后，又把“链上部分”细化成：
+
+新主线
+Commitment 合约
+createCommitment
+checkInCommitment / updateCommitmentStatus
+代币激励合约
+登录 / 打卡 / witness / support 可获得 token
+
+但当时的建议是：
+
+真实优先级
+必做主线
+前端网页完整可展示
+commitment 创建
+commitment 状态变化 / check-in
+可选增强
+token 激励机制
+witness / support 真上链
+
+也就是说，后来新版单人计划里，链上部分被重新定义为：
+
+优先做
+createCommitment
+checkInCommitment
+可以后补
+witness / support
+token contract

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RouteMint | 开始提问</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./routemint.css" />
+  </head>
+  <body class="rm-body rm-page-ask">
+    <div class="rm-shell">
+      <header class="site-header">
+        <a class="brand-mark" href="./routemint.html" aria-label="RouteMint">
+          <span class="brand-logo-view brand-logo-view-header">
+            <img src="./assets/routemint-logo.png" alt="RouteMint" class="brand-logo-img" />
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="./routemint-app.html" data-nav="home">首页</a>
+          <a href="./routemint-ask.html" data-nav="ask">开始提问</a>
+          <a href="./routemint-explore.html" data-nav="browse">看看经历</a>
+          <a href="./routemint-me.html" data-nav="me">我的经验</a>
+        </nav>
+
+        <button class="wallet-pill wallet-pill-minimal" data-open-settings type="button">
+          <span class="wallet-dot"></span>
+          <span id="walletStatePill">未连接</span>
+        </button>
+      </header>
+
+      <main class="page-stack">
+        <section class="page-heading page-heading-centered">
+          <h1>你想问什么</h1>
+          <p class="page-lead">
+            把情况说清楚一点，走过类似路的人才更容易回你。
+          </p>
+          <div class="status-inline" id="askConnectionText">先连上钱包，再把合约地址保存好。</div>
+        </section>
+
+        <section class="ask-page-shell">
+          <form class="form-card ask-form-card" id="askForm">
+            <section class="form-section">
+              <h2>先说说你的情况</h2>
+              <div class="field-stack">
+                <label class="field-label">
+                  标题
+                  <input id="questionTitleInput" type="text" placeholder="比如：要不要去读研？" required />
+                </label>
+
+                <label class="field-label">
+                  你的处境
+                  <textarea
+                    id="questionBodyInput"
+                    placeholder="把你现在最纠结的地方写下来，比如你在怕什么、手上有什么选项、为什么一直定不下来。"
+                  ></textarea>
+                </label>
+
+                <label class="field-label">
+                  你更想听谁的经历
+                  <select id="questionCategoryInput">
+                    <option value="0">读过研 / 留过学的人</option>
+                    <option value="1">转过行 / 换过工作的人</option>
+                    <option value="2">做过项目选择 / 创过业的人</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <h2>给回答留一点反馈</h2>
+              <div class="field-grid two-cols">
+                <label class="field-label">
+                  保证金
+                  <input id="stakeAmountInput" type="number" min="0" step="0.001" value="0.01" required />
+                  <span class="field-help">这是一个小额保证，提醒自己在收到回答后回来完成反馈。</span>
+                </label>
+
+                <label class="field-label">
+                  奖励池
+                  <input id="rewardPoolInput" type="number" min="0" step="0.001" value="0.02" required />
+                  <span class="field-help">你觉得有帮助的回答，会从这里拿到奖励。</span>
+                </label>
+              </div>
+            </section>
+
+            <details class="optional-details">
+              <summary>高级设置</summary>
+              <label class="field-label">
+                Question CID（可留空自动生成）
+                <input id="questionCidInput" type="text" placeholder="bafy-question-..." />
+              </label>
+            </details>
+
+            <div class="form-submit-row">
+              <div class="total-note">这次会一起发送 <strong id="totalContributionText">0.0300 AVAX</strong></div>
+              <button class="btn btn-primary" id="createQuestionBtn" type="submit">发出这个问题</button>
+            </div>
+
+            <div class="inline-status" id="askPageStatus">先连上钱包，再把合约地址保存好。</div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal hidden" id="settingsModal">
+      <div class="modal-backdrop" data-close-settings></div>
+      <div class="modal-dialog">
+        <div class="modal-head">
+          <div>
+            <p class="section-kicker">Chain setup</p>
+            <h3>链上设置</h3>
+          </div>
+          <button class="icon-btn" id="settingsCloseBtn" type="button">×</button>
+        </div>
+
+        <div class="settings-grid">
+          <div class="settings-row">
+            <span>当前钱包</span>
+            <strong id="settingsWalletLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>当前网络</span>
+            <strong id="settingsNetworkLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>合约状态</span>
+            <strong id="settingsContractLine">未配置</strong>
+          </div>
+        </div>
+
+        <label class="field-label">
+          RouteMint 合约地址
+          <input id="settingsContractInput" type="text" placeholder="粘贴你部署在 Avalanche Fuji 的 0x 地址" />
+        </label>
+
+        <div class="button-row">
+          <button class="btn btn-secondary" data-switch-network type="button">切到 Fuji</button>
+          <button class="btn btn-secondary" data-connect-wallet type="button">连接钱包</button>
+          <button class="btn btn-primary" id="settingsSaveBtn" type="button">保存地址</button>
+        </div>
+
+        <p class="inline-status" id="settingsStatus">你可以先连接钱包，再保存合约地址。</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script src="./routemint-core.js"></script>
+    <script src="./routemint-ask.js"></script>
+  </body>
+</html>

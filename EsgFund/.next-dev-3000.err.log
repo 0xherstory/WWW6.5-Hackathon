@@ -1,0 +1,105 @@
+
+[1m[33mwarn[39m[22m - No utility classes were detected in your source files. If this is unexpected, double-check the `content` option in your Tailwind CSS configuration.
+[1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+(node:102628) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+ ⨯ ./components/dashboard/esg-dashboard.tsx
+Error: Failed to read source code from D:\Cursor\EsgFund\components\dashboard\esg-dashboard.tsx
+
+Caused by:
+    stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/dashboard/esg-dashboard.tsx
+./components/dashboard/dashboard-client.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\Cursor\EsgFund\.next\server\app\api\events'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/history/route' in D:\Cursor\EsgFund\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'D:\Cursor\EsgFund\.next\server\app\api\history\route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/history/route' in 'D:\Cursor\EsgFund\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/history/route (expected D:\Cursor\EsgFund\.next\server\app\api\history\route.js)
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/events/route' in D:\Cursor\EsgFund\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'D:\Cursor\EsgFund\.next\server\app\api\events\route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/events/route' in 'D:\Cursor\EsgFund\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/events/route (expected D:\Cursor\EsgFund\.next\server\app\api\events\route.js)
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\Cursor\EsgFund\.next\server\app\api\events'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/events/route' in D:\Cursor\EsgFund\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'D:\Cursor\EsgFund\.next\server\app\api\events\route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/events/route' in 'D:\Cursor\EsgFund\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/events/route (expected D:\Cursor\EsgFund\.next\server\app\api\events\route.js)
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/history/route' in D:\Cursor\EsgFund\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'D:\Cursor\EsgFund\.next\server\app\api\history\route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/history/route' in 'D:\Cursor\EsgFund\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/history/route (expected D:\Cursor\EsgFund\.next\server\app\api\history\route.js)
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\Cursor\EsgFund\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
