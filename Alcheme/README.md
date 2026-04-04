@@ -8,7 +8,8 @@
 
 [![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/08QBVLgxwdc)
 
-[![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/hqdefault.jpg)](https://youtu.be/08QBVLgxwdc)
+[![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/maxresdefault.jpg)](https://youtu.be/08QBVLgxwdc)
+
 ------
 
 ## 🌟 Inspiration (The "Why")
