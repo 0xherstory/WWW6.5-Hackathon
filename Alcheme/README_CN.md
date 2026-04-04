@@ -37,14 +37,12 @@
 
 ## 🛠️ 技术栈
 
-- **前端交互**: React / Next.js (基于 **AI 驱动组件合成** 范式)
-- **视觉样式**: Tailwind CSS (采用 **“轻量炼金女巫风”** 美学)
-- **AI 引擎**:
-    - **GPT-4o**: 语义提炼、多维成长评分
-    - **DALL-E / GPT-Image-1**: 卡牌与勋章艺术图生成
-- **Web3 技术**:
-    - **Solidity**: ERC-721 (SBT 协议)
-    - **IPFS**: 去中心化元数据存储
+- **前端：**Next.js 14、React 18、TypeScript、Tailwind CSS、Framer Motion
+- **Web3：**Avalanche Fuji 测试网、wagmi、viem、RainbowKit、WalletConnect
+- **AI：**OpenAI API、DALL-E
+- **后端：**Node.js、Express、Sharp、Supabase
+- **智能合约：**Solidity ^0.8.20、Foundry、OpenZeppelin、灵魂绑定代币 SBT（Soulbound Token）
+- **存储：**IPFS、Pinata
 
 ---
 
@@ -68,14 +66,18 @@
 git clone https://github.com/your-username/alcheme.git
 
 # 2. 安装依赖
-cd alcheme
+cd Alcheme/frontend
+npm install
+cd Alcheme/backend
 npm install
 
 # 3. 设置环境变量
-# 在根目录下创建 .env 文件并添加你的 API Key
-echo "OPENAI_API_KEY=你的Key" > .env
+根据自己信息修改前端、后端.env文件
 
 # 4. 启动开发服务器
+cd Alcheme/backend
+npm run dev
+cd Alcheme/frontend
 npm run dev
 ```
 
