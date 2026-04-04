@@ -62,6 +62,22 @@ The current "Buy-Action" logic is only the starting point for the Ulysses framew
 
 ---
 
+### 👥 Team & Responsibilities
+
+* **Nina** —— **Product Architect / Contract Engineer**
+    * **Core Contributions:** Established the underlying behavioral finance framework of the Ulysses Protocol; designed the "Ulysses Pact" governance logic and the sub-linear willpower weighting model.
+    * **Project Delivery:** Responsible for core smart contract development, production of the standardized documentation suite (PRD/README), and end-to-end logic design.
+
+* **[Selin]** —— **Backend & Sentinel Engineer**
+    * **Core Contributions:** Implemented the protocol's real-time Watcher Service, utilizing efficient event indexing to ensure the accurate on-chain triggering of violation judgments.
+    * **Project Delivery:** Built the backend adjudication engine; designed the data interaction between the execution and monitoring layers; contributed to system-wide integration and stability assurance.
+
+* **[Nicky]** —— **Frontend & Presentation**
+    * **Core Contributions:** Developed the protocol terminal's interaction logic, transforming complex mathematical models into an intuitive, high-perception on-chain user experience.
+    * **Project Delivery:** Led the frontend development and full-link integration testing; responsible for the live Demo presentation and technical roadshow storytelling.
+
+---
+
 ## 📜 Epilogue
 
 > **"In a world where Code is Law, we provide the enforcement for willpower. In the Web3 world, stop paying the 'Emotional Tax' and convert your discipline and rationality into on-chain yield."**
