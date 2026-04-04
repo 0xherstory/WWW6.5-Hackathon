@@ -10,11 +10,6 @@
 
 [![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/hqdefault.jpg)](https://youtu.be/08QBVLgxwdc)
 
-
-[![Demo Video](https://img.shields.io/badge/Demo-Video-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/08QBVLgxwdc)
-
-[![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/hqdefault.jpg)](https://youtu.be/08QBVLgxwdc)
-
 ---
 
 ## 🌟 灵感来源 (The "Why")
