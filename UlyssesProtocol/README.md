@@ -68,13 +68,12 @@ Web3 交易的高频与高波特性，常使投资者陷入“短视冲动”。
 
 ### 快速开始 (Quick Start)
 
-`# 克隆仓库
-git clone https://github.com/ninaliu9671/WWW6.5-Hackathon/UlyssesProtocol.git
+```bash
+# 克隆仓库
+git clone [https://github.com/ninaliu9671/WWW6.5-Hackathon/UlyssesProtocol.git](https://github.com/ninaliu9671/WWW6.5-Hackathon/UlyssesProtocol.git)
+
 # 安装环境
 forge install
+
 # 运行测试
-forge test`
-
-[PRD_EN](https://www.notion.so/PRD_EN-338e13518ac780b9afa6c77d7f2ab64c?pvs=21)
-
-[产品需求文档 (PRD)：Ulysses Protocol —— 链上理智锚定协议](https://www.notion.so/PRD-Ulysses-Protocol-338e13518ac780108ff9c27fa6995d3c?pvs=21)
+forge test
