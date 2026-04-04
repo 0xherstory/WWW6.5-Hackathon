@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { Card } from "@/config/cards";
@@ -22,12 +23,24 @@ export default function ImageCard({
   size = "medium",
 }: ImageCardProps) {
   const t = useTranslations();
-  
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
   const sizeClasses = {
     small: "w-24",
     medium: "w-full",
     large: "w-full max-w-md",
   };
+
+  // 处理图片加载错误，切换到后备 PNG
+  const handleError = () => {
+    if (!hasError) {
+      setHasError(true);
+    }
+  };
+
+  // 确定使用哪个图片源
+  const imageSrc = hasError ? card.fallbackPath : card.imagePath;
 
   return (
     <div
@@ -86,15 +99,25 @@ export default function ImageCard({
 
         {/* 卡牌图片容器 - 9:16 纵向比例 */}
         <div className="aspect-[9/16] relative overflow-hidden bg-gray-50 m-3">
+          {/* 加载占位 */}
+          {!isLoaded && (
+            <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+          )}
+
           <Image
-            src={card.imagePath}
-            alt={t('select.imageCards')}
+            src={imageSrc}
+            alt={card.cnName}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className={`
+              object-cover transition-all duration-700
+              ${isLoaded ? "opacity-100 group-hover:scale-105" : "opacity-0"}
+            `}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             draggable={false}
+            onLoad={() => setIsLoaded(true)}
+            onError={handleError}
           />
-          
+
           {/* 悬浮遮罩 */}
           <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-300" />
           

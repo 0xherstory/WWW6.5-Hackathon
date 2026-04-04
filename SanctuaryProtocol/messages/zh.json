@@ -14,16 +14,14 @@
     "timemachine": "时光机",
     "home": "首页",
     "back": "返回",
-    "backToHome": "返回首页"
+    "backToHome": "返回首页",
+    "toggleMenu": "切换菜单"
   },
   "wallet": {
     "connect": "连接钱包",
     "disconnect": "断开连接",
     "wrongNetwork": "切换网络",
     "connectFirst": "请先连接钱包"
-  },
-  "errors": {
-    "unknown": "未知错误"
   },
   "home": {
     "title": "疗愈庇护所",
@@ -87,23 +85,59 @@
     "types": {
       "single": {
         "name": "单卡探索",
-        "description": "抽取一张卡牌，获取当下的指引"
+        "description": "抽取一张卡牌，获取当下的指引",
+        "positions": {
+          "center": "当下指引"
+        }
       },
       "three": {
         "name": "过去-现在-未来",
-        "description": "三张卡牌，看见时间的流动"
+        "description": "三张卡牌，看见时间的流动",
+        "positions": {
+          "past": "过去的影响",
+          "present": "现在的状态",
+          "future": "未来的可能"
+        }
       },
       "five": {
         "name": "十字牌阵",
-        "description": "深入探索问题的核心与解决之道"
+        "description": "深入探索问题的核心与解决之道",
+        "positions": {
+          "center": "现状",
+          "top": "挑战",
+          "left": "过去",
+          "right": "未来",
+          "bottom": "潜在"
+        }
       },
       "seven": {
         "name": "七星探索",
-        "description": "完整的身心灵探索之旅"
+        "description": "完整的身心灵探索之旅",
+        "positions": {
+          "crown": "王冠",
+          "wisdom": "智慧",
+          "understanding": "理解",
+          "beauty": "美丽",
+          "victory": "胜利",
+          "glory": "荣耀",
+          "kingdom": "王国"
+        }
       },
       "ten": {
         "name": "生命之树",
-        "description": "卡巴拉生命之树，完整的十质点探索"
+        "description": "卡巴拉生命之树，完整的十质点探索",
+        "positions": {
+          "kether": "王冠",
+          "chokmah": "智慧",
+          "binah": "理解",
+          "chesed": "慈悲",
+          "gevurah": "严厉",
+          "tiferet": "美丽",
+          "netzach": "胜利",
+          "hod": "荣耀",
+          "yesod": "基础",
+          "malkuth": "王国"
+        }
       }
     }
   },
@@ -214,11 +248,9 @@
     "errorTitle": "存储失败",
     "txLabel": "交易",
     "retry": "重试",
-    "placeholder": "在这里写下你的感受、洞察与觉察...",
     "chars": "字符",
     "words": "词",
-    "autoSave": "自动保存",
-    "encrypting": "正在加密"
+    "autoSave": "自动保存"
   },
   "success": {
     "title": "记录已保存",
@@ -491,6 +523,7 @@
     "closeHint": "按 ESC 或点击任意处关闭"
   },
   "errors": {
+    "unknown": "未知错误",
     "spreadNotFound": "牌阵不存在",
     "backToSpreads": "返回选择牌阵"
   },
@@ -535,6 +568,7 @@
       "notGmail": "目前仅支持 Gmail 邮箱",
       "invalidCode": "验证码格式错误",
       "codeExpired": "验证码已过期，请重新获取",
+      "sendFailed": "发送验证码失败",
       "verifyFailed": "验证失败，请重试",
       "alreadyClaimed": "该邮箱已领取过资金"
     },
@@ -548,27 +582,6 @@
     "title": "申请互助资金",
     "intro": "辛苦了，感谢你为自己停留的这二十分钟。",
     "description": "庇护所的互助资金池里，有一份来自远方的支持在等你。",
-    "pool": {
-      "title": "资金池状态",
-      "balance": "当前余额",
-      "helped": "已帮助",
-      "people": "人",
-      "guardians": "位守护者支持",
-      "sufficient": "资金充足，可以申请",
-      "insufficient": "资金池暂时枯竭",
-      "waiting": "等待守护者的支持..."
-    },
-    "requirements": {
-      "title": "申请条件",
-      "wallet": "连接钱包",
-      "completed": "完成觉察（选卡+写日记）",
-      "timeSpent": "停留时间 ≥ 3 分钟",
-      "wordCount": "日记字数 ≥ 50 字",
-      "verified": "邮箱验证",
-      "notClaimed": "未领取过互助资金",
-      "hint": "完成一次 OH 卡探索后即可满足申请条件"
-    },
-    "currentClaim": "当前可领取",
     "pool": {
       "title": "资金池状态",
       "balance": "当前余额",
@@ -590,6 +603,17 @@
       "insufficient": "资金池暂时枯竭",
       "waiting": "等待守护者的支持..."
     },
+    "requirements": {
+      "title": "申请条件",
+      "wallet": "连接钱包",
+      "completed": "完成觉察（选卡+写日记）",
+      "timeSpent": "停留时间 ≥ 3 分钟",
+      "wordCount": "日记字数 ≥ 50 字",
+      "verified": "邮箱验证",
+      "notClaimed": "未领取过互助资金",
+      "hint": "完成一次 OH 卡探索后即可满足申请条件"
+    },
+    "currentClaim": "当前可领取",
     "actions": {
       "ready": "我准备好了，生成匿名通行证",
       "notToday": "我今天不想领资金，仅保存觉察记录",

@@ -1,4 +1,7 @@
+"use client";
+
 import type { WordCard as WordCardType } from "@/types/card";
+import { useLocale } from "next-intl";
 
 interface WordCardProps {
   card: WordCardType;
@@ -13,8 +16,16 @@ export default function WordCard({
   onClick,
   className = "",
 }: WordCardProps) {
-  // 判断字数，四字词需要特殊排版
-  const isFourChars = card.word.length === 4;
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+
+  // 根据语言选择显示的文字
+  const displayWord = isEnglish ? card.enWord : card.word;
+
+  // 判断是否需要特殊排版（中文四字词或英文带斜杠的词）
+  const needsMultiLine = !isEnglish && card.word.length === 4;
+  // 英文带斜杠的词也分行显示
+  const enNeedsMultiLine = isEnglish && displayWord.includes('/');
 
   return (
     <div
@@ -26,60 +37,70 @@ export default function WordCard({
       `}
     >
       {/* 外层边框 - 统一高度 */}
-      <div 
+      <div
         className={`
           relative border h-32 flex items-center justify-center
           transition-all duration-300
-          ${isSelected 
-            ? "border-accent bg-accent/5 shadow-geometric" 
+          ${isSelected
+            ? "border-accent bg-accent/5 shadow-geometric"
             : "border-gray-200 bg-white hover:border-accent/50"
           }
         `}
       >
         {/* 角落装饰 */}
-        <span 
+        <span
           className={`
             absolute top-2 left-2 w-2 h-2 border-t border-l transition-colors duration-300
             ${isSelected ? "border-accent" : "border-gray-300 group-hover:border-accent/40"}
-          `} 
+          `}
         />
-        <span 
+        <span
           className={`
             absolute top-2 right-2 w-2 h-2 border-t border-r transition-colors duration-300
             ${isSelected ? "border-accent" : "border-gray-300 group-hover:border-accent/40"}
-          `} 
+          `}
         />
-        <span 
+        <span
           className={`
             absolute bottom-2 left-2 w-2 h-2 border-b border-l transition-colors duration-300
             ${isSelected ? "border-accent" : "border-gray-300 group-hover:border-accent/40"}
-          `} 
+          `}
         />
-        <span 
+        <span
           className={`
             absolute bottom-2 right-2 w-2 h-2 border-b border-r transition-colors duration-300
             ${isSelected ? "border-accent" : "border-gray-300 group-hover:border-accent/40"}
-          `} 
+          `}
         />
 
-        {/* 字卡文字 - 根据字数调整排版 */}
-        {isFourChars ? (
-          // 四字词：每行两个字，居中排列（包含斜杠）
+        {/* 字卡文字 - 根据语言和字数调整排版 */}
+        {needsMultiLine ? (
+          // 中文四字词：每行两个字，居中排列
           <div className={`
             flex flex-col items-center justify-center leading-tight
             transition-colors duration-300
             ${isSelected ? "text-accent" : "text-text group-hover:text-accent"}
           `}>
-            <span className="text-xl font-serif tracking-widest">{card.word.slice(0, 3)}</span>
-            <span className="text-xl font-serif tracking-widest mt-1">{card.word.slice(3)}</span>
+            <span className="text-xl font-serif tracking-widest">{card.word.slice(0, 2)}</span>
+            <span className="text-xl font-serif tracking-widest mt-1">{card.word.slice(2)}</span>
           </div>
-        ) : (
-          // 其他字数：单行居中
-          <h3 className={`
-            text-2xl font-serif tracking-wider transition-colors duration-300
+        ) : enNeedsMultiLine ? (
+          // 英文带斜杠：在斜杠处分行，斜杠放在第一行末尾
+          <div className={`
+            flex flex-col items-center justify-center leading-tight px-2
+            transition-colors duration-300
             ${isSelected ? "text-accent" : "text-text group-hover:text-accent"}
           `}>
-            {card.word}
+            <span className="text-lg font-serif tracking-wide">{displayWord.split('/')[0]}/</span>
+            <span className="text-lg font-serif tracking-wide">{displayWord.split('/')[1]}</span>
+          </div>
+        ) : (
+          // 其他：单行居中
+          <h3 className={`
+            text-xl font-serif tracking-wider transition-colors duration-300 text-center px-2
+            ${isSelected ? "text-accent" : "text-text group-hover:text-accent"}
+          `}>
+            {displayWord}
           </h3>
         )}
 

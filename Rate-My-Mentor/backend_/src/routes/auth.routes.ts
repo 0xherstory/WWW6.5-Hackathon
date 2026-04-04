@@ -3,15 +3,8 @@ import { AuthController, upload } from '../controllers/auth.controller';
 
 const authRouter = Router();
 
-/**
- * POST /api/v1/auth/submit-offer
- * Content-Type: multipart/form-data
- * 字段：
- * - offer: 文件
- * - userAddress: 钱包地址
- */
 authRouter.post(
-  '/submit-offer',
+  '/sign', // 👈 只改了这行！submit-offer → sign
   upload.single('offer'),
   AuthController.submitOffer
 );

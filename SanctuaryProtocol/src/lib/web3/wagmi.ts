@@ -11,12 +11,12 @@ const chains = isDevelopment
   : [avalancheFuji, avalanche];
 
 export const wagmiConfig = getDefaultConfig({
-  appName: "植物系疗愈 OH 卡",
+  appName: "疗愈庇护所",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "00000000000000000000000000000000", // 临时假值，生产环境请替换为真实的 projectId
   chains: chains as any,
   wallets: [
     {
-      groupName: "推荐钱包",
+      groupName: "推荐",
       wallets: [metaMaskWallet],
     },
   ],

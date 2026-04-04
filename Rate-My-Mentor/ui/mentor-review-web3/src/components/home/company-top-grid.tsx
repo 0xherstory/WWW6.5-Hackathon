@@ -29,12 +29,12 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
               Top 10 企业
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              按机构声誉分与合作导师规模（演示数据）
+              按机构声誉分排序（演示数据）
             </p>
           </div>
           <Link
             href="/companies"
-            className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline sm:mt-0"
+            className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-[#165DFF] hover:underline sm:mt-0"
           >
             查看完整榜单
             <ArrowUpRight className="h-4 w-4" />
@@ -46,8 +46,8 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
             <Link key={c.id} href={`/company/${encodeURIComponent(c.id)}`}>
               <Card
                 className={cn(
-                  "group h-full cursor-pointer transition-all hover:-translate-y-1 hover:border-accent/50 hover:shadow-lg",
-                  c.rank <= 3 && "relative overflow-hidden border-accent/30",
+                  "group h-full cursor-pointer transition-all hover:-translate-y-1 hover:border-[#165DFF]/50 hover:shadow-lg",
+                  c.rank <= 3 && "relative overflow-hidden border-[#165DFF]/30",
                 )}
               >
                 {c.rank <= 3 && (
@@ -61,7 +61,7 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
 
                 <CardHeader className="relative flex flex-row items-start gap-4 space-y-0 pb-3">
                   <div className={cn(
-                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-muted/50 transition-colors group-hover:border-accent/40",
+                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-muted/50 transition-colors group-hover:border-[#165DFF]/40",
                     c.rank === 1 && "border-amber-400/50 bg-amber-50 dark:bg-amber-950/30",
                     c.rank === 2 && "border-slate-400/50 bg-slate-50 dark:bg-slate-950/30",
                     c.rank === 3 && "border-orange-400/50 bg-orange-50 dark:bg-orange-950/30",
@@ -71,7 +71,7 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
                       c.rank === 1 && "text-amber-600 dark:text-amber-400",
                       c.rank === 2 && "text-slate-600 dark:text-slate-400",
                       c.rank === 3 && "text-orange-600 dark:text-orange-400",
-                      c.rank > 3 && "text-accent",
+                      c.rank > 3 && "text-[#165DFF]",
                     )} />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -91,7 +91,7 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
                         {c.industry}
                       </span>
                     </div>
-                    <CardTitle className="mt-1.5 text-lg leading-tight group-hover:text-accent transition-colors">
+                    <CardTitle className="mt-1.5 text-lg leading-tight group-hover:text-[#165DFF] transition-colors">
                       {c.name}
                     </CardTitle>
                     <CardDescription className="mt-1 flex items-center gap-1 text-xs">
@@ -105,7 +105,7 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
                       c.rank === 1 && "text-amber-600 dark:text-amber-400",
                       c.rank === 2 && "text-slate-600 dark:text-slate-400",
                       c.rank === 3 && "text-orange-600 dark:text-orange-400",
-                      c.rank > 3 && "text-accent",
+                      c.rank > 3 && "text-[#165DFF]",
                     )}>
                       {c.score.toFixed(1)}
                     </p>
@@ -117,7 +117,7 @@ export function CompanyTopGrid({ items }: { items: MockCompanyRank[] }) {
                 <CardContent className="relative pb-5">
                   <p className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    合作导师{" "}
+                    合作带教{" "}
                     <span className="font-medium text-foreground">
                       {c.mentorLinked}
                     </span>{" "}

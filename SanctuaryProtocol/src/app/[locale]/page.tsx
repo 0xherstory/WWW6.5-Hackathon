@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
 
 export default function Home() {
   const t = useTranslations();
@@ -36,43 +35,35 @@ export default function Home() {
           </div>
 
           {/* 主标题 */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-serif text-text mb-6 tracking-tight"
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl font-serif text-text mb-6 tracking-tight animate-fade-in-up"
+            style={{ animationDelay: '0ms' }}
           >
             {t('home.title')}
-          </motion.h1>
+          </h1>
 
           {/* 副标题 */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl sm:text-2xl text-muted mb-4 max-w-2xl mx-auto leading-relaxed"
+          <p
+            className="text-xl sm:text-2xl text-muted mb-4 max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
+            style={{ animationDelay: '100ms' }}
           >
             {t('home.subtitle')}
-          </motion.p>
+          </p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-body text-muted/70 mb-12 max-w-xl mx-auto"
+          <p
+            className="text-body text-muted/70 mb-12 max-w-xl mx-auto animate-fade-in-up"
+            style={{ animationDelay: '200ms' }}
           >
             {t('home.description')}
-          </motion.p>
+          </p>
 
           {/* 分隔线 */}
           <div className="elegant-divider max-w-xs mx-auto mb-12" />
 
           {/* 核心原则 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16 max-w-3xl mx-auto"
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16 max-w-3xl mx-auto animate-fade-in-up"
+            style={{ animationDelay: '300ms' }}
           >
             <PrincipleItem
               icon="◈"
@@ -89,14 +80,12 @@ export default function Home() {
               title={t('home.principles.transparent.title')}
               desc={t('home.principles.transparent.desc')}
             />
-          </motion.div>
+          </div>
 
           {/* 三个主要服务按钮 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12"
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 animate-fade-in-up"
+            style={{ animationDelay: '400ms' }}
           >
             <ServiceCard
               href={`/${locale}/launch`}
@@ -119,7 +108,7 @@ export default function Home() {
               desc={t('home.services.cbt.desc')}
               comingSoon
             />
-          </motion.div>
+          </div>
 
           {/* 底部装饰 */}
           <div className="flex items-center justify-center gap-4 mt-16">

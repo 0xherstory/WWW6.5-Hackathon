@@ -245,7 +245,14 @@ export default function JournalPage() {
           <h2 className="text-h3 font-serif text-text mb-6 text-center">
             {t('journal.selectedCards')}
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* 牌阵网格 - 保持原有牌阵布局 */}
+          <div 
+            className="grid gap-4 justify-items-center"
+            style={{
+              gridTemplateAreas: spread.gridTemplate,
+              gridTemplateColumns: `repeat(${spread.gridCols}, 1fr)`
+            }}
+          >
             {spread.positions.map((position, index) => {
               const imageCard = selectedCards.find(c => c.position === index * 2 + 1);
               const wordCardSelected = selectedCards.find(c => c.position === index * 2 + 2);
@@ -255,14 +262,16 @@ export default function JournalPage() {
               return (
                 <div
                   key={index}
-                  className="relative border border-secondary p-3 hover:border-accent/50 transition-colors"
+                  style={{ gridArea: position.gridArea }}
+                  className="relative flex flex-col items-center gap-2"
                 >
-                  <div className="text-tag text-muted mb-2 text-center">
-                    {position.name}
+                  <div className="text-tag text-muted text-center">
+                    {t(`select.position.${position.gridArea}`)}
                   </div>
                   {imageCardData ? (
                     <div 
-                      className="aspect-[9/16] relative mb-2 border border-secondary overflow-hidden cursor-pointer"
+                      className="aspect-[9/16] relative border border-secondary overflow-hidden cursor-pointer"
+                      style={{ width: 120 }}
                       onDoubleClick={() => handleOpenModal(imageCardData)}
                       title={t('journal.doubleClickToView')}
                     >
@@ -275,13 +284,18 @@ export default function JournalPage() {
                       />
                     </div>
                   ) : (
-                    <div className="aspect-[9/16] border border-dashed border-secondary mb-2 flex items-center justify-center">
+                    <div 
+                      className="aspect-[9/16] border border-dashed border-secondary flex items-center justify-center"
+                      style={{ width: 120 }}
+                    >
                       <span className="text-tag text-muted">{t('journal.imageCard')}</span>
                     </div>
                   )}
                   {wordCardData && (
-                    <div className="text-center py-2 border border-secondary bg-secondary/30">
-                      <span className="text-small text-text">{wordCardData.word}</span>
+                    <div className="text-center py-1 px-2 border border-secondary bg-secondary/30 min-w-[120px]">
+                      <span className="text-small text-text">
+                        {locale === 'en' ? wordCardData.enWord : wordCardData.word}
+                      </span>
                     </div>
                   )}
                 </div>

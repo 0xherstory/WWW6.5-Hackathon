@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 永恒花园 · Eternal Garden
 
-## Getting Started
+> 基于 Web3 的女性友好临终关怀与数字遗产社区 —— 让生命在数字世界温柔延续。
 
-First, run the development server:
+**English:** [README.en.md](./docs/README.en.md)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 仓库目录
+
+本队代码位于仓库根目录 **`永恒花园EternalGarden/`**。**`contracts`、`backend`、`ui` 三者平级**（与 `docs` 同为队目录下的顶层子目录）。结构如下：
+
+```text
+永恒花园EternalGarden/
+├── README.md
+├── docs/
+├── contracts/                # 合约相关代码
+├── backend/                  # 后端相关代码
+└── ui/                       # 前端相关代码（Next.js 主应用）
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`docs/` 内含 `README.en.md`、`VERCEL_DEPLOY.md` 等；视频、PPT 等大文件勿直传仓库，请放外链。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 项目是什么
 
-## Learn More
+**永恒花园**是一个面向临终关怀场景的 Web3 社区产品：用去中心化技术帮助用户**自主掌控数据**，把精神慰藉、互助帮扶与创意性临终服务连接起来，让生命的终点不再是孤独的告别，而是有尊严、有故事、可被铭记的「盛开」。
 
-To learn more about Next.js, take a look at the following resources:
+**核心理念：** 数据主权归用户，生命故事可永续留存，社区互助共生。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 我们解决什么问题
 
-## Deploy on Vercel
+- **情感与精神需求**：超越纯医疗/丧葬流程，关注未了心愿、倾诉与陪伴。  
+- **数据孤岛与隐私**：病历、遗愿、生命故事分散且难自主；链上身份与加密存储让用户真正「拥有」自己的数据。  
+- **服务碎片化**：心愿、档案、互助、身后事务分散；产品侧以「心愿清单」「档案馆」「互助任务」等模块整合体验。  
+- **孤独与缺乏支持**：匿名倾诉圈、陪伴者匹配、任务认领，形成可信任的互助网络。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Web3 带来的机会：** 链上确权与智能合约、IPFS/Arweave 等去中心化存储、DAO 与通证激励互助、零知识证明等隐私技术——与商业计划书中的产品与技术路线一致。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 产品能力（与计划书对齐）
+
+| 方向 | 内容 |
+|------|------|
+| **社区与心灵支持** | 匿名/化名倾诉圈、生命故事档案馆（文字/影像等叙事与权限设想）、陪伴者匹配 |
+| **物质与互助** | 互助任务板、心愿发布与认领、通证激励（BLOOM 等） |
+| **特色服务** | 「心愿清单」：发起与实现临终心愿，过程可沉淀进生命叙事 |
+| **数字遗产与身后** | 数字遗嘱、资产与受益人配置（演示与链上交互结合）、生态葬/云祭祀等展示模块 |
+| **链上演示** | 钱包连接、测试网合约交互（如心愿/记忆上链） |
+
+当前代码库为 **MVP / 演示级** 实现：完整链路与部分功能为模拟或测试网，便于路演与迭代。
+
+---
+
+## 技术栈（本仓库）
+
+| 层级 | 技术 |
+|------|------|
+| 框架 | Next.js（App Router）、React、TypeScript |
+| Web3 | wagmi、viem、RainbowKit |
+| 链环境 | Avalanche Fuji（测试网）；计划书亦提及 L2 / Polygon 等扩展方向 |
+| 样式 | Tailwind CSS |
+| 静态演示 | `ui/static-web/` 目录下纯 HTML/CSS/JS 版本（可选） |
+
+---
+
+## 本地开发
+
+```bash
+cd 永恒花园EternalGarden/ui
+npm install
+npm run dev
+```
+
+浏览器访问终端提示的本地地址（多为 `http://localhost:3000`）。
+
+生产构建（与 Vercel 一致建议使用 webpack 构建脚本）：
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## 部署（Vercel）
+
+在 Vercel 中将 **Root Directory** 设为 **`永恒花园EternalGarden/ui`**（本仓库若与其他项目同库，仍须指定该子目录）。详见 [docs/VERCEL_DEPLOY.md](./docs/VERCEL_DEPLOY.md)。
+
+---
+
+## 商业与愿景（摘要）
+
+- **差异化**：相对传统机构——强调数据主权、心愿众包与社区驱动；相对通用 Web3 社交——垂直临终关怀、结构化生命叙事与非投机导向的激励设计。  
+- **商业模式（规划）**：心愿与创意服务佣金、服务市场抽成、增值服务、B 端白标等；**BLOOM** 通证用于治理、激励与质押等（以实际落地与合规为准）。  
+- **愿景**：让每一段生命在终点前被温柔以待，故事被听见、被铭记，并以自己选择的方式在数字世界中延续。
+
+完整论述见团队商业计划书《「永恒花园」Web3 临终关怀社区商业计划书》。
+
+---
+
+## 目录说明
+
+| 路径 | 说明 |
+|------|------|
+| `ui/app/` | Next.js 页面与组件 |
+| `ui/static-web/` | 无构建链路的静态 HTML/JS 副本，便于纯静态托管或教学演示 |
+| `contracts/` | Solidity 合约 |
+| `backend/` | 独立后端（占位说明） |
+| `docs/` | 文档与部署说明 |
+
+---
+
+## 许可与声明
+
+本项目用于学习、黑客松与路演演示；涉及医疗、遗嘱与金融代币等内容时，请以正式合规产品与法务意见为准。
+
+---
+
+**Where Every Life Blooms Eternally.**

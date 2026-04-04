@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useWalletClient } from "wagmi";
 import { getCardById, getWordCardById } from "@/config/cards";
 import { getSpread } from "@/config/spreads";
@@ -41,6 +41,7 @@ export default function MemoryDetailModal({
   onClose,
 }: MemoryDetailModalProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const { data: walletClient } = useWalletClient();
   const [decryptedContent, setDecryptedContent] = useState<DecryptedContent | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
@@ -50,7 +51,7 @@ export default function MemoryDetailModal({
   const spread = memory.spreadType 
     ? getSpread(memory.spreadType as "single" | "three" | "five" | "seven" | "ten")
     : null;
-  const timeAgo = formatDistanceToNow(new Date(memory.timestamp));
+  const timeAgo = formatDistanceToNow(new Date(memory.timestamp), locale);
 
   // 如果有缓存的密钥，自动尝试解密
   useEffect(() => {
@@ -166,7 +167,9 @@ export default function MemoryDetailModal({
                 if (wordCard) {
                   return (
                     <div key={index} className="aspect-[9/16] border border-gray-200 rounded flex items-center justify-center bg-gray-50">
-                      <span className="text-lg font-serif text-text">{wordCard.word}</span>
+                      <span className="text-lg font-serif text-text">
+                        {locale === 'en' ? wordCard.enWord : wordCard.word}
+                      </span>
                     </div>
                   );
                 }

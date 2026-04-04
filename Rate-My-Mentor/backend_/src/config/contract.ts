@@ -1,27 +1,66 @@
 import { createPublicClient, http } from 'viem';
-import { sepolia } from 'viem/chains';
-import { getChainEnv } from './env';
+import { avalancheFuji } from 'viem/chains';
+
+// 直接从 process.env 读取，避开 requireEnv 的限制
+function getChainEnv() {
+  return {
+    RPC_URL: process.env.RPC_URL!,
+    CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS! as `0x${string}`,
+  };
+}
 
 let _publicClient: ReturnType<typeof createPublicClient> | null = null;
 
-// 懒加载：只有真正读取链上数据时才校验环境变量并初始化 client
 export function getPublicClient() {
   if (_publicClient) return _publicClient;
 
   const { RPC_URL } = getChainEnv();
   _publicClient = createPublicClient({
-    chain: sepolia,
+    chain: avalancheFuji,
     transport: http(RPC_URL),
   });
 
   return _publicClient;
 }
 
-// 按需读取合约地址，避免模块加载时因配置缺失直接报错
 export function getContractAddress(): `0x${string}` {
   const { CONTRACT_ADDRESS } = getChainEnv();
-  return CONTRACT_ADDRESS as `0x${string}`;
+  return CONTRACT_ADDRESS;
 }
+
+//4.3版本 补上缺失的 getChainEnv 函数备份
+//import { createPublicClient, http } from 'viem';
+//import { avalancheFuji } from 'viem/chains';
+//import { requireEnv } from './env';
+
+// ✅ 修复：补上缺失的 getChainEnv 函数
+//function getChainEnv() {
+  //return {
+    //RPC_URL: requireEnv('RPC_URL'),
+    //CONTRACT_ADDRESS: requireEnv('CONTRACT_ADDRESS'),
+  //};
+//}
+
+//let _publicClient: ReturnType<typeof createPublicClient> | null = null;
+
+// 懒加载：只有真正读取链上数据时才校验环境变量并初始化 client
+//export function getPublicClient() {
+  //if (_publicClient) return _publicClient;
+
+  //const { RPC_URL } = getChainEnv();
+  //_publicClient = createPublicClient({
+    //chain: avalancheFuji,
+    //transport: http(RPC_URL),
+  //});
+
+  //return _publicClient;
+//}
+
+// 按需读取合约地址，避免模块加载时因配置缺失直接报错
+//export function getContractAddress(): `0x${string}` {
+  //const { CONTRACT_ADDRESS } = getChainEnv();
+  //return CONTRACT_ADDRESS as `0x${string}`;
+//}
 
 //20260402改前版本备份：
 //import { createPublicClient, http } from 'viem';

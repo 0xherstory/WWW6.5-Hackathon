@@ -1,11 +1,109 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { IMAGE_CARDS } from "@/config/cards";
 import { getPoolStatus, type PoolStatus } from "@/lib/web3/sanctuaryContract";
+
+// 画廊卡牌组件 - 带懒加载和 fallback
+function GalleryCard({
+  card,
+  isHovered,
+  onHover,
+  onLeave,
+  locale,
+  t,
+}: {
+  card: (typeof IMAGE_CARDS)[0];
+  isHovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+  locale: string;
+  t: (key: string) => string;
+}) {
+  const [imgSrc, setImgSrc] = useState(card.imagePath);
+  const [hasError, setHasError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "100px", threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleError = useCallback(() => {
+    if (!hasError) {
+      setImgSrc(card.fallbackPath);
+      setHasError(true);
+    }
+  }, [hasError, card.fallbackPath]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative aspect-[9/16] overflow-hidden border border-secondary hover:border-accent transition-all duration-300 cursor-pointer group"
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+    >
+      {isVisible ? (
+        <>
+          <Image
+            src={imgSrc}
+            alt={card.cnName}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
+            draggable={false}
+            onError={handleError}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute bottom-0 left-0 right-0 p-2 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <p className="text-[10px] sm:text-xs font-medium truncate">
+              {locale === "zh" ? card.cnName : card.name}
+            </p>
+            <p className="text-white/70 text-[8px] sm:text-[10px]">
+              {t("launch.gallery.track")} {card.trackId} · {t("launch.gallery.stage")} {card.stage}
+            </p>
+          </div>
+          {isHovered && (
+            <div className="absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-accent flex items-center justify-center">
+              <svg
+                className="w-3 h-3 sm:w-4 sm:h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="w-full h-full bg-gray-100 animate-pulse" />
+      )}
+    </div>
+  );
+}
 
 export default function LaunchPage() {
   const t = useTranslations();
@@ -211,32 +309,15 @@ export default function LaunchPage() {
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 max-w-6xl mx-auto">
             {IMAGE_CARDS.slice(0, 30).map((card) => (
-              <div
+              <GalleryCard
                 key={card.id}
-                className="relative aspect-[9/16] overflow-hidden border border-secondary hover:border-accent transition-all duration-300 cursor-pointer group"
-                onMouseEnter={() => setHoveredCard(card.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <Image
-                  src={card.imagePath}
-                  alt={card.cnName}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  draggable={false}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-2 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-[10px] sm:text-xs font-medium truncate">{locale === 'zh' ? card.cnName : card.name}</p>
-                  <p className="text-white/70 text-[8px] sm:text-[10px]">{t('launch.gallery.track')} {card.trackId} · {t('launch.gallery.stage')} {card.stage}</p>
-                </div>
-                {hoveredCard === card.id && (
-                  <div className="absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-accent flex items-center justify-center">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                )}
-              </div>
+                card={card}
+                isHovered={hoveredCard === card.id}
+                onHover={() => setHoveredCard(card.id)}
+                onLeave={() => setHoveredCard(null)}
+                locale={locale}
+                t={t}
+              />
             ))}
           </div>
         </div>

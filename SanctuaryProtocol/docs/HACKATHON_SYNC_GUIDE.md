@@ -314,7 +314,7 @@ git push
 分支：main → main（fork main 到 upstream main）
 上游：0xherstory/WWW6.5-Hackathon
 
-PR 标题：SanctuaryProtocol - Web3 植物系疗愈 OH 卡系统
+PR 标题：SanctuaryProtocol - Web3 疗愈庇护所
 
 PR 正文应包含：
 - 项目简介

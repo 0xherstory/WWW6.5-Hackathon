@@ -1,38 +1,55 @@
 "use client";
 
 import { WagmiProvider } from "wagmi";
-import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, lightTheme, type Locale } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { wagmiConfig } from "@/lib/web3/wagmi";
-import { useChainSync } from "@/hooks/useChainSync";
+import dynamic from "next/dynamic";
+import { useLocale } from "next-intl";
 
 const queryClient = new QueryClient();
 
-// 自定义 RainbowKit 主题，匹配项目设计风格
 const customTheme = lightTheme({
   borderRadius: "none",
   fontStack: "system",
   overlayBlur: "small",
 });
 
-// 内部组件，用于同步链 ID
-function ChainSyncWrapper({ children }: { children: React.ReactNode }) {
-  useChainSync();
-  return <>{children}</>;
+const ChainSyncWrapper = dynamic(
+  () => import("./ChainSyncWrapper").then((mod) => mod.ChainSyncWrapper),
+  { ssr: false }
+);
+
+// RainbowKit 支持的语言映射
+const rainbowKitLocales: Record<string, Locale> = {
+  en: "en",
+  zh: "zh-CN",
+};
+
+function RainbowKitProviderWithLocale({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
+  const rainbowKitLocale = rainbowKitLocales[locale] || "en";
+
+  return (
+    <RainbowKitProvider
+      theme={customTheme}
+      modalSize="compact"
+      locale={rainbowKitLocale}
+    >
+      {children}
+    </RainbowKitProvider>
+  );
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider 
-          theme={customTheme}
-          modalSize="compact"
-        >
+        <RainbowKitProviderWithLocale>
           <ChainSyncWrapper>
             {children}
           </ChainSyncWrapper>
-        </RainbowKitProvider>
+        </RainbowKitProviderWithLocale>
       </QueryClientProvider>
     </WagmiProvider>
   );

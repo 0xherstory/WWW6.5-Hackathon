@@ -9,6 +9,8 @@ import CheckInAction from "@/components/CheckInAction";
 import PageWalletBar from "@/components/PageWalletBar";
 import { CHECKIN_CONTRACT_ADDRESS } from "@/contracts/checkinConfig";
 import { checkinAbi } from "@/contracts/checkinAbi";
+import MusicFloatingToggle from "@/components/MusicFloatingToggle";
+import { useBackgroundAudio } from "@/components/BackgroundAudioProvider";
 
 type Phase = "Inhale" | "Hold" | "Exhale";
 type SessionState = "idle" | "active" | "paused" | "complete";
@@ -47,6 +49,7 @@ const PHASES = [
 export default function BreathingPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
+  const { enabled } = useBackgroundAudio();
   const dailyWhisper = getDailyWhisper();
 
   const [sessionState, setSessionState] = useState<SessionState>("idle");
@@ -361,6 +364,7 @@ export default function BreathingPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,rgba(232,239,230,0.94),rgba(245,241,235,0.97)_36%,rgba(237,244,234,1)_100%)] text-[#33413a]">
       <PageWalletBar />
+      <MusicFloatingToggle track="home" />
 
       <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-6 md:px-10 md:py-7 lg:px-16">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -489,11 +493,12 @@ export default function BreathingPage() {
                     </p>
 
                     <p className="text-[15px] font-normal text-[#8d9790] md:text-[18px]">
-                      给自己一点安静 🌿
+                      给自己一点安静
                     </p>
                   </div>
                 </div>
               )}
+
             </div>
           </div>
         </div>
@@ -523,11 +528,11 @@ export default function BreathingPage() {
         {sessionState === "complete" && (
           <div className="relative z-10 mt-4 flex flex-col items-center gap-3">
             <div className="max-w-[340px] text-center">
-              <p className="text-[18px] leading-8 text-[#6f786f] md:text-[20px]">
-                {dailyWhisper.text}
-              </p>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-[#a1aa9f]">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-[#a1aa9f]">
                 {dailyWhisper.label}
+              </p>
+              <p className="mt-2 text-[18px] leading-8 text-[#6f786f] md:text-[20px]">
+                {dailyWhisper.text}
               </p>
             </div>
 
@@ -581,12 +586,15 @@ export default function BreathingPage() {
             </button>
           )}
 
-          <button
-            onClick={reset}
-            className="rounded-full border border-white/34 bg-white/68 px-7 py-3 text-sm tracking-[0.03em] text-[#6d7a72] shadow-[0_10px_22px_rgba(120,120,110,0.07),inset_0_1px_0_rgba(255,255,255,0.34)] backdrop-blur-md transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.018] hover:bg-white/86 hover:shadow-[0_16px_28px_rgba(120,120,110,0.10)] active:scale-[0.988]"
-          >
-            重置
-          </button>
+          {sessionState === "paused" && (
+            <button
+              onClick={reset}
+              className="rounded-full border border-white/34 bg-white/68 px-7 py-3 text-sm tracking-[0.03em] text-[#6d7a72] shadow-[0_10px_22px_rgba(120,120,110,0.07),inset_0_1px_0_rgba(255,255,255,0.34)] backdrop-blur-md transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.018] hover:bg-white/86 hover:shadow-[0_16px_28px_rgba(120,120,110,0.10)] active:scale-[0.988]"
+            >
+              重置
+            </button>
+          )}
+
         </div>
 
         <style jsx global>{`

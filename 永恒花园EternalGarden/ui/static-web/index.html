@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>永恒花园 Eternal Garden · Static</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "viem": "https://esm.sh/viem@2.21.4",
+          "viem/chains": "https://esm.sh/viem@2.21.4/chains"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="petalsContainer" class="petals-container" aria-hidden="true"></div>
+
+    <div id="walletGate" class="wallet-gate">
+      <div class="wallet-gate__aurora" aria-hidden="true"></div>
+      <div class="wallet-gate__ring r1" aria-hidden="true"></div>
+      <div class="wallet-gate__ring r2" aria-hidden="true"></div>
+      <div class="wallet-gate__card">
+        <div class="wallet-gate__mark" aria-hidden="true">✿</div>
+        <h1 class="wallet-gate__title">永恒花园</h1>
+        <p class="wallet-gate__en">Eternal Garden</p>
+        <p class="wallet-gate__lead">连接钱包，进入链上临终关怀与心愿社区。你的密钥，只属于你。</p>
+        <div class="wallet-gate__chain">Avalanche Fuji 测试网</div>
+        <div class="wallet-gate__cta">
+          <button type="button" id="btnConnect" class="btn-connect">连接钱包</button>
+        </div>
+        <p id="connectHint" class="wallet-gate__foot"></p>
+        <p class="wallet-gate__foot">Powered by Web3 · Your keys, your data</p>
+      </div>
+    </div>
+
+    <div id="appRoot" class="app-root hidden">
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+      <main class="main-shell">
+        <section id="pageHome" class="page active" data-page="Home">
+          <div class="hero">
+            <h1>让生命在数字世界<br />温柔延续</h1>
+            <p class="hero-en">Where Every Life Blooms Eternally</p>
+            <p class="hero-desc">基于 Web3 构建的去中心化临终关怀社区，用区块链守护数据主权，以社区温暖拥抱每一段生命旅程。</p>
+          </div>
+          <div class="page-inner">
+            <h3 class="home-section-title">核心理念</h3>
+            <p class="home-section-sub">技术不应冰冷——它可以成为承载爱与尊严的容器</p>
+            <div class="principles-grid">
+              <div class="principle-card">
+                <div class="principle-icon">🔗</div>
+                <h3>去中心化存储</h3>
+                <p>利用 IPFS 与 Arweave 去中心化存储网络，您的生命故事、影像资料将被永久、不可篡改地保存。</p>
+              </div>
+              <div class="principle-card">
+                <div class="principle-icon">🛡️</div>
+                <h3>隐私保护</h3>
+                <p>基于零知识证明技术，无需透露具体病情即可验证身份。细粒度访问控制保障隐私。</p>
+              </div>
+              <div class="principle-card">
+                <div class="principle-icon">🤝</div>
+                <h3>社区互助</h3>
+                <p>通过 DAO 治理和 BLOOM 通证激励，每一次陪伴、每一个心愿实现都被记录。</p>
+              </div>
+            </div>
+            <div class="home-web3">
+              <h3 class="home-section-title">Web3 技术赋能</h3>
+              <p class="home-section-sub">让技术回归人的尊严 · 链上心愿总量 <span id="memoryCount">0</span></p>
+              <div class="web3-tags" id="web3Tags"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pageCommunity" class="page" data-page="Community">
+          <div class="page-inner">
+            <div class="p2-header">
+              <h2>互助交友</h2>
+              <p>在这里，你不必独自面对 · 每一份倾诉都会被温柔接住</p>
+            </div>
+            <div id="confessionSection" class="community-section"></div>
+          </div>
+        </section>
+
+        <section id="pageServices" class="page" data-page="Services">
+          <div class="page-inner">
+            <div class="p3-header">
+              <h2>临终关怀服务</h2>
+              <p>从心愿实现到数字遗产 · 全方位的温暖陪伴</p>
+            </div>
+            <div class="tab-bar" id="serviceTabs"></div>
+            <div id="tabWish" class="tab-content active"></div>
+            <div id="tabLegacy" class="tab-content"></div>
+            <div id="tabMaze" class="tab-content"></div>
+            <div id="tabFuneral" class="tab-content"></div>
+          </div>
+        </section>
+
+        <section id="pageMy" class="page" data-page="My">
+          <div class="page-inner">
+            <div class="my-header">
+              <h2>个人中心</h2>
+              <p>你在永恒花园里的一切，都在这里</p>
+            </div>
+            <div id="myIdentity" class="my-identity"></div>
+            <div id="myGrid" class="my-grid"></div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="主导航">
+        <button type="button" class="nav-item active" data-nav="Home"><span>🏡</span>首页</button>
+        <span class="nav-separator" aria-hidden="true"></span>
+        <button type="button" class="nav-item" data-nav="Community"><span>💬</span>互助社区</button>
+        <span class="nav-separator" aria-hidden="true"></span>
+        <button type="button" class="nav-item" data-nav="Services"><span>✿</span>临终服务</button>
+        <span class="nav-separator" aria-hidden="true"></span>
+        <button type="button" class="nav-item" data-nav="My"><span>👤</span>个人中心</button>
+      </nav>
+
+      <div class="wallet-bar">
+        <span id="walletAddress" class="wallet-bar__addr"></span>
+        <button type="button" id="btnDisconnect" class="wallet-bar__disconnect">断开</button>
+      </div>
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 Agent 星际冒险 - 完整版</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<!-- ===== TITLE SCREEN ===== -->
+<div id="screen-title" class="screen active">
+  <div class="card">
+    <span class="title-ship">🚀</span>
+    <h1 class="title-h1">Agent 星际冒险</h1>
+    <p class="title-sub">和你的 AI 机器人搭档一起，探索宇宙、学会编程！</p>
+    <div class="title-badges">
+      <span class="badge">🌍 21 颗星球</span>
+      <span class="badge">⚡ Transformer</span>
+      <span class="badge">🏋️ 预训练/微调</span>
+      <span class="badge">🤖 Agent 开发</span>
+      <span class="badge">🎯 难度分级</span>
+    </div>
+    <button class="btn btn-cyan" style="width:100%;font-size:1.1rem;padding:16px" onclick="goMap()">
+      🚀 开始冒险！
+    </button>
+    <p style="margin-top:14px;font-size:.8rem;color:var(--muted)">
+      🟢 简单模式：适合小学生 | 🟡 困难模式：适合工程师
+    </p>
+  </div>
+</div>
+
+<!-- ===== MAP SCREEN ===== -->
+<div id="screen-map" class="screen">
+  <div class="inner">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <h2 style="font-size:1.5rem;font-weight:800;color:var(--cyan)">🌌 银河地图</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:2px">选择一颗星球开始学习</p>
+      </div>
+      <div class="hud">
+        <div class="hud-item">⭐ 星星 <span class="val" id="hud-stars">0</span></div>
+        <div class="hud-item">🌍 星球 <span class="val" id="hud-planets">0/21</span></div>
+      </div>
+    </div>
+    <div class="planets-grid" id="planets-grid"></div>
+  </div>
+</div>
+
+<!-- ===== LEVEL SCREEN ===== -->
+<div id="screen-level" class="screen">
+  <div class="inner" id="level-inner"></div>
+</div>
+
+<!-- ===== WIN SCREEN ===== -->
+<div id="screen-win" class="screen">
+  <div class="card">
+    <span class="win-emoji">🏆</span>
+    <div class="win-title">太厉害了！</div>
+    <div class="win-stars" id="win-stars">⭐⭐⭐⭐⭐</div>
+    <p class="win-sub">
+      你已经征服了所有星球！<br>
+      从 Transformer 到预训练、后训练、微调，<br>
+      再到 Agent、工具调用、ReAct、记忆、多 Agent……<br>
+      你和爸爸都是 AI 宇宙顶级探险家了！🚀🏆
+    </p>
+    <button class="btn btn-cyan" style="width:100%" onclick="goMap()">再玩一次！</button>
+  </div>
+</div>
+
+<!-- Load JavaScript files -->
+<script src="js/game-state.js"></script>
+<script src="js/planets/p1-llm.js"></script>
+<script src="js/planets/p2-tool-1.js"></script>
+<script src="js/planets/p3-tool-2.js"></script>
+<script src="js/planets/p4-react-1.js"></script>
+<script src="js/planets/p5-react-2.js"></script>
+<script src="js/planets/p6-memory-1.js"></script>
+<script src="js/planets/p7-memory-2.js"></script>
+<script src="js/planets/p8-multi-agent.js"></script>
+<script src="js/planets/p9-transformer.js"></script>
+<script src="js/planets/p10-pretrain.js"></script>
+<script src="js/planets/p11-posttrain.js"></script>
+<script src="js/planets/p12-practice-1.js"></script>
+<script src="js/planets/p13-practice-2.js"></script>
+<script src="js/planets/p14-framework-1.js"></script>
+<script src="js/planets/p15-framework-2.js"></script>
+<script src="js/planets/p16-final.js"></script>
+<script src="js/planets/p17-empire-1.js"></script>
+<script src="js/planets/p18-empire-2.js"></script>
+<script src="js/planets/p19-empire-3.js"></script>
+<script src="js/planets/p20-empire-4.js"></script>
+<script src="js/planets/p21-empire-5.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/interactions.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
+<!-- Trigger rebuild -->

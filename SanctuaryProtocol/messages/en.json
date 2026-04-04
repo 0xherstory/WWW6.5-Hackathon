@@ -14,16 +14,14 @@
     "timemachine": "Time Machine",
     "home": "Home",
     "back": "Back",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "toggleMenu": "Toggle menu"
   },
   "wallet": {
     "connect": "Connect Wallet",
     "disconnect": "Disconnect",
     "wrongNetwork": "Switch Network",
     "connectFirst": "Please connect wallet first"
-  },
-  "errors": {
-    "unknown": "Unknown error"
   },
   "home": {
     "title": "Healing Sanctuary",
@@ -87,23 +85,59 @@
     "types": {
       "single": {
         "name": "Single Card",
-        "description": "Draw one card for present guidance"
+        "description": "Draw one card for present guidance",
+        "positions": {
+          "center": "Present Guidance"
+        }
       },
       "three": {
         "name": "Past-Present-Future",
-        "description": "Three cards to see the flow of time"
+        "description": "Three cards to see the flow of time",
+        "positions": {
+          "past": "Past Influence",
+          "present": "Present State",
+          "future": "Future Possibility"
+        }
       },
       "five": {
         "name": "Cross Spread",
-        "description": "Deep exploration of core issues and solutions"
+        "description": "Deep exploration of core issues and solutions",
+        "positions": {
+          "center": "Present",
+          "top": "Challenge",
+          "left": "Past",
+          "right": "Future",
+          "bottom": "Potential"
+        }
       },
       "seven": {
         "name": "Seven Stars",
-        "description": "A complete journey of body-mind-spirit exploration"
+        "description": "A complete journey of body-mind-spirit exploration",
+        "positions": {
+          "crown": "Crown",
+          "wisdom": "Wisdom",
+          "understanding": "Understanding",
+          "beauty": "Beauty",
+          "victory": "Victory",
+          "glory": "Glory",
+          "kingdom": "Kingdom"
+        }
       },
       "ten": {
         "name": "Tree of Life",
-        "description": "Kabbalistic Tree of Life, complete Sephiroth exploration"
+        "description": "Kabbalistic Tree of Life, complete Sephiroth exploration",
+        "positions": {
+          "kether": "Kether",
+          "chokmah": "Chokmah",
+          "binah": "Binah",
+          "chesed": "Chesed",
+          "gevurah": "Gevurah",
+          "tiferet": "Tiferet",
+          "netzach": "Netzach",
+          "hod": "Hod",
+          "yesod": "Yesod",
+          "malkuth": "Malkuth"
+        }
       }
     }
   },
@@ -214,11 +248,9 @@
     "errorTitle": "Storage Failed",
     "txLabel": "Transaction",
     "retry": "Retry",
-    "placeholder": "Write your feelings, insights and awareness here...",
     "chars": "chars",
     "words": "words",
-    "autoSave": "Auto-saving",
-    "encrypting": "Encrypting"
+    "autoSave": "Auto-saving"
   },
   "success": {
     "title": "Record Saved",
@@ -491,6 +523,7 @@
     "closeHint": "Press ESC or click anywhere to close"
   },
   "errors": {
+    "unknown": "Unknown error",
     "spreadNotFound": "Spread not found",
     "backToSpreads": "Back to Spreads"
   },
@@ -535,6 +568,7 @@
       "notGmail": "Currently only Gmail is supported",
       "invalidCode": "Invalid verification code format",
       "codeExpired": "Code expired, please get a new one",
+      "sendFailed": "Failed to send verification code",
       "verifyFailed": "Verification failed, please try again",
       "alreadyClaimed": "This email has already claimed funds"
     },
@@ -548,27 +582,6 @@
     "title": "Apply for Mutual Aid Funds",
     "intro": "Thank you for taking these twenty minutes for yourself.",
     "description": "In the sanctuary's mutual aid pool, there's support waiting for you from afar.",
-    "pool": {
-      "title": "Pool Status",
-      "balance": "Current Balance",
-      "helped": "Helped",
-      "people": "people",
-      "guardians": "guardians supporting",
-      "sufficient": "Funds available, ready to apply",
-      "insufficient": "Pool temporarily depleted",
-      "waiting": "Waiting for guardian support..."
-    },
-    "requirements": {
-      "title": "Requirements",
-      "wallet": "Connect Wallet",
-      "completed": "Completed exploration (card selection + journal)",
-      "timeSpent": "Time spent ≥ 3 minutes",
-      "wordCount": "Journal word count ≥ 50 words",
-      "verified": "Email Verification",
-      "notClaimed": "Haven't claimed mutual aid before",
-      "hint": "Complete an OH Card exploration to meet the application requirements"
-    },
-    "currentClaim": "Current Claim Amount",
     "pool": {
       "title": "Pool Status",
       "balance": "Current Balance",
@@ -590,6 +603,17 @@
       "insufficient": "Pool temporarily depleted",
       "waiting": "Waiting for guardian support..."
     },
+    "requirements": {
+      "title": "Requirements",
+      "wallet": "Connect Wallet",
+      "completed": "Completed exploration (card selection + journal)",
+      "timeSpent": "Time spent ≥ 3 minutes",
+      "wordCount": "Journal word count ≥ 50 words",
+      "verified": "Email Verification",
+      "notClaimed": "Haven't claimed mutual aid before",
+      "hint": "Complete an OH Card exploration to meet the application requirements"
+    },
+    "currentClaim": "Current Claim Amount",
     "actions": {
       "ready": "I'm ready, generate anonymous pass",
       "notToday": "Not today, just save my exploration",

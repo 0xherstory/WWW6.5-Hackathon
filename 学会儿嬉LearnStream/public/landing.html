@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnChain - Landing Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #fce7f3, #f9d5e5);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Floating background elements */
+        .floating-element {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 24px;
+            font-weight: 600;
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .floating-element.small {
+            font-size: 16px;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg);
+            }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #8b5cf6;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+        
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .lang-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .hero-title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            margin: 0 20px;
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .feature-description {
+            color: #6b7280;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        /* Community Section */
+        .community-section {
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .community-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+            margin: 0 20px;
+        }
+        
+        .danmaku-container {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .danmaku {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+        
+        .cta-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .features-section,
+            .community-container {
+                margin: 0 10px;
+                padding: 30px 15px;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .hero-tags {
+                gap: 8px;
+            }
+            
+            .hero-tag {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 60px 0 40px;
+            }
+            
+            .logo {
+                font-size: 36px;
+            }
+            
+            .hero-title {
+                font-size: 24px;
+            }
+            
+            .btn-primary {
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+            
+            .features-section,
+            .community-section,
+            .cta-section {
+                padding: 40px 0;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-tags {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating-element" style="top: 10%; left: 10%; animation-delay: 0s;">learn</div>
+    <div class="floating-element small" style="top: 20%; right: 15%; animation-delay: 1s;">grow</div>
+    <div class="floating-element" style="bottom: 15%; left: 20%; animation-delay: 2s;">share</div>
+    <div class="floating-element small" style="bottom: 25%; right: 10%; animation-delay: 3s;">connect</div>
+    <div class="floating-element" style="top: 40%; left: 5%; animation-delay: 4s;">learn</div>
+    <div class="floating-element small" style="top: 60%; right: 20%; animation-delay: 5s;">grow</div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="logo" data-lang-en="LearnStream" data-lang-zh="学会儿嬉">学会儿嬉LearnStream</div>
+            <div class="language-switcher">
+                <button id="en-btn" class="lang-btn active">EN</button>
+                <button id="zh-btn" class="lang-btn">中文</button>
+            </div>
+            <div class="hero-tags">
+                <span class="hero-tag" data-lang-en="📘 Learn to Earn" data-lang-zh="📘 学习赚钱">📘 学习赚钱</span>
+                <span class="hero-tag" data-lang-en="🌍 Multilingual Learning" data-lang-zh="🌍 多语言学习">🌍 多语言学习</span>
+                <span class="hero-tag" data-lang-en="💬 Community Interaction" data-lang-zh="💬 社区互动">💬 社区互动</span>
+            </div>
+            <h1 class="hero-title" data-lang-en="Learn Share Grow" data-lang-zh="学习 分享 成长">学习 分享 成长</h1>
+            <p class="hero-subtitle" data-lang-en="Record your learning process, be seen in the community, and continue to grow" data-lang-zh="记录你的学习过程，在社区中被看见，并持续成长">记录你的学习过程，在社区中被看见，并持续成长</p>
+            <a href="login.html" class="btn-primary" data-lang-en="Start Learning" data-lang-zh="开始学习">开始学习</a>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title" data-lang-en="Core Features" data-lang-zh="核心功能">核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title" data-lang-en="Learning Records" data-lang-zh="学习记录">学习记录</h3>
+                    <p class="feature-description" data-lang-en="Record every learning activity" data-lang-zh="记录每一次学习行为">记录每一次学习行为</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title" data-lang-en="Community Interaction" data-lang-zh="社区互动">社区互动</h3>
+                    <p class="feature-description" data-lang-en="Encourage each other" data-lang-zh="与他人互相鼓励">与他人互相鼓励</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3 class="feature-title" data-lang-en="Game Challenges" data-lang-zh="游戏挑战">游戏挑战</h3>
+                    <p class="feature-description" data-lang-en="Earn rewards through challenges" data-lang-zh="通过挑战获得奖励">通过挑战获得奖励</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title" data-lang-en="Learning Growth" data-lang-zh="学习成长">学习成长</h3>
+                    <p class="feature-description" data-lang-en="Visualize your progress" data-lang-zh="可视化你的进步轨迹">可视化你的进步轨迹</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Community Section -->
+    <section class="community-section">
+        <div class="container">
+            <div class="community-container">
+                <div class="danmaku-container">
+                    <div class="danmaku" style="left: 10%; top: 20%; animation-duration: 3s; animation-delay: 0s;">今天也坚持学习了！</div>
+                    <div class="danmaku" style="left: 60%; top: 15%; animation-duration: 4s; animation-delay: 1s;">Keep going!</div>
+                    <div class="danmaku" style="left: 30%; top: 50%; animation-duration: 5s; animation-delay: 0.5s;">頑張って！</div>
+                    <div class="danmaku" style="left: 75%; top: 40%; animation-duration: 3.5s; animation-delay: 1.5s;">You're doing great!</div>
+                    <div class="danmaku" style="left: 20%; top: 70%; animation-duration: 4.5s; animation-delay: 0.2s;">继续加油！</div>
+                    <div class="danmaku" style="left: 55%; top: 65%; animation-duration: 3.8s; animation-delay: 1.2s;">学习使我快乐！</div>
+                    <div class="danmaku" style="left: 80%; top: 75%; animation-duration: 4.2s; animation-delay: 0.8s;">一起成长吧！</div>
+                    <div class="danmaku" style="left: 40%; top: 30%; animation-duration: 3.2s; animation-delay: 1.8s;">坚持就是胜利！</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title" data-lang-en="Start your learning journey" data-lang-zh="开始你的学习旅程">开始你的学习旅程</h2>
+            <p class="cta-subtitle" data-lang-en="Already 1000+ learners are growing here" data-lang-zh="已有1000+学习者在这里成长">已有1000+学习者在这里成长</p>
+            <a href="login.html" class="btn-primary" data-lang-en="Enter LearnStream" data-lang-zh="进入学会儿嬉">进入学会儿嬉</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-lang-en="&copy; 2026 LearnStream. All rights reserved." data-lang-zh="&copy; 2026 学会儿嬉. 保留所有权利.">&copy; 2026 学会儿嬉. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 语言切换功能
+        function setLanguage(lang) {
+            // 保存语言选择到本地存储
+            localStorage.setItem('language', lang);
+            
+            // 更新语言按钮状态
+            document.getElementById('en-btn').classList.remove('active');
+            document.getElementById('zh-btn').classList.remove('active');
+            document.getElementById(lang + '-btn').classList.add('active');
+            
+            // 更新所有带有语言数据属性的元素
+            const elements = document.querySelectorAll('[data-lang-en]');
+            elements.forEach(element => {
+                element.textContent = element.getAttribute('data-lang-' + lang);
+            });
+        }
+        
+        // 初始化语言
+        function initLanguage() {
+            // 从本地存储加载语言，默认中文
+            const savedLang = localStorage.getItem('language') || 'zh';
+            setLanguage(savedLang);
+        }
+        
+        // 页面加载动画
+        window.addEventListener('DOMContentLoaded', function() {
+            // 初始化语言
+            initLanguage();
+            
+            // 添加淡入效果
+            const elements = document.querySelectorAll('.hero-section, .features-section, .community-section, .cta-section');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+        
+        // 语言切换事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('en-btn').addEventListener('click', () => setLanguage('en'));
+            document.getElementById('zh-btn').addEventListener('click', () => setLanguage('zh'));
+        });
+        
+
+    </script>
+</body>
+</html>

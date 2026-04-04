@@ -12,7 +12,9 @@ export interface CardReading {
 
 export interface WordCard {
   id: string;
-  word: string;
-  meaning: string;
-  trackId?: number; // 所属轨迹ID（1-6）
+  word: string;        // 中文词
+  meaning: string;     // 中文含义
+  enWord: string;      // 英文词
+  enMeaning: string;   // 英文含义
+  trackId?: number;    // 所属轨迹ID（1-6）
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { getCardById, getWordCardById } from "@/config/cards";
 import { getSpread } from "@/config/spreads";
 import { formatDistanceToNow } from "@/utils/date";
@@ -19,6 +19,7 @@ interface MemoryCardProps {
 
 export default function MemoryCard({ memory, onClick }: MemoryCardProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const spread = getSpread(memory.spreadType as "single" | "three" | "five" | "seven" | "ten");
   
   const firstImageCard = memory.selectedCardIds[0]
@@ -29,7 +30,7 @@ export default function MemoryCard({ memory, onClick }: MemoryCardProps) {
     ? getWordCardById(memory.selectedCardIds[1])
     : null;
 
-  const timeAgo = formatDistanceToNow(new Date(memory.timestamp));
+  const timeAgo = formatDistanceToNow(new Date(memory.timestamp), locale);
 
   return (
     <div
@@ -63,7 +64,9 @@ export default function MemoryCard({ memory, onClick }: MemoryCardProps) {
           </div>
 
           {firstWordCard && (
-            <p className="text-lg font-serif text-accent mb-2">{firstWordCard.word}</p>
+            <p className="text-lg font-serif text-accent mb-2">
+              {locale === 'en' ? firstWordCard.enWord : firstWordCard.word}
+            </p>
           )}
 
           <div className="flex items-center gap-2 text-xs text-muted">

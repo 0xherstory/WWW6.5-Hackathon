@@ -1,5 +1,5 @@
 import { emailTransporter } from '../config/email';
-import { env } from '../config/env';
+import { env, getAIEnv } from '../config/env';
 import { openaiClient } from '../config/openai';
 import { OfferOCRResult } from '../types/auth.types';
 import { generateOTP, getOTPExpireTime } from '../utils/otp.util';
@@ -55,8 +55,9 @@ export class AuthService {
 
   // 3. OCR识别Offer Letter，提取公司信息
   static async extractOfferInfo(base64Image: string): Promise<OfferOCRResult> {
+    const { OPENAI_MODEL } = getAIEnv();
     const response = await openaiClient.chat.completions.create({
-      model: env.OPENAI_MODEL,
+      model: OPENAI_MODEL,
       messages: [
         {
           role: 'user',

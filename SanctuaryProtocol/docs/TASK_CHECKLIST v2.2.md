@@ -1,9 +1,9 @@
 # Web3 植物系疗愈 OH 卡系统 - 任务清单 v2.2
 
-> **更新时间**: 2026-04-02
+> **更新时间**: 2026-04-03
 > **项目阶段**: v2.2 平台化生态架构
 > **当前状态**: Phase 3 部署测试进行中
-> **最近更新**: UI修复和国际化完成
+> **最近更新**: 国际化全面修复 + 前端性能优化
 
 ---
 
@@ -153,6 +153,13 @@ export const CONTRACTS = {
 | 交易失败 (Donors cannot claim) | 2026-04-02 | 修改合约逻辑，允许非捐赠者多次领取 |
 | 英文页面显示中文内容 | 2026-04-02 | 全面实现国际化，所有页面支持中英文切换 |
 | 记忆详情显示默认字卡而非用户选择 | 2026-04-02 | 将字卡信息保存到localStorage，不解密也能显示 |
+| 钱包弹窗显示"推荐钱包"中文 | 2026-04-03 | 改为"推荐"，保持项目主体语言一致性 |
+| 牌阵位置名称未国际化 | 2026-04-03 | 添加`select.position.*`翻译key，journal/select页面统一使用 |
+| 字卡英文翻译缺失 | 2026-04-03 | WordCard接口添加enWord字段，配置30张字卡英文翻译 |
+| 验证步骤硬编码中文 | 2026-04-03 | zkEmailSimulation.ts改为纯工具模块，文本移到verification/page.tsx用t()处理 |
+| 日期格式化硬编码中文 | 2026-04-03 | utils/date.ts添加locale参数，根据语言返回不同格式 |
+| 翻译文件重复key | 2026-04-03 | 合并messages/*.json中重复的errors、claim.pool、journal.placeholder等key |
+| 前端首次加载慢 | 2026-04-03 | Web3 provider栈动态导入 + 添加loading.tsx骨架屏优化体验 |
 | Pinata JWT暴露在前端 | 2026-04-02 | 创建IPFS API路由，后端代理上传下载 |
 | 解密失败（密钥不匹配） | 2026-04-02 | 实现decryptWithFallback，支持多种密钥格式兼容 |
 | CORS错误（IPFS下载） | 2026-04-02 | 创建/api/ipfs/download代理路由，多网关容错 |
@@ -1047,4 +1054,155 @@ v2.2 平台化生态架构已完成核心开发和部署：
 
 **当前状态**: 系统可正常使用，核心功能全部完成并通过测试。剩余问题为优化项（邮箱验证码真实发送、领取成功页面自动跳转），不影响系统正常使用。
 
-**最新更新**: 2026-04-02 - 完成国际化实现和UI修复，所有页面支持中英文切换，修复记忆详情字卡显示问题。
+**最新更新**: 2026-04-03 - 国际化全面修复完成，前端性能优化，所有硬编码文本已国际化，钱包弹窗和牌阵位置名称正确显示。
+
+---
+
+## 📋 附录 A: 国际化修复详情 (2026-04-03)
+
+### 修复概览
+
+本次修复解决了项目中所有剩余的国际化问题，确保中英文切换时所有UI元素正确显示。
+
+### 详细修复清单
+
+#### 1. 钱包连接弹窗
+
+**问题**: RainbowKit钱包弹窗在英文模式下显示"推荐钱包"中文
+
+**根因**: `wagmi.ts`中`groupName`硬编码为中文，RainbowKit不会对自定义`groupName`做翻译
+
+**解决方案**: 
+- 保持`groupName: "推荐"`（项目主体语言为中文）
+- `appName`改为"疗愈庇护所"
+
+**修改文件**: `src/lib/web3/wagmi.ts`
+
+#### 2. 牌阵位置名称
+
+**问题**: 英文模式下牌阵位置显示"现状""挑战"等中文
+
+**解决方案**: 
+- 添加`select.position.*`翻译key到`messages/en.json`和`messages/zh.json`
+- journal页面和select页面统一使用`t(`select.position.${position.gridArea}`)`
+
+**修改文件**: 
+- `messages/en.json`
+- `messages/zh.json`
+- `src/app/[locale]/journal/[spreadType]/page.tsx`
+
+#### 3. 字卡英文翻译
+
+**问题**: 字卡在英文模式下仍显示中文
+
+**解决方案**: 
+- `WordCard`接口添加`enWord`字段
+- 为30张字卡配置英文翻译
+- 组件根据`locale`动态显示
+
+**修改文件**: 
+- `src/config/cards.ts`
+- `src/app/[locale]/select/[spreadType]/page.tsx`
+- `src/app/[locale]/journal/[spreadType]/page.tsx`
+
+#### 4. 验证步骤文本
+
+**问题**: `zkEmailSimulation.ts`中有硬编码中文验证步骤
+
+**解决方案**: 
+- 将`zkEmailSimulation.ts`改为纯工具模块，只负责进度和加密逻辑
+- 验证步骤文本移到`verification/page.tsx`，使用`t('verification.animation.*')`
+
+**修改文件**: 
+- `src/lib/zkEmailSimulation.ts`
+- `src/app/[locale]/verification/page.tsx`
+- `messages/en.json` / `messages/zh.json`
+
+#### 5. 日期格式化
+
+**问题**: `utils/date.ts`中时间格式化硬编码中文（"刚刚""分钟前"等）
+
+**解决方案**: 
+- 添加`locale`参数到`formatDistanceToNow`函数
+- 根据`locale`返回不同语言格式
+- 调用方使用`useLocale()`传入当前语言
+
+**修改文件**: 
+- `src/utils/date.ts`
+- `src/components/cards/MemoryCard.tsx`
+- `src/components/cards/MemoryDetailModal.tsx`
+
+#### 6. 翻译文件重复key
+
+**问题**: `messages/*.json`中存在重复key，导致前者被后者静默覆盖
+
+**重复key列表**:
+- `errors`（嵌套结构重复）
+- `claim.pool`（出现两次）
+- `journal.placeholder`（出现两次）
+- `journal.encrypting`（出现两次）
+
+**解决方案**: 合并重复key，保留完整嵌套结构
+
+**修改文件**: `messages/en.json`, `messages/zh.json`
+
+#### 7. 前端首次加载优化
+
+**问题**: Web3 provider栈全量加载导致首次加载慢
+
+**解决方案**: 
+- 创建`ChainSyncWrapper`组件，动态导入`@rainbow-me/rainbowkit/wallets`
+- 为所有路由添加`loading.tsx`骨架屏
+- 使用CSS动画替代Framer Motion减少包体积
+
+**修改文件**: 
+- `src/app/providers.tsx`
+- `src/components/ChainSyncWrapper.tsx`
+- `src/app/[locale]/loading.tsx`
+- `src/app/[locale]/*/loading.tsx`
+
+### 技术要点
+
+1. **RainbowKit国际化限制**: 自定义`groupName`和`appName`不走locale翻译，应保持项目主体语言
+2. **动态键名最佳实践**: 使用`t(`select.position.${gridArea}`)`时确保所有可能的值都有对应翻译
+3. **日期国际化**: 简单场景可用条件判断，复杂场景建议使用`date-fns`或`Intl.RelativeTimeFormat`
+4. **翻译文件维护**: 定期使用JSON校验工具检查重复key
+
+---
+
+## 📋 附录 B: 前端性能优化详情 (2026-04-03)
+
+### 优化措施
+
+| 优化项 | 原实现 | 优化后 | 效果 |
+|--------|--------|--------|------|
+| Web3 Provider加载 | 静态导入 | 动态导入 | 减少首屏JS体积 |
+| 页面加载状态 | 无 | loading.tsx骨架屏 | 提升感知性能 |
+| 动画实现 | Framer Motion | CSS动画 | 减少依赖体积 |
+| 组件分割 | 无 | ChainSyncWrapper独立 | 按需加载 |
+
+### 关键代码
+
+**动态导入配置**:
+```typescript
+// providers.tsx
+const ChainSyncWrapper = dynamic(
+  () => import("@/components/ChainSyncWrapper").then((mod) => mod.ChainSyncWrapper),
+  { ssr: false }
+);
+```
+
+**骨架屏实现**:
+```typescript
+// loading.tsx
+export default function Loading() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-2 border-accent/30 border-t-accent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-body text-muted">Loading...</p>
+      </div>
+    </div>
+  );
+}
+```

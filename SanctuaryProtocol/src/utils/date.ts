@@ -17,34 +17,35 @@ export function isSameDay(date1: Date, date2: Date): boolean {
   );
 }
 
-export function formatDistanceToNow(date: Date): string {
+export function formatDistanceToNow(date: Date, locale: string = 'zh'): string {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  const isEn = locale === 'en';
   
   if (diffInSeconds < 60) {
-    return '刚刚';
+    return isEn ? 'just now' : '刚刚';
   }
   
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   if (diffInMinutes < 60) {
-    return `${diffInMinutes}分钟前`;
+    return isEn ? `${diffInMinutes} min ago` : `${diffInMinutes}分钟前`;
   }
   
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) {
-    return `${diffInHours}小时前`;
+    return isEn ? `${diffInHours} hr ago` : `${diffInHours}小时前`;
   }
   
   const diffInDays = Math.floor(diffInHours / 24);
   if (diffInDays < 30) {
-    return `${diffInDays}天前`;
+    return isEn ? `${diffInDays} days ago` : `${diffInDays}天前`;
   }
   
   const diffInMonths = Math.floor(diffInDays / 30);
   if (diffInMonths < 12) {
-    return `${diffInMonths}个月前`;
+    return isEn ? `${diffInMonths} mo ago` : `${diffInMonths}个月前`;
   }
   
   const diffInYears = Math.floor(diffInMonths / 12);
-  return `${diffInYears}年前`;
+  return isEn ? `${diffInYears} yr ago` : `${diffInYears}年前`;
 }

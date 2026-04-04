@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { Card } from "@/config/cards";
 
@@ -13,6 +13,14 @@ interface ImageModalProps {
 
 export default function ImageModal({ card, isOpen, onClose }: ImageModalProps) {
   const t = useTranslations();
+  const [imageSrc, setImageSrc] = useState<string>("");
+
+  // 当卡牌变化时，重置图片源
+  useEffect(() => {
+    if (card) {
+      setImageSrc(card.imagePath);
+    }
+  }, [card]);
   
   // ESC键关闭
   useEffect(() => {
@@ -57,13 +65,19 @@ export default function ImageModal({ card, isOpen, onClose }: ImageModalProps) {
           onContextMenu={(e) => e.preventDefault()}
         >
           <Image
-            src={card.imagePath}
-            alt={t('select.imageCards')}
+            src={imageSrc || card.imagePath}
+            alt={card.cnName}
             width={600}
             height={1067}
             className="max-w-full max-h-[90vh] w-auto h-auto object-contain select-none"
             draggable={false}
-            style={{ 
+            onError={() => {
+              // 加载失败时切换到后备 PNG
+              if (imageSrc !== card.fallbackPath) {
+                setImageSrc(card.fallbackPath);
+              }
+            }}
+            style={{
               WebkitUserSelect: "none",
               MozUserSelect: "none",
               msUserSelect: "none",

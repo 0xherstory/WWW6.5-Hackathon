@@ -17,6 +17,7 @@
             background: linear-gradient(145deg, #fff5f8 0%, #ffe9f0 100%);
             min-height: 100vh;
             color: #2d2f36;
+            position: relative;
         }
 
         h1 {
@@ -203,6 +204,108 @@
             margin: 0;
         }
 
+        /* 中心通知样式 */
+        .center-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #e66767;
+            padding: 20px 30px;
+            border-radius: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #f4acb7;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            pointer-events: none;
+        }
+        .center-notification.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        .center-notification button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            margin-left: 15px;
+            cursor: pointer;
+            color: #e66767;
+            box-shadow: none;
+            padding: 0 5px;
+        }
+        .center-notification button:hover {
+            background: none;
+            transform: none;
+        }
+
+        /* Toast 容器 (右下角) 增强 */
+        #toastContainer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: white;
+            color: #e66767;
+            padding: 12px 20px;
+            border-radius: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            border-left: 5px solid #e66767;
+            transition: all 0.3s ease;
+            transform: translateX(120%);
+            opacity: 0;
+        }
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #e66767;
+            margin: 0;
+            padding: 0 5px;
+        }
+
+        /* 语言选择下拉框 */
+        .lang-select {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e66767;
+            border-radius: 40px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            color: #e66767;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #b5838a;
+            font-size: 0.8rem;
+        }
+
         @media (max-width: 640px) {
             body {
                 padding: 16px;
@@ -210,14 +313,24 @@
             button {
                 padding: 6px 14px;
             }
+            .center-notification {
+                width: 80%;
+                font-size: 1rem;
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <select id="langSwitcher" class="lang-select">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+    </select>
+
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
-            <h1>🌸 A fresh start</h1>
-            <div class="sub">社区互助 · 链上治理 · 姐妹同行</div>
+            <h1 id="title">🌸 A fresh start</h1>
+            <div id="subtitle" class="sub">社区互助 · 链上治理 · 姐妹同行</div>
         </div>
         <button id="connectBtn" style="background:#c44569;">🔗 连接钱包</button>
     </div>
@@ -225,12 +338,12 @@
 
     <!-- 成员信息模块 -->
     <div id="memberInfo" class="section" style="display:none;">
-        <h2>👭 我的身份</h2>
+        <h2 id="myIdentity">👭 我的身份</h2>
         <div class="status-card">
-            <p>✅ 成员状态: <strong id="isActive" style="color:#e66767;">—</strong></p>
-            <p>👑 管理员: <strong id="isAdmin">—</strong></p>
-            <p>📝 加入申请状态: <span id="joinRequestStatus">—</span></p>
-            <p>🚪 退出申请状态: <span id="leaveRequestStatus">—</span></p>
+            <p><span id="memberStatusLabel">✅ 成员状态:</span> <strong id="isActive" style="color:#e66767;">—</strong></p>
+            <p><span id="adminLabel">👑 管理员:</span> <strong id="isAdmin">—</strong></p>
+            <p><span id="joinReqLabel">📝 加入申请状态:</span> <span id="joinRequestStatus">—</span></p>
+            <p><span id="leaveReqLabel">🚪 退出申请状态:</span> <span id="leaveRequestStatus">—</span></p>
         </div>
         <div class="flex-row">
             <button id="requestJoinBtn">✨ 申请加入</button>
@@ -239,27 +352,22 @@
             <button id="cancelLeaveBtn" class="btn-outline">↩️ 取消退出申请</button>
         </div>
         <div id="adminPanel" style="display:none; margin-top: 20px;">
-            <h3>🛡️ 管理员操作</h3>
+            <h3 id="adminOps">🛡️ 管理员操作</h3>
             <div class="flex-row">
                 <input type="text" id="approveAddress" placeholder="也可手动输入地址">
                 <button id="approveJoinBtn">✅ 批准加入</button>
                 <button id="rejectJoinBtn">❌ 拒绝加入</button>
                 <button id="approveLeaveBtn">✅ 批准退出</button>
                 <button id="rejectLeaveBtn">❌ 拒绝退出</button>
-                <button id="refreshRequestsBtn" class="btn-outline">🔄 刷新待审批列表</button>
             </div>
-
-            <!-- 待审批加入申请列表 -->
             <div style="margin-top: 20px;">
-                <h4>📥 待审批加入申请</h4>
+                <h4 id="pendingJoinTitle">📥 待审批加入申请</h4>
                 <div id="pendingJoinList" style="max-height: 200px; overflow-y: auto;">
                     <div style="color:#aaa; text-align:center;">暂无待审批加入申请</div>
                 </div>
             </div>
-
-            <!-- 待审批退出申请列表 -->
             <div style="margin-top: 20px;">
-                <h4>📤 待审批退出申请</h4>
+                <h4 id="pendingLeaveTitle">📤 待审批退出申请</h4>
                 <div id="pendingLeaveList" style="max-height: 200px; overflow-y: auto;">
                     <div style="color:#aaa; text-align:center;">暂无待审批退出申请</div>
                 </div>
@@ -269,8 +377,8 @@
 
     <!-- 资金库模块 -->
     <div id="treasuryInfo" class="section" style="display:none;">
-        <h2>🏦 互助资金库</h2>
-        <p>💰 总余额: <strong id="totalFunds" style="font-size:1.6rem;color:#2a9d8f;">0</strong> <span style="font-size:0.9rem;">AVAX</span></p>
+        <h2 id="treasuryTitle">🏦 互助资金库</h2>
+        <p><span id="balanceLabel">💰 总余额:</span> <strong id="totalFunds" style="font-size:1.6rem;color:#2a9d8f;">0</strong> <span style="font-size:0.9rem;">AVAX</span></p>
         <div class="flex-row">
             <input type="number" id="donateAmount" placeholder="捐款金额 (AVAX)" step="0.01">
             <button id="donateBtn">💖 爱心捐款</button>
@@ -279,21 +387,34 @@
 
     <!-- 投票与提案模块 -->
     <div id="votingInfo" class="section" style="display:none;">
-        <h2>🗳️ 社区治理提案</h2>
+        <h2 id="votingTitle">🗳️ 社区治理提案</h2>
         <div style="background:#fff0f3; border-radius: 20px; padding: 12px 18px; margin-bottom: 20px;">
-            <h3 style="margin:0 0 8px 0;">📝 发起新提案</h3>
+            <h3 id="newProposalTitle" style="margin:0 0 8px 0;">📝 发起新提案</h3>
             <input type="text" id="recipient" placeholder="受益人地址">
             <input type="number" id="proposalAmount" placeholder="申请金额 (AVAX)" step="0.01">
             <textarea id="reason" placeholder="提案理由 (例如: 社区活动经费、困难援助等)"></textarea>
             <button id="createProposalBtn">✨ 创建提案</button>
-            <div><small>📌 仅活跃成员可创建提案，投票期结束后自动可执行</small></div>
+            <div><small id="proposalNote">📌 仅活跃成员可创建提案，投票期结束后自动可执行</small></div>
         </div>
         <div>
-            <h3>📋 全部提案</h3>
+            <h3 id="allProposalsTitle">📋 全部提案</h3>
             <div id="proposalsList" style="max-height: 500px; overflow-y: auto;"></div>
             <div id="noProposalsMsg" style="color:#b5838a; text-align:center; padding:20px;">暂无提案，成为成员后发起第一个吧 🌱</div>
         </div>
     </div>
+
+    <footer>
+        📧 建议反馈: <a href="mailto:bhe523952@gmail.com">bhe523952@gmail.com</a>
+    </footer>
+
+    <!-- 中心通知容器 -->
+    <div id="centerNotification" class="center-notification" style="display: none;">
+        <span id="centerMsg"></span>
+        <button id="closeCenterBtn">✖</button>
+    </div>
+
+    <!-- Toast 容器 -->
+    <div id="toastContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.2.0/dist/ethers.umd.min.js"></script>
     <script src="app.js"></script>

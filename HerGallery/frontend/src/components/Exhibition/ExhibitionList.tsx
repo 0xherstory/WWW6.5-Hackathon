@@ -1,4 +1,4 @@
-import { Exhibition } from '@/data/mockData';
+import { Exhibition } from '@/config/contract';
 import ExhibitionCard from './ExhibitionCard';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,9 @@ interface Props {
 }
 
 const ExhibitionList = ({ exhibitions }: Props) => {
-  if (exhibitions.length === 0) {
+  const visibleExhibitions = exhibitions.filter((exhibition) => !exhibition.flagged);
+
+  if (visibleExhibitions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <span className="text-5xl mb-4">✿</span>
@@ -25,7 +27,7 @@ const ExhibitionList = ({ exhibitions }: Props) => {
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {exhibitions.map((exhibition, index) => (
+      {visibleExhibitions.map((exhibition, index) => (
         <ExhibitionCard key={exhibition.id} exhibition={exhibition} index={index} />
       ))}
     </div>

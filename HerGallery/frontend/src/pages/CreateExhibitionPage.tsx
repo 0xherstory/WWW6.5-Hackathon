@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Loader2 } from 'lucide-react';
 import Layout from '@/components/Layout/Layout';
 import { toast } from 'sonner';
 import { useCreateExhibition, useCreationFee } from '@/hooks/useContract';
+import { uploadFileToIPFS, uploadToIPFS } from '@/services/ipfs';
 
 const CreateExhibitionPage = () => {
   const navigate = useNavigate();
@@ -19,8 +20,10 @@ const CreateExhibitionPage = () => {
   const [content, setContent] = useState('');
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [tagsInput, setTagsInput] = useState('');
   const [previewMode, setPreviewMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const creationFee = fee ? Number(fee) / 1e18 : 0.001;
 
@@ -58,15 +61,48 @@ const CreateExhibitionPage = () => {
     setIsSubmitting(true);
 
     try {
+      const tags = tagsInput
+        .split(/[，,]/)
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+        .slice(0, 3);
+      let coverHash = '';
+      let contentHash = '';
+
+      // Upload cover to IPFS if present
+      setIsUploading(true);
+      toast.info('正在上传展厅内容到 IPFS...');
+
+      contentHash = await uploadToIPFS({
+        markdown: content.trim(),
+      });
+
+      if (coverFile) {
+        toast.info('正在上传封面到 IPFS...');
+        try {
+          coverHash = await uploadFileToIPFS(coverFile);
+          toast.success('封面上传成功！');
+        } catch (uploadErr: any) {
+          toast.error('封面上传失败: ' + uploadErr.message);
+          setIsSubmitting(false);
+          setIsUploading(false);
+          return;
+        } finally {
+          setIsUploading(false);
+        }
+      }
+
       await createExhibition({
         title: title.trim(),
-        contentHash: content.trim(),
-        coverHash: coverPreview || '',
+        contentHash,
+        coverHash,
+        tags,
       });
       toast.success('交易已发送，请等待确认...');
     } catch (err: any) {
       toast.error(err.message || '创建失败，请重试');
       setIsSubmitting(false);
+      setIsUploading(false);
     }
   };
 
@@ -123,6 +159,18 @@ const CreateExhibitionPage = () => {
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="mb-6">
+            <label className="mb-1.5 block text-sm font-medium text-foreground">
+              标签 <span className="text-xs text-muted-foreground">最多 3 个，用逗号分隔</span>
+            </label>
+            <input
+              value={tagsInput}
+              onChange={(e) => setTagsInput(e.target.value)}
+              placeholder="证言记录, 历史档案, 二创作品"
+              className="w-full rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
+            />
           </div>
 
           {/* Markdown Editor */}

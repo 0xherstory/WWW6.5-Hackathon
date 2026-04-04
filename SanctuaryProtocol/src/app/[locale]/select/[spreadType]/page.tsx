@@ -1,16 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { getSpread, type SpreadType, getCardSize } from "@/config/spreads";
-import ImageCard from "@/components/cards/ImageCard";
+import LazyImageCard from "@/components/cards/LazyImageCard";
 import WordCard from "@/components/cards/WordCard";
 import ImageModal from "@/components/cards/ImageModal";
 import { useCardStore } from "@/stores/cardStore";
 import { IMAGE_CARDS, WORD_CARDS, getCardById, getWordCardById, type Card } from "@/config/cards";
+
+// 左侧已选卡牌图片组件 - 使用 state 管理 fallback
+function SelectedCardImage({ card, width }: { card: Card; width: number }) {
+  const [imgSrc, setImgSrc] = useState(card.imagePath);
+  const [hasError, setHasError] = useState(false);
+
+  const handleError = useCallback(() => {
+    if (!hasError) {
+      setImgSrc(card.fallbackPath);
+      setHasError(true);
+    }
+  }, [hasError, card.fallbackPath]);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={card.cnName}
+      fill
+      className="object-cover"
+      sizes={`${width}px`}
+      draggable={false}
+      onError={handleError}
+    />
+  );
+}
 
 type CardTypeTab = "image" | "word";
 
@@ -238,13 +263,7 @@ export default function SelectPage() {
         >
           {imageCard ? (
             <div className="aspect-[9/16] relative overflow-hidden border border-gray-200 hover:border-accent transition-colors" style={{ width: cardSize.imageWidth }}>
-              <Image
-                src={imageCard.imagePath}
-                alt={t('select.imageCards')}
-                fill
-                className="object-cover"
-                draggable={false}
-              />
+              <SelectedCardImage key={imageCard.id} card={imageCard} width={cardSize.imageWidth} />
               {isImageActive && (
                 <div className="absolute inset-0 bg-accent/10 flex items-center justify-center">
                   <span className="text-xs text-accent bg-white px-2 py-1">{t('select.selectImage')}</span>
@@ -280,7 +299,9 @@ export default function SelectPage() {
           style={{ minHeight: cardSize.wordHeight }}
         >
           {wordCard ? (
-            <span className="text-lg font-serif text-text">{wordCard.word}</span>
+            <span className="text-lg font-serif text-text">
+              {locale === 'en' ? wordCard.enWord : wordCard.word}
+            </span>
           ) : (
             <span className={`text-sm font-serif ${isWordActive ? "text-accent" : "text-muted"}`}>
               {t('select.selectWord')}
@@ -412,13 +433,14 @@ export default function SelectPage() {
               {/* 卡牌网格 */}
               {activeTab === "image" ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-y-auto flex-1 min-h-0">
-                  {IMAGE_CARDS.map((card) => (
-                    <ImageCard
+                  {IMAGE_CARDS.map((card, index) => (
+                    <LazyImageCard
                       key={card.id}
                       card={card}
                       isSelected={selectedImageIds.includes(card.id)}
                       onClick={() => handleImageCardClick(card.id)}
                       onDoubleClick={() => handleOpenModal(card)}
+                      priority={index < 8} // 前8张优先加载
                     />
                   ))}
                 </div>

@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { avalancheFuji } from "wagmi/chains";
-import WalletConnectButton from "@/components/WalletConnectButton";
 import CheckInAction from "@/components/CheckInAction";
 import { CHECKIN_CONTRACT_ADDRESS } from "@/contracts/checkinConfig";
 import { checkinAbi } from "@/contracts/checkinAbi";
 import PageWalletBar from "@/components/PageWalletBar";
+import MusicFloatingToggle from "@/components/MusicFloatingToggle";
+import { useBackgroundAudio } from "@/components/BackgroundAudioProvider";
 
 type SessionStatus = "done" | "pending";
 
@@ -31,6 +32,13 @@ function formatWeekday(date: Date) {
 
 export default function CheckInPage() {
   const { address, isConnected } = useAccount();
+  const { playTrack, pauseTrack } = useBackgroundAudio();
+  const [mounted, setMounted] = useState(false);
+  const hasAutoPlayedRef = useRef(false);
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
   const { data: hasCheckedInToday } = useReadContract({
     address: CHECKIN_CONTRACT_ADDRESS,
@@ -185,25 +193,42 @@ export default function CheckInPage() {
     };
   }, [todayStatus]);
 
-  const todayStatusText =
-    todayStatus === "done" ? "已完成" : "待记录";
+  const todayStatusText = todayStatus === "done" ? "已完成" : "待记录";
 
   const todayStatusDescription =
     todayStatus === "done"
       ? "本次训练已完成，今日链上打卡已完成，无需重复记录。"
       : "今天还没有记录节律，完成一次训练后，就可以留下今日的温柔打卡。";
 
-  const centerTitle =
-    todayStatus === "done" ? "今日节律已记录" : "今天还未打卡";
+  const centerTitle = todayStatus === "done" ? "今日节律已记录" : "今天还未打卡";
 
   const centerDescription =
     todayStatus === "done"
       ? "每一次轻柔完成，都会慢慢变成身体熟悉的支持感。"
       : "开始一次练习后，再回来收下属于今天的鼓励签。";
 
+  useEffect(() => {
+    if (todayStatus === "done" && !hasAutoPlayedRef.current) {
+      hasAutoPlayedRef.current = true;
+
+      playTrack("checkin", {
+        loop: false,
+        reset: true,
+        forceEnable: true,
+      });
+      return;
+    }
+
+    if (todayStatus !== "done") {
+      hasAutoPlayedRef.current = false;
+      pauseTrack();
+    }
+  }, [todayStatus, playTrack, pauseTrack]);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,rgba(248,244,240,0.98),rgba(246,240,235,0.98)_28%,rgba(243,236,231,0.98)_56%,rgba(245,242,239,1)_100%)] text-[#48544d]">
       <PageWalletBar />
+      {todayStatus === "done" && <MusicFloatingToggle track="checkin" />}
 
       <section className="relative mx-auto flex min-h-screen w-full max-w-[1560px] flex-col px-8 pt-5 pb-4 md:px-12 md:pt-5 md:pb-4 lg:px-16 xl:px-20">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -223,11 +248,7 @@ export default function CheckInPage() {
           </Link>
         </div>
 
-        <div className="mb-4 flex justify-center">
-          <WalletConnectButton />
-        </div>
-
-        {!isConnected && (
+        {mounted && !isConnected && (
           <div className="mb-1 text-center text-sm text-[#9b9c95]">
             连接钱包后即可查看今日打卡状态
           </div>
@@ -318,7 +339,7 @@ export default function CheckInPage() {
               </div>
             </div>
 
-            {isConnected && todayStatus !== "done" && (
+            {mounted &&isConnected && todayStatus !== "done" && (
               <div className="mt-4 flex justify-center">
                 <CheckInAction onSuccess={() => window.location.reload()} />
               </div>

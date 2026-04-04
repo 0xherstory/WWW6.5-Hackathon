@@ -1,9 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
-import { useLocale } from "next-intl";
 
 export default function CounselorPage() {
   const t = useTranslations();
@@ -36,52 +34,42 @@ export default function CounselorPage() {
           </div>
 
           {/* 图标 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="w-20 h-20 mx-auto mb-8 border-2 border-accent/30 flex items-center justify-center"
+          <div
+            className="w-20 h-20 mx-auto mb-8 border-2 border-accent/30 flex items-center justify-center animate-fade-in-scale"
+            style={{ animationDelay: '0ms' }}
           >
             <span className="text-4xl">💬</span>
-          </motion.div>
+          </div>
 
           {/* 主标题 */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-serif text-text mb-4 tracking-tight"
+          <h1
+            className="text-3xl sm:text-4xl font-serif text-text mb-4 tracking-tight animate-fade-in-up"
+            style={{ animationDelay: '100ms' }}
           >
             {t('counselor.title')}
-          </motion.h1>
+          </h1>
 
           {/* 副标题 */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-muted mb-8 max-w-xl mx-auto"
+          <p
+            className="text-lg text-muted mb-8 max-w-xl mx-auto animate-fade-in-up"
+            style={{ animationDelay: '200ms' }}
           >
             {t('counselor.subtitle')}
-          </motion.p>
+          </p>
 
           {/* 即将开放标记 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-accent/30 bg-accent/5 mb-12"
+          <div
+            className="inline-flex items-center gap-2 px-6 py-3 border border-accent/30 bg-accent/5 mb-12 animate-fade-in-up"
+            style={{ animationDelay: '300ms' }}
           >
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
             <span className="text-accent font-medium">{t('counselor.comingSoon')}</span>
-          </motion.div>
+          </div>
 
           {/* 功能预览卡片 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12 text-left"
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12 text-left animate-fade-in-up"
+            style={{ animationDelay: '400ms' }}
           >
             <FeatureCard
               icon="🤝"
@@ -103,23 +91,20 @@ export default function CounselorPage() {
               title={t('counselor.features.verified.title')}
               desc={t('counselor.features.verified.desc')}
             />
-          </motion.div>
+          </div>
 
           {/* 描述文本 */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-body text-muted/80 mb-12 max-w-lg mx-auto leading-relaxed"
+          <p
+            className="text-body text-muted/80 mb-12 max-w-lg mx-auto leading-relaxed animate-fade-in-up"
+            style={{ animationDelay: '500ms' }}
           >
             {t('counselor.description')}
-          </motion.p>
+          </p>
 
           {/* 返回按钮 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: '600ms' }}
           >
             <Link
               href={`/${locale}`}
@@ -128,7 +113,7 @@ export default function CounselorPage() {
               <span>←</span>
               <span>{t('nav.backToHome')}</span>
             </Link>
-          </motion.div>
+          </div>
 
           {/* 底部装饰 */}
           <div className="flex items-center justify-center gap-4 mt-16">

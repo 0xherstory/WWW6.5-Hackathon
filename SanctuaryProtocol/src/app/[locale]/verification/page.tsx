@@ -59,7 +59,7 @@ export default function VerificationPage() {
         if (data.remainingSeconds) {
           setCountdown(data.remainingSeconds);
         }
-        setError(data.error || 'Failed to send code');
+        setError(data.error || t('verification.error.sendFailed'));
         return;
       }
 
@@ -73,7 +73,7 @@ export default function VerificationPage() {
       setCountdown(60);
     } catch (err) {
       console.error('Send code error:', err);
-      setError('Failed to send verification code');
+      setError(t('verification.error.sendFailed'));
     } finally {
       setIsSending(false);
     }
@@ -99,12 +99,26 @@ export default function VerificationPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Verification failed');
+        setError(data.error || t('verification.error.verifyFailed'));
         setStep("code");
         return;
       }
 
-      await simulateZKProof(email, (text, progress) => {
+      // 验证步骤文本 key
+      const stepKeys = [
+        'verification.animation.disconnecting',
+        'verification.animation.reading',
+        'verification.animation.generating',
+        'verification.animation.shredded',
+      ];
+
+      await simulateZKProof(email, (progress) => {
+        // 根据进度确定当前步骤文本
+        const stepIndex = Math.min(
+          Math.floor(progress * stepKeys.length),
+          stepKeys.length - 1
+        );
+        const text = progress >= 1 ? t('verification.animation.complete') : t(stepKeys[stepIndex]);
         setVerificationText(text);
         setVerificationProgress(progress);
       });

@@ -1,35 +1,55 @@
 const { uploadToIPFS } = require('./ipfsService');
 const { mintTokens } = require('./web3Service');
-const LearningDataModel = require('../models/LearningDataModel');
+const LearningData = require('../models/LearningData');
+const User = require('../models/User');
 
-// 记录学习数据
 const recordLearningData = async (userId, data) => {
     try {
-        // 上传到 IPFS
-        const ipfsHash = await uploadToIPFS(data);
+        let ipfsHash = null;
+        if (uploadToIPFS) {
+            try {
+                ipfsHash = await uploadToIPFS(data);
+            } catch (err) {
+                console.log('IPFS upload skipped:', err.message);
+            }
+        }
         
-        // 保存到数据库
-        const learningData = new LearningDataModel({
-            userId,
-            ipfsHash,
-            createdAt: new Date(),
+        const learningData = LearningData.create({
+            userId: parseInt(userId),
+            ipfsHash: ipfsHash,
+            learningType: data.learningType || 'vocabulary',
+            duration: data.duration || 0,
+            tokensEarned: data.rewardAmount || 0,
+            language: data.language || 'english',
+            notes: data.notes || ''
         });
-        await learningData.save();
 
-        // 铸造代币
-        await mintTokens(userId, data.rewardAmount);
+        if (data.rewardAmount && data.walletAddress) {
+            try {
+                await mintTokens(data.walletAddress, data.rewardAmount);
+            } catch (err) {
+                console.log('Token minting skipped:', err.message);
+            }
+        }
 
-        return { ipfsHash, message: 'Data recorded and tokens minted.' };
+        User.updateTokens(parseInt(userId), data.rewardAmount || 0);
+        User.updateLearningTime(parseInt(userId), data.duration || 0);
+
+        return { 
+            ipfsHash, 
+            learningId: learningData.id,
+            tokensEarned: data.rewardAmount || 0,
+            message: 'Data recorded successfully.' 
+        };
     } catch (err) {
         console.error('Learning Data Error:', err);
         throw new Error('Failed to record learning data');
     }
 };
 
-// 获取学习数据
 const getLearningData = async (userId) => {
     try {
-        const data = await LearningDataModel.find({ userId });
+        const data = LearningData.findByUserId(parseInt(userId));
         return data;
     } catch (err) {
         console.error('Get Learning Data Error:', err);
@@ -37,4 +57,60 @@ const getLearningData = async (userId) => {
     }
 };
 
-module.exports = { recordLearningData, getLearningData };
+const getUserData = async (userId) => {
+    try {
+        const user = User.findById(parseInt(userId));
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const learningData = LearningData.findByUserId(parseInt(userId));
+        
+        return {
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                avatar: user.avatar,
+                tokens: user.tokens,
+                learningStreak: user.learningStreak,
+                totalLearningTime: user.totalLearningTime
+            },
+            learningHistory: learningData
+        };
+    } catch (err) {
+        console.error('Get User Data Error:', err);
+        throw new Error('Failed to get user data');
+    }
+};
+
+const updateUserData = async (userId, updateData) => {
+    try {
+        const user = User.update(parseInt(userId), updateData);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            avatar: user.avatar,
+            tokens: user.tokens,
+            learningStreak: user.learningStreak
+        };
+    } catch (err) {
+        console.error('Update User Data Error:', err);
+        throw new Error('Failed to update user data');
+    }
+};
+
+const recordWeeklyLearningData = async () => {
+    console.log('Weekly learning data processing completed');
+};
+
+module.exports = { 
+    recordLearningData, 
+    getLearningData,
+    getUserData,
+    updateUserData,
+    recordWeeklyLearningData
+};

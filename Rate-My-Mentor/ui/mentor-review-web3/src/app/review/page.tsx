@@ -73,11 +73,12 @@ export default function ReviewPage() {
     } catch {
       setSbt(null);
     }
-  }, []);
+
+    }, []);
 
   const [phase, setPhase] = useState<Phase>("input");
-  const [targetType, setTargetType] = useState<TargetType>("mentor");
   const [targetName, setTargetName] = useState("");
+  const [department, setDepartment] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [dialog, setDialog] = useState<DialogState>(null);
 
@@ -120,7 +121,7 @@ export default function ReviewPage() {
 
   function resetForm() {
     setPhase("input");
-    setTargetType("mentor");
+    setDepartment("mentor");
     setTargetName("");
     setReviewText("");
     setDialog(null);
@@ -230,10 +231,10 @@ export default function ReviewPage() {
         args: [
           BigInt(sbt.tokenId),
           targetId,
-          targetType,
+          department,
           overallScore,
           dimScores,
-          cidBytes,
+          cidBytes32 as `0x${string}`,
         ],
       });
     } catch (err) {
@@ -242,17 +243,17 @@ export default function ReviewPage() {
     }
   }
 
-  if (!isConnected) {
-    return (
-      <div className="mx-auto w-full max-w-lg px-4 py-20 text-center">
-        <div className="mb-4 text-4xl">🔗</div>
-        <h1 className="text-2xl font-semibold">请先连接钱包</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          连接钱包后才能提交评价。
-        </p>
-      </div>
-    );
-  }
+  // if (!isConnected) {
+  //   return (
+  //     <div className="mx-auto w-full max-w-lg px-4 py-20 text-center">
+  //       <div className="mb-4 text-4xl">🔗</div>
+  //       <h1 className="text-2xl font-semibold">请先连接钱包</h1>
+  //       <p className="mt-2 text-sm text-muted-foreground">
+  //         连接钱包后才能提交评价。
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   if (wrongNetwork) {
     return (
@@ -293,7 +294,7 @@ export default function ReviewPage() {
               className="flex-1"
               onClick={() => router.push("/mentors")}
             >
-              查看导师列表
+              查看企业榜单
             </Button>
             <Button className="flex-1" onClick={resetForm}>
               再写一条
@@ -304,7 +305,7 @@ export default function ReviewPage() {
     );
   }
 
-  if (phase === INPUT_PHASE) {
+  if (phase === "input" || phase === "extracting") {
     return (
       <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-12">
         <div>
@@ -337,48 +338,22 @@ export default function ReviewPage() {
         )}
 
         <Card className="space-y-4 p-5">
-          <h2 className="text-sm font-medium">评价对象</h2>
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setTargetType("mentor")}
-              className={`flex-1 rounded-lg border py-2 text-sm transition-colors ${
-                targetType === "mentor"
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border"
-              }`}
-            >
-              导师
-            </button>
-            <button
-              type="button"
-              onClick={() => setTargetType("company")}
-              className={`flex-1 rounded-lg border py-2 text-sm transition-colors ${
-                targetType === "company"
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border"
-              }`}
-            >
-              公司
-            </button>
-          </div>
+          <h2 className="text-sm font-medium">评价内容</h2>
 
           <Input
-            placeholder={
-              targetType === "mentor"
-                ? "输入导师姓名（如：张三）"
-                : "输入公司名称（如：字节跳动）"
-            }
+            placeholder="企业名称（如：字节跳动）"
             value={targetName}
             onChange={(e) => setTargetName(e.target.value)}
           />
-        </Card>
 
-        <Card className="space-y-3 p-5">
-          <h2 className="text-sm font-medium">你的评价</h2>
+          <Input
+            placeholder="机构/部门（如：抖音电商运营部）"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+          />
+
           <Textarea
-            placeholder="例如：我在这个组里成长很快，但带教经常临场改需求，反馈不够及时，而且沟通方式有时会让人压力很大。（至少 20 字）"
+            placeholder="写下你的真实评价...（至少 20 字）"
             rows={6}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
@@ -413,7 +388,7 @@ export default function ReviewPage() {
     );
   }
 
-  if (phase === REVIEW_AI_RESULT_PHASE && aiResult) {
+  if ((phase === "review_ai_result" || phase === "submitting") && aiResult) {
     return (
       <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-12">
         <div>
