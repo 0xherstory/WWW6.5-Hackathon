@@ -1,7 +1,7 @@
 # PurrChain 🐱✨
 
 <div align="center">
-  <img src="./Favicon.ico" alt="PurrChain Logo" width="500">
+  <img src="./Favicon.ico" alt="PurrChain Logo" width="100">
   <br>
   <strong>Decentralized Cat Adoption Platform</strong>
   <br>
