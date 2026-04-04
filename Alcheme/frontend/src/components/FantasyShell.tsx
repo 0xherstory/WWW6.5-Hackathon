@@ -14,12 +14,13 @@ export function FantasyShell({
   const pathname = usePathname()
 
   return (
-    <div
-      className="fantasy-page"
-      style={{
-        backgroundImage: `url(${uiAssets.background})`,
-      }}
-    >
+    <div className="fantasy-page">
+      <div
+        className="fantasy-background"
+        style={{
+          backgroundImage: `url(${uiAssets.background})`,
+        }}
+      />
       <div className="sparkle-layer pointer-events-none">
         {Array.from({ length: 24 }).map((_, index) => (
           <span

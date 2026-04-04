@@ -33,8 +33,16 @@ body {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.fantasy-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background-position: center;
-  background-size: cover;
+  background-size: 130% 120%;
+  background-repeat: no-repeat;
 }
 
 .sparkle-layer {
@@ -137,6 +145,11 @@ body {
 .ore-gradient-connection {
   background: linear-gradient(135deg, #34d399, #10b981);
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+}
+
+.ore-gradient-arcane {
+  background: linear-gradient(135deg, #c084fc, #8b5cf6);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
 }
 
 .btn-magical {

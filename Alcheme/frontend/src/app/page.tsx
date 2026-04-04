@@ -65,7 +65,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="lg:col-span-12 mt-2 flex flex-col items-center gap-8">
+      <div className="lg:col-span-12 mt-2 flex flex-col items-center">
         <div id="home-primary-action">
           {isConnected ? (
             <Link href="/mining" className="gold-button inline-flex items-center justify-center px-10 py-4 text-lg">
@@ -81,30 +81,7 @@ export default function HomePage() {
             </ConnectButton.Custom>
           )}
         </div>
-
-        <div className="grid w-full max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
-          <FeatureCard href="/mining" title="Collect" description="Capture daily thoughts and turn them into ores with the connected backend flow." />
-          <FeatureCard href="/refining" title="Refine" description="Select saved ores and refine them into milestone cards without losing the new UI." />
-          <FeatureCard href="/awakening" title="Awaken" description="Combine cards, mint medals on-chain, and preserve your identity." />
-        </div>
       </div>
     </FantasyShell>
-  )
-}
-
-function FeatureCard({
-  href,
-  title,
-  description,
-}: {
-  href: string
-  title: string
-  description: string
-}) {
-  return (
-    <Link href={href} className="fantasy-card rounded-[28px] p-6 transition-transform duration-300 hover:-translate-y-1">
-      <p className="cinzel text-xl font-bold uppercase tracking-[0.24em] text-[#8b6914]">{title}</p>
-      <p className="mt-3 text-lg leading-7 text-[#5b3a1c]">{description}</p>
-    </Link>
   )
 }

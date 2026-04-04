@@ -35,6 +35,9 @@ export default function AwakeningPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [newMedal, setNewMedal] = useState<Medal | null>(null)
   const [editableTitle, setEditableTitle] = useState('')
+  const [isPersistingMint, setIsPersistingMint] = useState(false)
+  const [hasMintedCurrent, setHasMintedCurrent] = useState(false)
+  const [lastHandledMintHash, setLastHandledMintHash] = useState<`0x${string}` | undefined>(undefined)
 
   // Tuning knobs for this page:
   // - ritualDoorWidth controls the idle door size
@@ -42,9 +45,9 @@ export default function AwakeningPage() {
   // - resultMedalSize controls the preview medal diameter
   const ritualDoorWidth = 700
   const ritualDoorOffsetY = -50
-  const resultMedalSize = 500
+  const resultMedalSize = 260
 
-  const { mintMedal, isPending: isMinting, isConfirmed: mintConfirmed, receipt } = useMintMedal()
+  const { mintMedal, isPending: isMinting, isConfirmed: mintConfirmed, receipt, hash } = useMintMedal()
 
   useEffect(() => {
     if (!isConnected || !address) {
@@ -56,7 +59,15 @@ export default function AwakeningPage() {
   }, [isConnected, address])
 
   useEffect(() => {
-    if (mintConfirmed && receipt && newMedal) {
+    if (
+      isPersistingMint &&
+      mintConfirmed &&
+      receipt &&
+      hash &&
+      hash !== lastHandledMintHash &&
+      receipt.transactionHash === hash &&
+      newMedal
+    ) {
       const medalMintedEvent = receipt.logs.find((log) => {
         return log.topics[0] === '0xdccdb8897eec6a644b93d2ff2b1d5a7fee4603857d745585ad971dfcd0ccd299'
       })
@@ -68,15 +79,23 @@ export default function AwakeningPage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tokenId: tokenId.toString() }),
-        }).then(() => {
-          setSelectedCards([])
-          setSelectedMedal(null)
-          setNewMedal(null)
-          void fetchData()
         })
+          .then(() => {
+            setSelectedCards([])
+            setSelectedMedal(null)
+            setHasMintedCurrent(true)
+            setLastHandledMintHash(hash)
+            void fetchData()
+          })
+          .catch((error) => {
+            console.error('Error syncing minted medal:', error)
+          })
+          .finally(() => {
+            setIsPersistingMint(false)
+          })
       }
     }
-  }, [mintConfirmed, receipt, newMedal])
+  }, [hash, isPersistingMint, lastHandledMintHash, mintConfirmed, receipt, newMedal])
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -119,6 +138,8 @@ export default function AwakeningPage() {
       if (result.success) {
         setNewMedal(result.medal)
         setEditableTitle(result.medal.title)
+        setHasMintedCurrent(false)
+        setIsPersistingMint(false)
       }
     } catch (error) {
       console.error('Error awakening medal:', error)
@@ -128,7 +149,7 @@ export default function AwakeningPage() {
   }
 
   const handleMint = async () => {
-    if (!newMedal) return
+    if (!newMedal || isPersistingMint || hasMintedCurrent) return
 
     if (editableTitle !== newMedal.title) {
       await fetch(`/api/medals/${newMedal.id}`, {
@@ -138,7 +159,23 @@ export default function AwakeningPage() {
       })
     }
 
-    mintMedal(newMedal.image_url, editableTitle, newMedal.description)
+    try {
+      setIsPersistingMint(true)
+      mintMedal(newMedal.image_url, editableTitle, newMedal.description)
+    } catch (error) {
+      setIsPersistingMint(false)
+      console.error('Error minting medal:', error)
+    }
+  }
+
+  const handleContinueAwakening = async () => {
+    setSelectedCards([])
+    setSelectedMedal(null)
+    setNewMedal(null)
+    setEditableTitle('')
+    setHasMintedCurrent(false)
+    setIsPersistingMint(false)
+    await fetchData()
   }
 
   return (
@@ -154,20 +191,32 @@ export default function AwakeningPage() {
             <p className="mt-4 text-xl">Connect your wallet to awaken or evolve medals.</p>
           </div>
         ) : newMedal ? (
-          <div className="fantasy-card w-full max-w-[420px] rounded-[32px] p-6 text-center">
+          <div className="fantasy-card w-full max-w-[400px] rounded-[32px] p-6 text-center">
             <p className="cinzel text-sm font-bold uppercase tracking-[0.25em] text-[#8b6914]">Medal Forged</p>
             <div
               className="relative mx-auto mt-4"
               style={{ height: `${resultMedalSize}px`, width: `${resultMedalSize}px` }}
             >
               <div className="absolute inset-0 rounded-full bg-yellow-300/20 blur-3xl" />
-              <img src={newMedal.image_url} alt={newMedal.title} className="relative z-10 h-full w-full rounded-full object-cover shadow-2xl" />
+              <div className="relative z-10 h-full w-full rounded-full bg-white/35 p-2 shadow-2xl">
+                <img
+                  src={newMedal.image_url}
+                  alt={newMedal.title}
+                  className="h-full w-full rounded-full object-contain"
+                />
+              </div>
             </div>
             <input value={editableTitle} onChange={(event) => setEditableTitle(event.target.value)} className="input-magical mt-4 text-center text-lg" />
             <p className="mt-3 text-base leading-7 text-[#5b3a1c]">{newMedal.description}</p>
-            <button onClick={handleMint} disabled={isMinting} className="gold-button mt-4 w-full disabled:cursor-not-allowed disabled:opacity-60">
-              {isMinting ? 'Minting...' : 'Mint On-Chain'}
-            </button>
+            {hasMintedCurrent ? (
+              <button onClick={() => void handleContinueAwakening()} className="gold-button mt-4 w-full">
+                Continue Awakening
+              </button>
+            ) : (
+              <button onClick={handleMint} disabled={isMinting || isPersistingMint} className="gold-button mt-4 w-full disabled:cursor-not-allowed disabled:opacity-60">
+                {isMinting || isPersistingMint ? 'Minting...' : 'Mint On-Chain'}
+              </button>
+            )}
           </div>
         ) : (
           <>

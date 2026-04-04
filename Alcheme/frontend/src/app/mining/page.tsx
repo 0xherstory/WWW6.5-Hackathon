@@ -6,6 +6,7 @@ import { Trash2 } from 'lucide-react'
 import { useAccount } from 'wagmi'
 import { FantasyShell } from '@/components/FantasyShell'
 import { uiAssets } from '@/utils/uiAssets'
+import { getOreVisual, type OreDimension } from '@/utils/oreVisuals'
 
 interface SavedOre {
   id: string
@@ -13,7 +14,7 @@ interface SavedOre {
   refined_data: {
     id: number
     text: string
-    dimension: 'Wisdom' | 'Will' | 'Creation' | 'Connection'
+    dimension: OreDimension
     score: number
   }
   created_at: string
@@ -22,16 +23,9 @@ interface SavedOre {
 interface EditingOre {
   id: number
   text: string
-  dimension: 'Wisdom' | 'Will' | 'Creation' | 'Connection'
+  dimension: OreDimension
   score: number
 }
-
-const dimensionInfo = {
-  Wisdom: { label: 'Wisdom', gradient: 'ore-gradient-wisdom', crystal: uiAssets.crystals[0] },
-  Will: { label: 'Will', gradient: 'ore-gradient-will', crystal: uiAssets.crystals[4] },
-  Creation: { label: 'Creation', gradient: 'ore-gradient-creation', crystal: uiAssets.crystals[2] },
-  Connection: { label: 'Connection', gradient: 'ore-gradient-connection', crystal: uiAssets.crystals[5] },
-} as const
 
 export default function MiningPage() {
   const { isConnected, address } = useAccount()
@@ -181,25 +175,31 @@ export default function MiningPage() {
             <div className="space-y-4">
               {ores.map((ore) => (
                 <div key={ore.id} className="rounded-[24px] border border-[#8b6914]/20 bg-white/55 p-4 shadow-sm">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex h-12 w-12 items-center justify-center">
-                        <div className={`absolute inset-1 rounded-full blur-md ${dimensionInfo[ore.dimension].gradient}`} />
-                        <img
-                          src={dimensionInfo[ore.dimension].crystal}
-                          alt={dimensionInfo[ore.dimension].label}
-                          className="relative z-10 h-12 w-12 object-contain drop-shadow-md"
-                        />
+                  {(() => {
+                    const visual = getOreVisual(ore.dimension, `${ore.id}-${ore.text}-${ore.dimension}`)
+
+                    return (
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="relative flex h-12 w-12 items-center justify-center">
+                            <div className={`absolute inset-1 rounded-full blur-md ${visual.glowClass}`} />
+                            <img
+                              src={visual.crystal}
+                              alt={visual.label}
+                              className="relative z-10 h-12 w-12 object-contain drop-shadow-md"
+                            />
+                          </div>
+                          <div>
+                            <p className="cinzel text-sm font-bold uppercase tracking-[0.2em] text-[#8b6914]">{visual.label}</p>
+                            <p className="text-sm text-[#6b4a2c]">Quality {ore.score}/5</p>
+                          </div>
+                        </div>
+                        <button onClick={() => handleDeleteOre(ore.id)} className="text-[#8b6914] transition hover:text-red-500">
+                          <Trash2 size={18} />
+                        </button>
                       </div>
-                      <div>
-                        <p className="cinzel text-sm font-bold uppercase tracking-[0.2em] text-[#8b6914]">{dimensionInfo[ore.dimension].label}</p>
-                        <p className="text-sm text-[#6b4a2c]">Quality {ore.score}/5</p>
-                      </div>
-                    </div>
-                    <button onClick={() => handleDeleteOre(ore.id)} className="text-[#8b6914] transition hover:text-red-500">
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
+                    )
+                  })()}
                   <input
                     value={ore.text}
                     onChange={(event) => {
@@ -256,16 +256,26 @@ export default function MiningPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {savedOres.slice(0, 6).map((ore, index) => (
-              <div key={ore.id} className="rounded-[24px] border border-[#8b6914]/15 bg-white/60 p-3 text-center">
-                <img
-                  src={uiAssets.crystals[index % uiAssets.crystals.length]}
-                  alt="Ore crystal"
-                  className="mx-auto h-16 w-16 object-contain drop-shadow-md"
-                />
-                <p className="mt-2 line-clamp-2 text-sm leading-5 text-[#5b3a1c]">{ore.refined_data?.text || ore.raw_input}</p>
-              </div>
-            ))}
+            {savedOres.slice(0, 6).map((ore) => {
+              const visual = getOreVisual(
+                ore.refined_data?.dimension ?? 'Wisdom',
+                `${ore.id}-${ore.refined_data?.text || ore.raw_input}`,
+              )
+
+              return (
+                <div key={ore.id} className="rounded-[24px] border border-[#8b6914]/15 bg-white/60 p-3 text-center">
+                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center">
+                    <div className={`absolute inset-2 rounded-full blur-md ${visual.glowClass}`} />
+                    <img
+                      src={visual.crystal}
+                      alt={visual.label}
+                      className="relative z-10 h-16 w-16 object-contain drop-shadow-md"
+                    />
+                  </div>
+                  <p className="mt-2 line-clamp-2 text-sm leading-5 text-[#5b3a1c]">{ore.refined_data?.text || ore.raw_input}</p>
+                </div>
+              )
+            })}
             {!isLoading && savedOres.length === 0 && (
               <div className="col-span-2 rounded-[24px] border border-dashed border-[#8b6914]/20 bg-white/35 px-4 py-10 text-center text-[#7b5a39]">
                 No ores yet. Your first saved entry will appear here.

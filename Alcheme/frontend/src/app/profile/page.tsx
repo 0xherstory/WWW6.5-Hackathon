@@ -25,15 +25,15 @@ const wallOffsetX = 0
 const wallOffsetY = 0
 
 const medalWallSlots = [
-  { left: '31.3%', top: '28.0%', size: '14.0%' },
-  { left: '50.2%', top: '28.0%', size: '14.0%' },
-  { left: '69.3%', top: '28.5%', size: '14.5%' },
-  { left: '31.3%', top: '28.0%', size: '14.0%' },
-  { left: '50.2%', top: '28.0%', size: '14.0%' },
-  { left: '69.3%', top: '28.5%', size: '14.5%' },
-  { left: '31.3%', top: '28.0%', size: '14.0%' },
-  { left: '50.2%', top: '28.0%', size: '14.0%' },
-  { left: '69.3%', top: '28.5%', size: '14.5%' },
+  { left: '31.3%', top: '28.0%', size: '14.3%' },
+  { left: '50.2%', top: '28.0%', size: '14.3%' },
+  { left: '69.3%', top: '28.0%', size: '14.3%' },
+  { left: '31.3%', top: '50.5%', size: '14.3%' },
+  { left: '50.2%', top: '50.5%', size: '14.3%' },
+  { left: '69.3%', top: '50.5%', size: '14.3%' },
+  { left: '31.3%', top: '72.8%', size: '14.3%' },
+  { left: '50.2%', top: '72.8%', size: '14.3%' },
+  { left: '69.3%', top: '72.8%', size: '14.3%' },
 ] as const
 
 export default function ProfilePage() {
@@ -112,7 +112,11 @@ export default function ProfilePage() {
                   <button
                     key={index}
                     onClick={() => medal && setSelectedMedal(medal)}
-                    className={`absolute flex items-center justify-center rounded-full ${medal ? 'hover:scale-105' : 'border border-dashed border-[#8b6914]/15'} transition`}
+                    type="button"
+                    title={medal ? `Open ${medal.title}` : 'Empty slot'}
+                    className={`absolute z-10 flex items-center justify-center rounded-full transition ${
+                      medal ? 'cursor-pointer hover:scale-105' : 'cursor-default border border-dashed border-[#8b6914]/15'
+                    }`}
                     style={{
                       left: slot.left,
                       top: slot.top,
@@ -157,30 +161,6 @@ export default function ProfilePage() {
               {nickname || 'Add your archive name'}
             </button>
           )}
-        </div>
-
-        <div className="fantasy-card rounded-[32px] p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <p className="cinzel text-sm font-bold uppercase tracking-[0.25em] text-[#8b6914]">Recent Medals</p>
-              <p className="text-base text-[#6b4a2c]">Open any medal for details.</p>
-            </div>
-            {isLoading && <span className="text-sm text-[#8b6914]">Loading...</span>}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {medals.slice(0, 4).map((medal) => (
-              <button key={medal.id} onClick={() => setSelectedMedal(medal)} className="overflow-hidden rounded-[24px] border border-[#8b6914]/15 bg-white/60 p-2 text-center transition hover:scale-[1.02]">
-                <img src={medal.image_url} alt={medal.title} className="aspect-square w-full rounded-[18px] object-cover" />
-                <p className="mt-2 line-clamp-2 text-sm leading-5 text-[#5b3a1c]">{medal.title}</p>
-              </button>
-            ))}
-            {!isLoading && medals.length === 0 && (
-              <div className="col-span-2 rounded-[24px] border border-dashed border-[#8b6914]/20 bg-white/35 px-4 py-10 text-center text-[#7b5a39]">
-                No medals minted yet.
-              </div>
-            )}
-          </div>
         </div>
       </div>
 

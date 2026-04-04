@@ -5,12 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
 import { FantasyShell } from '@/components/FantasyShell'
 import { uiAssets } from '@/utils/uiAssets'
+import { getOreVisual, type OreDimension } from '@/utils/oreVisuals'
 
 interface Ore {
   id: string
   refined_data: {
     text: string
-    dimension: 'Wisdom' | 'Will' | 'Creation' | 'Connection'
+    dimension: OreDimension
     score: number
   }
   created_at: string
@@ -22,13 +23,6 @@ interface Card {
   image_url: string
   created_at: string
 }
-
-const dimensionInfo = {
-  Wisdom: { label: 'Wisdom', gradient: 'ore-gradient-wisdom', crystal: uiAssets.crystals[0] },
-  Will: { label: 'Will', gradient: 'ore-gradient-will', crystal: uiAssets.crystals[4] },
-  Creation: { label: 'Creation', gradient: 'ore-gradient-creation', crystal: uiAssets.crystals[2] },
-  Connection: { label: 'Connection', gradient: 'ore-gradient-connection', crystal: uiAssets.crystals[5] },
-} as const
 
 export default function RefiningPage() {
   const { isConnected, address } = useAccount()
@@ -166,7 +160,10 @@ export default function RefiningPage() {
                   <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                     {ores.map((ore) => {
                       const selected = selectedOres.includes(ore.id)
-                      const info = dimensionInfo[ore.refined_data.dimension]
+                      const visual = getOreVisual(
+                        ore.refined_data.dimension,
+                        `${ore.id}-${ore.refined_data.text}`,
+                      )
                       return (
                         <button
                           key={ore.id}
@@ -182,14 +179,14 @@ export default function RefiningPage() {
                           }`}
                         >
                           <div className="relative mx-auto flex h-16 w-16 items-center justify-center">
-                            <div className={`absolute inset-2 rounded-full blur-md ${info.gradient}`} />
+                            <div className={`absolute inset-2 rounded-full blur-md ${visual.glowClass}`} />
                             <img
-                              src={info.crystal}
-                              alt={info.label}
+                              src={visual.crystal}
+                              alt={visual.label}
                               className="relative z-10 h-16 w-16 object-contain drop-shadow-md"
                             />
                           </div>
-                          <p className="cinzel mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#8b6914]">{info.label}</p>
+                          <p className="cinzel mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#8b6914]">{visual.label}</p>
                           <p className="mt-2 line-clamp-2 text-sm leading-5 text-[#5b3a1c]">{ore.refined_data.text}</p>
                         </button>
                       )
