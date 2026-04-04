@@ -1,0 +1,378 @@
+{
+  "nextPactId": 5,
+  "pacts": [
+    {
+      "id": "1",
+      "wallet": "0xde1a000000000000000000000000000000000001",
+      "habitName": "喝水",
+      "category": "diet",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 21,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-03-28T00:00:00.000Z",
+      "lastCheckinAt": "2026-04-03T00:00:00.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "latestEncouragement": null,
+      "checkins": [
+        {
+          "checkedAt": "2026-03-28T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000001001",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-03-31T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000001002",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-04-02T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000001003",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-04-03T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000001004",
+          "source": "seed",
+          "encouragement": null
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "wallet": "0xde1a000000000000000000000000000000000001",
+      "habitName": "阅读",
+      "category": "mental",
+      "frequencyLabel": "工作日",
+      "frequencyCode": "1",
+      "durationDays": 14,
+      "stakeAmountWei": "500000000000000000",
+      "startAt": "2026-03-25T00:00:00.000Z",
+      "lastCheckinAt": "2026-04-03T09:07:52.467Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "latestEncouragement": "又完成一次 阅读，继续把「给学习动作绑定一个固定触发点，比如坐下后先读 2 页」留在明天。",
+      "checkins": [
+        {
+          "checkedAt": "2026-03-26T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000002001",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-03-27T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000002002",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-03-29T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000002003",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-04-01T00:00:00.000Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000000000000002004",
+          "source": "seed",
+          "encouragement": null
+        },
+        {
+          "checkedAt": "2026-04-03T09:07:52.467Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000021775207272469",
+          "source": "checkin",
+          "encouragement": "又完成一次 阅读，继续把「给学习动作绑定一个固定触发点，比如坐下后先读 2 页」留在明天。"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "阅读",
+      "category": "mental",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T06:58:33.000Z",
+      "lastCheckinAt": "2026-04-03T06:58:49.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T06:58:49.000Z",
+          "txHash": null,
+          "source": "chain-sync",
+          "encouragement": null
+        }
+      ],
+      "latestEncouragement": null
+    },
+    {
+      "id": "2",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "称重",
+      "category": "physical",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 3,
+      "stakeAmountWei": "150000000000000000",
+      "startAt": "2026-04-03T07:29:56.000Z",
+      "lastCheckinAt": "2026-04-03T07:31:06.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T07:31:06.000Z",
+          "txHash": null,
+          "source": "chain-sync",
+          "encouragement": null
+        }
+      ],
+      "latestEncouragement": null
+    },
+    {
+      "id": "3",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "新知",
+      "category": "mental",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:30:35.000Z",
+      "lastCheckinAt": "2026-04-03T07:39:43.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T07:39:43.000Z",
+          "txHash": null,
+          "source": "chain-sync",
+          "encouragement": null
+        }
+      ],
+      "latestEncouragement": null
+    },
+    {
+      "id": "4",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "准备",
+      "category": "physical",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:34:40.000Z",
+      "lastCheckinAt": "2026-04-03T07:41:08.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T07:41:08.000Z",
+          "txHash": null,
+          "source": "chain-sync",
+          "encouragement": null
+        }
+      ],
+      "latestEncouragement": null
+    },
+    {
+      "id": "5",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "通勤",
+      "category": "physical",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:35:12.000Z",
+      "lastCheckinAt": "2026-04-03T09:58:32.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:58:31.358Z",
+          "txHash": "0x1e4c1fefbef5e42646fc473d7fdbc699125967fc00457b3a6936bb11d1747232",
+          "source": "checkin",
+          "encouragement": "第一笔 通勤 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ],
+      "latestEncouragement": "第一笔 通勤 记录已经落下，今天就是微习惯生长的起点。"
+    },
+    {
+      "id": "6",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "整理文件",
+      "category": "business",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 8,
+      "stakeAmountWei": "400000000000000000",
+      "startAt": "2026-04-03T07:35:51.000Z",
+      "lastCheckinAt": "2026-04-03T09:59:26.000Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:59:24.659Z",
+          "txHash": "0x7cb93b58e59b524da7488825a081e3dcc92071dcf2070971d4803197b994ca06",
+          "source": "checkin",
+          "encouragement": "第一笔 整理文件 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ],
+      "latestEncouragement": "第一笔 整理文件 记录已经落下，今天就是微习惯生长的起点。"
+    },
+    {
+      "id": "7",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "散步/跳舞",
+      "category": "physical",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:36:55.000Z",
+      "lastCheckinAt": null,
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [],
+      "latestEncouragement": null
+    },
+    {
+      "id": "8",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "新知",
+      "category": "mental",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:39:31.000Z",
+      "lastCheckinAt": null,
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [],
+      "latestEncouragement": null
+    },
+    {
+      "id": "3",
+      "wallet": "0xde1a000000000000000000000000000000000001",
+      "habitName": "引体向上",
+      "category": "physical",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T09:26:06.887Z",
+      "lastCheckinAt": "2026-04-03T09:26:19.046Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "latestEncouragement": "第一笔 引体向上 记录已经落下，今天就是微习惯生长的起点。",
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:26:19.046Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000031775208379048",
+          "source": "checkin",
+          "encouragement": "第一笔 引体向上 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "wallet": "0xde1a000000000000000000000000000000000001",
+      "habitName": "致谢",
+      "category": "happiness",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T09:27:15.208Z",
+      "lastCheckinAt": "2026-04-03T09:28:03.273Z",
+      "completed": false,
+      "rewardClaimed": false,
+      "latestEncouragement": "第一笔 致谢 记录已经落下，今天就是微习惯生长的起点。",
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:28:03.273Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000041775208483274",
+          "source": "checkin",
+          "encouragement": "第一笔 致谢 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "清理",
+      "category": "productivity",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T07:42:34.000Z",
+      "lastCheckinAt": null,
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:56:04.197Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000091775210164198",
+          "source": "checkin",
+          "encouragement": "第一笔 清理 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ],
+      "latestEncouragement": "第一笔 清理 记录已经落下，今天就是微习惯生长的起点。"
+    },
+    {
+      "id": "10",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "想法",
+      "category": "productivity",
+      "frequencyLabel": "自定义",
+      "frequencyCode": "2",
+      "durationDays": 2,
+      "stakeAmountWei": "100000000000000000",
+      "startAt": "2026-04-03T09:48:43.000Z",
+      "lastCheckinAt": null,
+      "completed": false,
+      "rewardClaimed": false,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T09:55:45.161Z",
+          "txHash": "0x0000000000000000000000000000000000000000000000000101775210145163",
+          "source": "checkin",
+          "encouragement": "第一笔 想法 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ],
+      "latestEncouragement": "第一笔 想法 记录已经落下，今天就是微习惯生长的起点。"
+    },
+    {
+      "id": "11",
+      "wallet": "0x3e78ae2236d65a87129e97e993ba5446cc08dbae",
+      "habitName": "脑力游戏",
+      "category": "mental",
+      "frequencyLabel": "每天",
+      "frequencyCode": "0",
+      "durationDays": 1,
+      "stakeAmountWei": "50000000000000000",
+      "startAt": "2026-04-03T10:03:50.000Z",
+      "lastCheckinAt": "2026-04-03T10:04:06.000Z",
+      "completed": true,
+      "rewardClaimed": true,
+      "checkins": [
+        {
+          "checkedAt": "2026-04-03T10:04:05.775Z",
+          "txHash": "0xec8079503f50d928305286bedd231fe9f3c42ac79a85af7887545bba61466d60",
+          "source": "checkin",
+          "encouragement": "第一笔 脑力游戏 记录已经落下，今天就是微习惯生长的起点。"
+        }
+      ],
+      "latestEncouragement": "第一笔 脑力游戏 记录已经落下，今天就是微习惯生长的起点。"
+    }
+  ]
+}
