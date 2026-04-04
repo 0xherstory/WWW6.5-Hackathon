@@ -1,4 +1,4 @@
-import { getOpenAIClient } from '../config/openai';
+import { miniMaxChatCompletion } from '../config/minimax';
 
 //service 不自己读 process.env，只消费已经验证过的配置。
 import { getAIEnv } from '../config/env'; //原版：import { env } from '../config/env';
@@ -35,32 +35,18 @@ export class AIService {
       }
       `;
     
-    const { OPENAI_MODEL } = getAIEnv(); //Service 不直接碰 env，只拿“已经验证过的配置对象”
+    const { MINIMAX_MODEL } = getAIEnv();
 
-    const response = await getOpenAIClient().chat.completions.create({ //Service 不负责初始化 client，只负责用
-      model: OPENAI_MODEL,
+    const result = await miniMaxChatCompletion({
+      model: MINIMAX_MODEL,
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
-      response_format: { type: 'json_object' },
     });
 
-    const result = response.choices[0]?.message?.content; //原本写法风险：风险：choices 可能为空；message 可能 undefined；content 可能 null，一旦有异常结构 → 直接 crash通过。修改后把“结构异常”统一转成“业务错误”
-    if (!result) {
-      throw new Error('AI 提取失败，无返回结果');
-    }
+    let jsonStr = result.trim();
+    const codeBlockMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlockMatch) jsonStr = codeBlockMatch[1].trim();
 
-    return JSON.parse(result) as AIReviewResult;
-    
-    // const response = await openaiClient.chat.completions.create({
-    //   model: env.OPENAI_MODEL,
-    //   messages: [{ role: 'user', content: prompt }],
-    //   temperature: 0.3,
-    //   response_format: { type: 'json_object' },
-    // });
-
-    // const result = response.choices[0].message.content;
-    // if (!result) throw new Error('AI提取失败，无返回结果');
-
-    // return JSON.parse(result) as AIReviewResult;
+    return JSON.parse(jsonStr) as AIReviewResult;
   }
 }

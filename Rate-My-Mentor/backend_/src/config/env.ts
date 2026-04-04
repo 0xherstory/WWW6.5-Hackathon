@@ -30,7 +30,7 @@ export const env = {
   ...parsedBaseEnv.data,
   OTP_EXPIRE_MINUTES: process.env.OTP_EXPIRE_MINUTES || '5',
   EMAIL_USER: process.env.EMAIL_USER || '',
-  OPENAI_MODEL: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+  MINIMAX_MODEL: process.env.MINIMAX_MODEL || 'MiniMax-M2.7',
   ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || '',
   CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS || ''
 };
@@ -109,8 +109,12 @@ export function requireEnv(key: keyof typeof env): string {
 /* ------------------------------------------------------------------ */
 
 const aiEnvSchema = z.object({
-  OPENAI_API_KEY: z.string().min(1, 'OPENAI_API_KEY 必填'),
-  OPENAI_MODEL: z.string().default('gpt-4o'),
+  MINIMAX_API_KEY: z.string().min(1, 'MINIMAX_API_KEY 必填（MiniMax 开放平台 / Coding Plan）'),
+  MINIMAX_MODEL: z.string().default('MiniMax-M2.7'),
+  /** chatcompletion_v2 的 API 根域名（无路径）；国内可改为 https://api.minimaxi.com */
+  MINIMAX_NATIVE_BASE_URL: z.string().url().default('https://api.minimax.io'),
+  /** Offer 图片识别用；若 M2.7 多模态异常可改为 MiniMax-Text-01 */
+  MINIMAX_VISION_MODEL: z.string().default('MiniMax-M2.7'),
 });
 
 const ipfsEnvSchema = z.object({

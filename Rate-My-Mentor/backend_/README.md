@@ -1,4 +1,3 @@
-=======
 # Rate My Mentor 后端服务
 黑客松项目后端，提供身份验证、AI结构化评分、IPFS加密存储、声誉数据聚合能力
 
@@ -12,13 +11,14 @@ Node.js + Express + TypeScript + OpenAI GPT-4o + Pinata IPFS
 4. 访问 http://localhost:3001/health 检查服务是否正常
 
 ## 接口文档
-所有接口统一前缀：`/api/v1`
+所有接口统一前缀：`/api`
 - 身份验证相关：`/auth`
 - AI评分相关：`/ai`
 - IPFS存储相关：`/ipfs`
 - 声誉看板相关：`/reputation`
 - 合约交互相关：`/contract`
 
+'''
 backend/
 ├── .env.example              # 环境变量示例（不上传Git，仅本地填写）
 ├── .gitignore                # Git忽略规则文件
@@ -64,13 +64,9 @@ backend/
         ├── reputation.routes.ts
         ├── contract.routes.ts
         └── index.ts           # 路由总入口
-<<<<<<< HEAD
->>>>>>> f459229 (后端代码)
-=======
 ```
 
->>>>>>> 04d6931b6f3ff54d0864ea7d82069bf512b33508
-
+'''
 
 严格按照我提供的商务风职场评价平台搜索结果页需求，生成完整可直接运行的前端页面代码，要求如下：
 
@@ -105,5 +101,6 @@ backend/
     - 用模拟数据填充页面，和合约返回的数据结构完全对齐，后续可直接替换
     - 所有交互效果正常，符合商务产品的交互逻辑
     - 代码可直接复制到项目src/app/search/page.tsx文件中运行，无任何冗余内容，全程突出职场评价的专业商务属性
+
 
 生成完整的page.tsx代码，可直接使用。
