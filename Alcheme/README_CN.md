@@ -6,6 +6,8 @@
 
 🎬 演示视频：Alcheme 如何将个人成长的碎片转化为链上身份勋章
 
+[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/08QBVLgxwdc)
+
 [![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/hqdefault.jpg)](https://youtu.be/08QBVLgxwdc)
 
 ---
