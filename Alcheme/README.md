@@ -3,7 +3,7 @@
 ------
 
 > **Refine fragments, awaken true self.**
-
+[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-red?style=for-the-badge&logo=youtube)](https://youtu.be/08QBVLgxwdc)
 ------
 
 ## 🌟 Inspiration (The "Why")
