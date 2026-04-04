@@ -22,7 +22,7 @@ import {
 } from "@/lib/thirdweb-connect-theme";
 
 const MOON_TOKEN_ADDRESS = "0x0e99AE008922E4547EE0e35388a0a4FD907C6c01";
-const HUT_CONTRACT_ADDRESS = "0xFe33db86B9d73DE2EeA4290A41fca2Cfdc90E71D";
+const HUT_CONTRACT_ADDRESS = "0xDf3ba211961da80819D37190da03A7253898A7BA";
 
 const moonTokenContract = getContract({
   client,
@@ -426,8 +426,16 @@ function HomeContent({
   const account = useActiveAccount();
   const walletConnected = !!account?.address;
   // 新增状态：判断当前是否处于经期、控制经期详细弹窗
-const [isPeriodActive, setIsPeriodActive] = useState(false);
-const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
+  const [isPeriodActive, setIsPeriodActive] = useState(false);
+  const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
+  const [periodSymptom, setPeriodSymptom] = useState("");
+  const [isSavingDetail, setIsSavingDetail] = useState(false);
+
+  // 新增经期详细相关状态
+  const [flowLevel, setFlowLevel] = useState<number>(2); // 1=轻量, 2=正常, 3=大量
+  const [symptomText, setSymptomText] = useState("");
+  const [isRecordingPeriod, setIsRecordingPeriod] = useState(false);
+
 
   const { data: moonBalance } = useWalletBalance({
     client,
@@ -618,86 +626,111 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
 
   // --- 新增经期打卡上链函数 ---
   const handleRecordPeriod = async () => {
-    if (!periodStart) {
-      return;
-    }
+    if (!periodStart || !walletConnected) return;
 
-    if (!walletConnected) {
-      setPeriodDialogOpen(false);
-      setUploadError(t("connectFirst"));
-      return;
-    }
-
+    setIsRecordingPeriod(true);
     try {
-      console.log("准备发送经期打卡交易...");
-      console.log("钱包地址:", account?.address);
-      console.log("合约地址:", HUT_CONTRACT_ADDRESS);
+      let cid = "";
       
-      // 1. 验证流量级别（1-3）
-      const flowLevel = 1; // 默认正常流量
-      if (flowLevel < 1 || flowLevel > 3) {
-        throw new Error("Invalid flow level, must be 1-3");
+      // 🌟 第一步：如果用户填了感受，先传到 IPFS
+      if (symptomText.trim()) {
+        const ipfsRes = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: symptomText,
+            timestamp: new Date().toISOString(),
+            isPublic: false // 标记为隐私
+          }),
+        });
+        const resData = await ipfsRes.json();
+        cid = resData.cid; // 这里拿到的 CID 会存入合约
       }
 
-      // 2. 准备合约调用：对应 MenstrualHut.sol 中的 startPeriod 函数
+      // 🌟 第二步：准备合约交易，传入 flowLevel 和刚才拿到的 cid
       const transaction = prepareContractCall({
         contract: hutContract,
         method: "function startPeriod(uint8 _flowLevel, string memory _symptomCid) public",
-        params: [flowLevel, ""],
+        params: [flowLevel, cid],
       });
 
-      console.log("交易已准备，等待用户签名...");
+      await sendTransaction(transaction);
       
-      // 3. 发送交易并等待钱包签名确认
-      const txResult = await sendTransaction(transaction);
+      // 🌟 第三步：【关键】立即触发重新读取合约，这样刷新页面状态也不会丢
+      await refetchPeriods(); 
       
-      console.log("交易已提交，结果:", txResult);
-
-      // 4. 成功后的反馈
+      setIsPeriodActive(true);
       setPeriodDialogOpen(false);
-      setUploadError(""); // 清除之前的错误
-      
-      // 3 秒后重置
-      setTimeout(() => {
-        setUploadError("");
-      }, 3000);
-      
+      setSymptomText(""); // 清空输入框
     } catch (error) {
-      console.error("经期打卡失败:", error);
-      let errorMsg = "";
-      
-      if (error instanceof Error) {
-        // 处理常见的智能合约错误
-        if (error.message.includes("execution reverted") || error.message.includes("Execution Reverted")) {
-          errorMsg = locale === "zh" 
-            ? `合约执行失败。可能原因：\n1. MOON 代币配置错误\n2. 合约权限不足\n3. 冷却时间还未到达\n错误信息: ${error.message.substring(0, 100)}` 
-            : `Contract execution failed. Possible causes:\n1. MOON token configuration error\n2. Insufficient contract permissions\n3. Cooldown period not reached\nError: ${error.message.substring(0, 100)}`;
-        } else if (error.message.includes("user rejected") || error.message.includes("User denied") || error.message.includes("reject")) {
-          errorMsg = locale === "zh" 
-            ? "您已拒绝交易" 
-            : "Transaction was rejected by user";
-        } else if (error.message.includes("insufficient funds") || error.message.includes("insufficient balance")) {
-          errorMsg = locale === "zh" 
-            ? "钱包余额不足，请确保有足够的 AVAX" 
-            : "Insufficient wallet balance. Please ensure you have enough AVAX";
-        } else if (error.message.includes("network") || error.message.includes("connection")) {
-          errorMsg = locale === "zh" 
-            ? "网络连接错误，请检查网络并重试" 
-            : "Network connection error. Please check your network and try again";
-        } else {
-          errorMsg = locale === "zh" 
-            ? `发生错误: ${error.message}` 
-            : `An error occurred: ${error.message}`;
-        }
-      } else {
-        errorMsg = locale === "zh" 
-          ? "发生未知错误，请查看控制台日志" 
-          : "Unknown error occurred. Please check console logs";
-      }
-      
-      setUploadError(errorMsg);
+      console.error("打卡失败:", error);
+    } finally {
+      setIsRecordingPeriod(false);
     }
   };
+
+  const handleSavePeriodDetail = async () => {
+    if (!periodSymptom.trim()) return;
+
+    // 检查是否连接钱包
+    if (!walletConnected) {
+      setUploadError(t("connectFirst"));
+      setPeriodDetailOpen(false);
+      return;
+    }
+
+    setIsSavingDetail(true);
+    try {
+      // 【步骤 1】: 将感受文本上传到 IPFS
+      const ipfsRes = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: periodSymptom,
+          timestamp: new Date().toISOString(),
+          isPublic: false // 经期详细通常视为隐私数据
+        }),
+      });
+
+      if (!ipfsRes.ok) {
+        throw new Error("IPFS 上传失败");
+      }
+
+      const resData = await ipfsRes.json();
+      const cid = resData.cid;
+      if (!cid) throw new Error("未能获取到 CID");
+
+      // 【步骤 2】: 调用智能合约 updatePeriodSymptom 更新最后一次经期的 CID
+      const transaction = prepareContractCall({
+        contract: hutContract,
+        method: "function updatePeriodSymptom(string memory _newSymptomCid) public",
+        params: [cid],
+      });
+
+      await sendTransaction(transaction);
+
+      // 【步骤 3】: 保存成功后的界面重置
+      setPeriodSymptom("");
+      setPeriodDetailOpen(false);
+      setUploadError(""); // 清理之前的错误提示
+
+    } catch (error) {
+      console.error("保存详细记录失败:", error);
+      let errorMsg = locale === "zh" ? "保存详细记录失败，请重试" : "Failed to save details";
+      
+      if (error instanceof Error) {
+        // 如果用户尚未点击“记录新经期”，合约会报 "No records found"
+        if (error.message.includes("No records found")) {
+            errorMsg = locale === "zh" ? "请先在日历处点击「记录新经期」" : "Please log a new period first";
+        } else if (error.message.includes("user rejected") || error.message.includes("User denied")) {
+            errorMsg = locale === "zh" ? "已取消交易" : "Transaction cancelled";
+        }
+      }
+      setUploadError(errorMsg);
+    } finally {
+      setIsSavingDetail(false);
+    }
+  }; 
 
   const daysUntilNext = useMemo(() => {
     if (!periodStart) return null;
@@ -736,11 +769,14 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
     router.push(`/experience?${qs.toString()}`);
   };
 
-  const { data: myPeriods, isLoading: isLoadingPeriods } = useReadContract({
+  const { data: myPeriods, isLoading: isPeriodsLoading, refetch: refetchPeriods } = useReadContract({
     contract: hutContract,
-    method: "function getMyPeriods() view returns ((uint256 startTime, uint256 endTime, uint8 flowLevel, string symptomCid)[])",
-    params: [],
-    queryOptions: { enabled: !!account?.address } 
+    method: "function getMyPeriods(address _user) view returns ((uint256 startTime, uint256 endTime, uint8 flowLevel, string symptomCid)[])",
+    // 🌟 明确把当前地址作为参数传进去
+    params: [account?.address ?? "0x0000000000000000000000000000000000000000"], 
+    queryOptions: { 
+      enabled: !!account?.address,
+    },
   });
 
   // 获取全站总记录数
@@ -764,10 +800,6 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
   }, [totalRecords]);
 
   const handleEndPeriod = async () => {
-    if (!walletConnected) {
-      setUploadError(t("connectFirst"));
-      return;
-    }
     try {
       const transaction = prepareContractCall({
         contract: hutContract,
@@ -777,34 +809,68 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
       
       await sendTransaction(transaction);
       
-      // 乐观更新前端状态
+      // 🌟 关键：结束后也要立刻同步链上数据
+      await refetchPeriods(); 
+      
       setIsPeriodActive(false);
-      setUploadError(""); 
     } catch (error) {
-      console.error("结束经期失败:", error);
-      setUploadError(locale === "zh" ? "结束经期失败，请重试" : "Failed to end period");
+      console.error("结束失败:", error);
+    }
+  };
+
+  // page.tsx 内部
+  const handleUpdateDetail = async () => {
+    if (!symptomText.trim() || !walletConnected) return;
+
+    setIsRecordingPeriod(true); // 借用记录中的状态
+    try {
+      // 1. 上传新内容到 IPFS
+      const ipfsRes = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: symptomText,
+          timestamp: new Date().toISOString(),
+          isPublic: false 
+        }),
+      });
+      const resData = await ipfsRes.json();
+      const newCid = resData.cid;
+
+      // 2. 调用新合约函数 updatePeriodSymptom
+      const transaction = prepareContractCall({
+        contract: hutContract,
+        method: "function updatePeriodSymptom(string memory _newSymptomCid) public",
+        params: [newCid],
+      });
+
+      await sendTransaction(transaction);
+
+      // 3. 刷新数据
+      await refetchPeriods();
+      setPeriodDetailOpen(false);
+      alert(locale === "zh" ? "感受已成功保存到区块链 ✨" : "Feeling saved to blockchain ✨");
+    } catch (error) {
+      console.error("更新感受失败:", error);
+    } finally {
+      setIsRecordingPeriod(false);
     }
   };
 
   useEffect(() => {
-    // 只有当钱包连接了，且合约成功返回了数据数组时才执行
     if (!walletConnected || !myPeriods || myPeriods.length === 0) {
-        // 如果没数据，保持默认值
         return;
     }
-
-    // 获取数组中的最后一条经期记录（最近一次打卡）
     const lastRecord = myPeriods[myPeriods.length - 1];
     
-    // 合约存的是 Unix 时间戳（秒），BigInt 类型
-    // 我们需要转成毫秒并转换成 JS 的 Date 对象，供前端日历和计算使用
     if (lastRecord.startTime > BigInt(0)) {
       const startDate = new Date(Number(lastRecord.startTime) * 1000);
       setPeriodStart(startDate);
       console.log("成功同步链上经期数据，开始日期:", startDate);
-      setIsPeriodActive(lastRecord.endTime === BigInt(0));
+      // 🌟【修改】增强对 0 的判断（兼容 BigInt(0)）
+      const isActive = lastRecord.endTime === BigInt(0) || lastRecord.endTime === BigInt(0);
+      setIsPeriodActive(isActive);
     }
-    // 如果你的合约里未来存储了用户的平均周期，也可以在这里 setCycleDays
   }, [walletConnected, myPeriods]);
 
   return (
@@ -1143,57 +1209,92 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setPeriodDialogOpen(false)}
           >
-            <div 
-              className="absolute inset-0 bg-black/35 pointer-events-none" 
-              aria-hidden="true"
-            />
+            <div className="absolute inset-0 bg-black/35 pointer-events-none" aria-hidden="true" />
             <div 
               className="relative w-full max-w-md overflow-hidden rounded-2xl border border-pink-200/80 bg-white/92 p-4 shadow-xl backdrop-blur-md"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* 弹窗头部 */}
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-base font-semibold text-[#9f1239]">{t("noData")}</h3>
+                <h3 className="text-base font-semibold text-[#9f1239]">
+                  {locale === "zh" ? "记录新经期" : "Log New Period"}
+                </h3>
                 <button
                   type="button"
                   onClick={() => setPeriodDialogOpen(false)}
                   className="ml-auto inline-flex h-7 w-7 items-center justify-center rounded-full bg-pink-100/60 hover:bg-pink-200/80 text-[#9f1239] transition"
                   aria-label="Close dialog"
                 >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div className="mt-3 rounded-xl bg-white p-2">
-                <DayPicker
-                  mode="single"
-                  selected={periodStart}
-                  onSelect={(date) => {
-                    if (date) setPeriodStart(date);
-                  }}
-                />
+
+              {/* 弹窗主体：日历 + 流量 + 症状 */}
+              <div className="mt-3 max-h-[70vh] overflow-y-auto px-1 pb-2">
+                <div className="rounded-xl bg-white p-2 shadow-sm border border-pink-50 mb-4 flex justify-center">
+                  <DayPicker
+                    mode="single"
+                    selected={periodStart}
+                    onSelect={(date) => { if (date) setPeriodStart(date); }}
+                    disabled={{ after: new Date() }}
+                    defaultMonth={new Date()}
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-[#9f1239]">流量水平</label>
+                    <div className="flex gap-2">
+                      {[1, 2, 3].map((level) => (
+                        <button
+                          key={level}
+                          type="button"
+                          onClick={() => setFlowLevel(level)}
+                          className={`flex-1 rounded-xl py-2 text-sm font-medium transition ${
+                            flowLevel === level
+                              ? "bg-pink-200 text-pink-800 border-pink-300"
+                              : "bg-pink-50 text-pink-600 border-transparent hover:bg-pink-100"
+                          }`}
+                        >
+                          {level === 1 ? (locale === "zh" ? "轻量" : "Light") : level === 2 ? (locale === "zh" ? "正常" : "Normal") : (locale === "zh" ? "大量" : "Heavy")}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-[#9f1239]">症状与感受（选填，将被安全加密）</label>
+                    <textarea
+                      value={symptomText}
+                      onChange={(e) => setSymptomText(e.target.value)}
+                      placeholder={locale === "zh" ? "例如：今天量很多，伴有轻微偏头痛..." : "e.g., Heavy flow today, mild headache..."}
+                      className="min-h-[100px] w-full rounded-xl border border-pink-200 bg-white p-3 text-sm text-[#4c1d95] outline-none focus:ring-2 focus:ring-[#d946ef]/40"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="mt-4 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPeriodDialogOpen(false)}
+
+              {/* 弹窗底部按钮 */}
+              <div className="mt-4 flex gap-2 pt-2 border-t border-pink-100">
+                <button 
+                  type="button" 
+                  onClick={() => setPeriodDialogOpen(false)} 
                   className="flex-1 rounded-xl border border-pink-200 bg-white px-4 py-3 text-sm font-semibold text-[#9f1239] hover:bg-pink-50/50 transition"
                 >
                   {locale === "zh" ? "取消" : "Cancel"}
                 </button>
-                <button
-                  type="button"
-                  onClick={handleRecordPeriod}
-                  className="flex-1 glow-hover rounded-xl bg-gradient-to-r from-[#f472b6] to-[#d946ef] px-4 py-3 text-sm font-semibold text-white shadow-sm"
+                <button 
+                  type="button" 
+                  onClick={handleRecordPeriod} 
+                  disabled={isRecordingPeriod}
+                  className="flex-1 glow-hover rounded-xl bg-gradient-to-r from-[#f472b6] to-[#d946ef] px-4 py-3 text-sm font-semibold text-white shadow-sm disabled:opacity-50"
                 >
-                  {t("confirm")}
+                  {isRecordingPeriod ? (locale === "zh" ? "正在上链..." : "Recording...") : t("confirm")}
                 </button>
               </div>
+
             </div>
           </div>
         )}
@@ -1210,19 +1311,28 @@ const [periodDetailOpen, setPeriodDetailOpen] = useState(false);
             >
               <h3 className="text-lg font-semibold text-[#9f1239] mb-4">{t("periodDetail")}</h3>
               <p className="text-sm text-[#9f1239]/80 mb-4">
-                {locale === "zh" ? "在这里可以记录你的流量、痛感和详细感受（后续可接入合约的 _flowLevel 和 _symptomCid）。" : "Log your flow level, pain, and feelings here."}
+                {locale === "zh" ? "在这里可以记录你的流量、痛感和详细感受。" : "Log your flow level, pain, and feelings here."}
               </p>
               
+              {/* 👈 绑定 value 和 onChange */}
               <textarea
+                value={periodSymptom}
+                onChange={(e) => setPeriodSymptom(e.target.value)}
+                disabled={isSavingDetail}
                 placeholder={locale === "zh" ? "例如：今天量很多，伴有轻微偏头痛..." : "e.g., Heavy flow today, mild headache..."}
-                className="min-h-32 w-full rounded-xl border border-pink-200 bg-white p-3 text-sm text-[#4c1d95] outline-none focus:ring-2 focus:ring-[#d946ef]/40"
+                className="min-h-32 w-full rounded-xl border border-pink-200 bg-white p-3 text-sm text-[#4c1d95] outline-none focus:ring-2 focus:ring-[#d946ef]/40 disabled:opacity-60"
               />
               
+              {/* 👈 绑定新的点击提交函数 */}
               <button
-                onClick={() => setPeriodDetailOpen(false)}
-                className="mt-4 w-full glow-hover rounded-xl bg-gradient-to-r from-[#f472b6] to-[#d946ef] px-4 py-3 text-sm font-semibold text-white shadow-sm"
+                onClick={handleSavePeriodDetail}
+                disabled={isSavingDetail || !periodSymptom.trim()}
+                className="mt-4 w-full glow-hover rounded-xl bg-gradient-to-r from-[#f472b6] to-[#d946ef] px-4 py-3 text-sm font-semibold text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {locale === "zh" ? "保存记录" : "Save Record"}
+                {isSavingDetail 
+                  ? (locale === "zh" ? "正在保存..." : "Saving...") 
+                  : (locale === "zh" ? "保存记录" : "Save Record")
+                }
               </button>
             </div>
           </div>
