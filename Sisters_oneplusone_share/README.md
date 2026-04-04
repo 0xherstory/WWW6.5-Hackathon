@@ -33,6 +33,14 @@
 
 ---
 
+## 🎨 Preview
+
+<p align="center">
+  <img src="./docs/screenshots/landing_page.png" alt="SOOS Landing Page Preview" width="800px" style="border-radius: 15px; shadow: 10px 10px 30px rgba(0,0,0,0.1);">
+</p>
+
+
+
 ## 📊 业务流程图 (Workflow)
 
 ```mermaid
