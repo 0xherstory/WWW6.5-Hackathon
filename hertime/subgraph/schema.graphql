@@ -1,0 +1,52 @@
+type Service @entity {
+  id: ID!                    # bytes32 serviceId hex
+  requester: Bytes!          # address(0) 若匿名
+  actualRequester: Bytes!    # 真实发起人
+  provider: Bytes            # 接单人，匹配后才有
+  tag: Int!                  # 0-4 服务类型
+  numHours: BigInt!          # 单位 0.1h（链上 tenthHours）
+  status: Int!               # 0=OPEN 1=MATCHED 2=COMPLETED 3=CANCELLED
+  isAnonymous: Boolean!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+  completedAt: BigInt
+  cancelledAt: BigInt
+}
+
+type Member @entity {
+  id: ID!                    # 地址小写
+  registeredAt: BigInt!
+  hrtEarned: BigInt!         # 累计赚取 HRT（wei）
+  hrtSpent: BigInt!          # 累计消费 HRT（wei）
+  servicesProvided: Int!     # 提供次数（链上记录）
+  servicesRequested: Int!    # 发起次数
+  avgScore: BigInt!          # 声誉均分 ×100，如 462 = 4.62
+  skills: [SkillBadge!]! @derivedFrom(field: "member")
+  hrtFlows: [HRTFlow!]! @derivedFrom(field: "member")
+}
+
+type SkillBadge @entity {
+  id: ID!                    # "{address}-{skillType}"
+  member: Member!
+  skillType: Int!            # 0-5 对应六种技能
+  tokenId: BigInt!
+  mintedAt: BigInt!
+}
+
+type Rating @entity {
+  id: ID!                    # "{serviceId}-{raterAddress}"
+  serviceId: Bytes!
+  rater: Bytes!
+  submittedAt: BigInt!
+  revealed: Boolean!
+}
+
+type HRTFlow @entity {
+  id: ID!                    # txHash-logIndex
+  type: String!              # "welcome" | "earn" | "spend"
+  member: Member!
+  amount: BigInt!
+  serviceId: Bytes           # earn/spend 时有值
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}

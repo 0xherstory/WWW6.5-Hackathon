@@ -1,0 +1,12 @@
+{
+  "network": "fuji",
+  "chainId": "43113",
+  "deployer": "",
+  "deployedAt": "",
+  "contracts": {
+    "HerTimeToken": "0x0000000000000000000000000000000000000000",
+    "HerTimeService": "0x0000000000000000000000000000000000000000",
+    "HerTimeReputation": "0x0000000000000000000000000000000000000000",
+    "HerTimeSkillNFT": "0x0000000000000000000000000000000000000000"
+  }
+}
