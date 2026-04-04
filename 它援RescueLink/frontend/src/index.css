@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 30 15% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 15% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 15% 25%;
+
+    --primary: 24 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 60% 94%;
+    --secondary-foreground: 30 50% 30%;
+
+    --muted: 40 20% 95%;
+    --muted-foreground: 30 10% 50%;
+
+    --accent: 38 90% 58%;
+    --accent-foreground: 30 60% 18%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 20% 90%;
+    --input: 40 20% 90%;
+    --ring: 24 85% 55%;
+
+    --radius: 0.75rem;
+
+    --urgent: 0 72% 55%;
+    --urgent-foreground: 0 0% 100%;
+    --success: 152 45% 45%;
+    --success-foreground: 0 0% 100%;
+    --points: 38 90% 58%;
+    --points-foreground: 30 60% 18%;
+
+    --header-bg: 45 70% 94%;
+    --header-fg: 25 50% 25%;
+    --header-accent: 45 55% 88%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
