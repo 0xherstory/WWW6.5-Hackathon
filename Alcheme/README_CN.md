@@ -3,7 +3,12 @@
 ---
 
 > **Refine fragments, awaken true self.** > **精炼碎片，唤醒真我。**
-> 
+
+🎬 演示视频：Alcheme 如何将个人成长的碎片转化为链上身份勋章
+
+[![Demo Video](https://img.shields.io/badge/Demo-Video-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/08QBVLgxwdc)
+
+[![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/hqdefault.jpg)](https://youtu.be/08QBVLgxwdc)
 
 ---
 
