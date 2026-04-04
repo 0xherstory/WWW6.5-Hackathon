@@ -80,7 +80,7 @@ npm run dev
 
 ```
 
-Open [Alcheme Live Demo](https://tux-assist-66534042.figma.site/awaken) to begin your alchemy journey.
+Open [Alcheme Live Demo](https://tux-assist-66534042.figma.site) to begin your alchemy journey.
 
 ---
 
