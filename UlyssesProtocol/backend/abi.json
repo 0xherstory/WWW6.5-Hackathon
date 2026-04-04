@@ -1,5 +1,18 @@
 [
   {
+    "inputs": [],
+    "name": "stakingToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "_stakingToken", "type": "address" },
       { "internalType": "address", "name": "_watcher", "type": "address" }
@@ -51,18 +64,6 @@
     "name": "stake",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" },
-      { "internalType": "address", "name": "_target", "type": "address" }
-    ],
-    "name": "getPendingReward",
-    "outputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]
