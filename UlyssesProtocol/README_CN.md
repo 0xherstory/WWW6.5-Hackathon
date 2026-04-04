@@ -62,15 +62,15 @@ Web3 交易的高频与高波特性，常使投资者陷入“短视冲动”。
 
 ### 👥 团队分工 (Team & Responsibilities)
 
-* **Nina Liu** —— **Product Architect / Contract Engineer (产品架构与合约开发)**
+* **[Nina]** —— **Product Architect / Contract Engineer (产品架构与合约开发)**
     * **核心贡献：** 构建 Ulysses 协议的行为金融学底层框架，设计“尤利西斯契约”治理逻辑及亚线性意志力加权模型。
     * **项目交付：** 负责核心智能合约编写、全套产品标准化文档（PRD/README）输出及逻辑闭环设计。
 
-* **[成员姓名]** —— **Backend & Sentinel Engineer (后端与哨兵系统开发)**
+* **[Selin]** —— **Backend & Sentinel Engineer (后端与哨兵系统开发)**
     * **核心贡献：** 实现协议实时监听系统（Watcher Service），通过高效事件索引确保违约判定逻辑在链上的准确触达。
     * **项目交付：** 搭建后端裁决引擎，负责合约执行侧与监测侧的数据交互设计，参与系统级联调与稳定性保障。
 
-* **[成员姓名]** —— **Frontend & Presentation (前端开发与现场演示)**
+* **[Nicky]** —— **Frontend & Presentation (前端开发与现场演示)**
     * **核心贡献：** 负责协议终端的交互逻辑实现，将复杂的数学模型转化为直观、高感知的链上交易体验。
     * **项目交付：** 主导前端页面开发、演示环境下的全链路集成测试，并负责黑客松现场路演（Roadshow）的 Demo 展示与宣讲。
 
