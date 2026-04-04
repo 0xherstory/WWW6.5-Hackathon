@@ -4,9 +4,10 @@
 
 > **Refine fragments, awaken true self.**
 
-🎬 Demo Video: See how Alcheme turns personal growth fragments into on-chain identity badges.
 
+🎬 Demo Video: See how Alcheme turns personal growth fragments into on-chain identity badges.
 [![Watch the demo](https://img.youtube.com/vi/08QBVLgxwdc/maxresdefault.jpg)](https://youtu.be/08QBVLgxwdc)
+
 ------
 
 ## 🌟 Inspiration (The "Why")
