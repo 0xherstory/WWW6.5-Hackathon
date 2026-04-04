@@ -52,7 +52,10 @@ Identity is not a static state. You can continuously inject new cards into exist
 
 | **1. Collect Ores** | **2. Refine Cards** | **3. Awaken Badge** |
 | --- | --- | --- |
-|  |  |  |
+| <img width="2308" height="1228" alt="collect ores" src="https://github.com/user-attachments/assets/c357f48c-9667-4247-a22f-0c20d65e655e" />
+ | <img width="2314" height="1234" alt="refine cards" src="https://github.com/user-attachments/assets/9032c333-57ad-429f-bf9f-629e48ea2a03" />
+ | <img width="2310" height="1236" alt="awaken badges" src="https://github.com/user-attachments/assets/ca5ea008-ffbb-4ce0-b4a9-3d144a07588a" />
+ |
 
 > *Visit the **Personal Profile** to see your dynamic 6D Radar Chart and evolving Badge Wall!*
 > 
