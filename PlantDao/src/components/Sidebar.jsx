@@ -1,0 +1,74 @@
+import { NavLink } from 'react-router-dom'
+import { userData } from '../data/mockData'
+
+const navItems = [
+  { path: '/', label: '首页', icon: '🏠' },
+  { path: '/plant/1', label: '我的植物', icon: '🌿' },
+  { path: '/marketplace', label: '市场', icon: '🛒' },
+  { path: '/community', label: '社区', icon: '👥' },
+  { path: '/dao', label: 'DAO', icon: '🏛️' },
+]
+
+export default function Sidebar() {
+  return (
+    <aside className="glass-sidebar fixed left-0 top-0 h-screen w-64 z-40 flex flex-col">
+      {/* Logo */}
+      <div className="p-6 pb-4">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl float-animation">🌱</span>
+          <div>
+            <h1 className="text-xl font-bold text-plant-600">Plant DAO</h1>
+            <p className="text-xs text-gray-400">Web3 植物护理平台</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-4">
+        <ul className="space-y-1">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
+                    isActive
+                      ? 'bg-plant-400/15 text-plant-600 shadow-glow'
+                      : 'text-gray-600 hover:bg-plant-400/8 hover:text-plant-600'
+                  }`
+                }
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span>{item.label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* User Card */}
+      <div className="p-4">
+        <div className="glass-card p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">{userData.avatar}</span>
+            <div>
+              <p className="text-xs font-semibold text-plant-600">{userData.level}</p>
+              <p className="text-xs text-gray-400">{userData.displayAddress}</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs">
+            <div className="text-center">
+              <p className="font-bold text-plant-600">{userData.seedBalance}</p>
+              <p className="text-gray-400">$SEED</p>
+            </div>
+            <div className="w-px h-6 bg-gray-200"></div>
+            <div className="text-center">
+              <p className="font-bold text-gold-400">{userData.pleafBalance}</p>
+              <p className="text-gray-400">$PLEAF</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  )
+}

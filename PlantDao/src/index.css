@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green-primary: #6DBE45;
+  --green-dark: #2E7D32;
+  --gold: #F4B400;
+  --cream-bg: #FFFDF7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--cream-bg);
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  box-shadow: 0 8px 32px rgba(109, 190, 69, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Glass Sidebar */
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Glass Topbar */
+.glass-topbar {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Glow Button */
+.btn-glow {
+  background: linear-gradient(135deg, #6DBE45, #4ade80);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(109, 190, 69, 0.3);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 6px 25px rgba(109, 190, 69, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Gold Glow Button */
+.btn-gold {
+  background: linear-gradient(135deg, #F4B400, #FCD34D);
+  color: #1a1a2e;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(244, 180, 0, 0.3);
+}
+
+.btn-gold:hover {
+  box-shadow: 0 6px 25px rgba(244, 180, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Outline Button */
+.btn-outline {
+  background: transparent;
+  color: #2E7D32;
+  border: 2px solid #6DBE45;
+  border-radius: 14px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(109, 190, 69, 0.1);
+  box-shadow: 0 4px 15px rgba(109, 190, 69, 0.2);
+}
+
+/* Progress Bar */
+.progress-bar {
+  background: rgba(109, 190, 69, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #6DBE45, #4ade80);
+  border-radius: 10px;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+/* NFT Badge */
+.nft-badge {
+  background: linear-gradient(135deg, #F4B400, #EAB308);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(244, 180, 0, 0.3);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(109, 190, 69, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 190, 69, 0.5);
+}
+
+/* Animated background gradient */
+.bg-gradient-animated {
+  background: linear-gradient(-45deg, #FFFDF7, #dcfce7, #FFF9E6, #f0fdf0);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Plant health indicator */
+.health-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Leaf icon decoration */
+.leaf-decoration {
+  position: absolute;
+  opacity: 0.05;
+  font-size: 120px;
+  z-index: 0;
+  pointer-events: none;
+}

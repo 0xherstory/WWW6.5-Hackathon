@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Hardhat
+artifacts/
+cache/
+
+# Vite
+dist/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
