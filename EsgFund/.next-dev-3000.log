@@ -1,0 +1,82 @@
+
+> reactive-esg-fund@0.1.0 dev
+> next dev -p 3000
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 11.6s
+ ○ Compiling / ...
+ ✓ Compiled / in 11.2s (817 modules)
+ GET / 200 in 89ms
+ ○ Compiling /api/events ...
+ ✓ Compiled /api/events in 637ms (453 modules)
+ ✓ Compiled (457 modules)
+ GET /api/protocols 200 in 1024ms
+ GET /api/protocols 200 in 1041ms
+ GET /api/history 200 in 1044ms
+ GET /api/history 200 in 1038ms
+ GET /api/events 200 in 1056ms
+ GET /api/events 200 in 1054ms
+ GET / 200 in 721ms
+ GET /api/protocols 200 in 48ms
+ GET /api/history 200 in 58ms
+ GET /api/history 200 in 52ms
+ GET /api/events 200 in 68ms
+ GET /api/events 200 in 62ms
+ GET /api/protocols 200 in 72ms
+ ✓ Compiled in 802ms (419 modules)
+ ✓ Compiled /api/protocols in 1804ms (805 modules)
+ ✓ Compiled /api/history in 1ms (453 modules)
+ ✓ Compiled (457 modules)
+ GET /api/events 200 in 1504ms
+ GET /api/events 200 in 1514ms
+ GET /api/protocols 200 in 1535ms
+ GET /api/protocols 200 in 1528ms
+ GET /api/history 200 in 1553ms
+ GET /api/history 200 in 1548ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 867ms (846 modules)
+ GET /_next/static/css/app/layout.css?v=1775307370673 404 in 1094ms
+ ✓ Compiled in 421ms (846 modules)
+ ✓ Compiled in 1446ms (846 modules)
+ GET /api/protocols 200 in 1417ms
+ GET /api/history 200 in 1405ms
+ GET /api/events 200 in 1431ms
+ GET / 200 in 229ms
+ GET /_next/static/css/app/layout.css?v=1775307463887 404 in 49ms
+ GET /_next/static/chunks/main-app.js?v=1775307463887 404 in 65ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 64ms
+ GET / 200 in 107ms
+ GET /_next/static/css/app/layout.css?v=1775307485701 404 in 69ms
+ GET /_next/static/chunks/main-app.js?v=1775307485701 404 in 76ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 71ms
+ GET / 200 in 70ms
+ GET /_next/static/css/app/layout.css?v=1775307502670 404 in 54ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 58ms
+ GET /_next/static/chunks/main-app.js?v=1775307502670 404 in 56ms
+ GET / 200 in 52ms
+ GET /_next/static/css/app/layout.css?v=1775307613913 404 in 46ms
+ GET /_next/static/chunks/main-app.js?v=1775307613913 404 in 165ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 149ms
+ GET / 200 in 54ms
+ GET /_next/static/css/app/layout.css?v=1775307667684 404 in 52ms
+ GET /_next/static/chunks/main-app.js?v=1775307667684 404 in 100ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 103ms
+ GET /_next/static/css/app/layout.css?v=1775307667684 404 in 49ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 43ms
+ GET / 200 in 80ms
+ GET /_next/static/css/app/layout.css?v=1775307852951 404 in 40ms
+ GET /_next/static/chunks/main-app.js?v=1775307852951 404 in 58ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 50ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.5s (1032 modules)
+ GET / 404 in 3739ms
+ ✓ Compiled /api/protocols in 364ms (494 modules)
+ GET /api/protocols 200 in 494ms
+ GET / 404 in 58ms
+ ✓ Compiled in 1530ms (1027 modules)
+ ✓ Compiled /_not-found in 471ms (1030 modules)
+ GET / 404 in 776ms

@@ -1,0 +1,40 @@
+
+> reactive-esg-fund@0.1.0 dev
+> next dev -p 3005
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3005
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 6.4s
+ ○ Compiling /api/protocols ...
+ ✓ Compiled /api/protocols in 603ms (57 modules)
+ GET /api/protocols 200 in 864ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1981ms (839 modules)
+ GET / 200 in 2341ms
+ GET /api/protocols 200 in 83ms
+ ✓ Compiled /api/events in 418ms (455 modules)
+ ✓ Compiled (457 modules)
+ GET /api/protocols 200 in 652ms
+ GET /api/events 200 in 672ms
+ GET /api/events 200 in 671ms
+ GET /api/history 200 in 688ms
+ GET /api/history 200 in 681ms
+ ✓ Compiled /api/calculate-score in 308ms (460 modules)
+ POST /api/calculate-score 200 in 399ms
+ GET /api/protocols 200 in 21ms
+ GET /api/history 200 in 30ms
+ GET /api/events 200 in 37ms
+ GET / 200 in 194ms
+ GET /api/protocols 200 in 43ms
+ GET /api/protocols 200 in 32ms
+ GET /api/history 200 in 58ms
+ GET /api/history 200 in 53ms
+ GET /api/events 200 in 71ms
+ GET /api/events 200 in 66ms
+ POST /api/calculate-score 200 in 32ms
+ GET /api/protocols 200 in 22ms
+ GET /api/history 200 in 24ms
+ GET /api/events 200 in 28ms

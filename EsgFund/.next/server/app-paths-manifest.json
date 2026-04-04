@@ -1,0 +1,7 @@
+{
+  "/api/protocols/route": "app/api/protocols/route.js",
+  "/page": "app/page.js",
+  "/api/history/route": "app/api/history/route.js",
+  "/api/events/route": "app/api/events/route.js",
+  "/api/calculate-score/route": "app/api/calculate-score/route.js"
+}
