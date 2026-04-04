@@ -3,8 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
+import { WalletStatusCard } from "../components/wallet-status-card";
+import { SceneStatusCard, SceneStatusRail } from "../components/scene-status";
+import { useWalletConnection } from "../hooks/use-wallet-connection";
 import { useTownSnapshot } from "../lib/ami-world";
-import { mockUser } from "../lib/mock-user";
+import { formatAddress } from "../services/support/supportService";
 
 const notices = [
   "新的伙伴今天就可以写下自己的第一份约定。",
@@ -21,6 +24,7 @@ type LandmarkLabelProps = {
 export default function SquarePage() {
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const townSnapshot = useTownSnapshot();
+  const { walletAddress } = useWalletConnection();
 
   return (
     <>
@@ -62,7 +66,7 @@ export default function SquarePage() {
                       今日小镇
                     </p>
                     <p className="mt-2 text-[14px] tracking-[0.08em] text-[#7D716A] [text-shadow:0_1px_0_rgba(255,255,255,0.35)]">
-                      2026年4月2日
+                      2026年4月4日
                     </p>
                     <p className="mt-2 text-[15px] font-medium tracking-[0.08em] text-[#6E8B67] [text-shadow:0_1px_0_rgba(255,255,255,0.35)]">
                       {townSnapshot.totalOnline} 人在线
@@ -157,17 +161,21 @@ export default function SquarePage() {
                 </p>
               </div>
 
-              <div className="absolute left-6 top-[5.5rem] z-20 rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.7)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]">
-                  当前在线住客
-                </p>
-                <p className="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]">
-                  {mockUser.username}
-                </p>
-                <p className="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]">
-                  {mockUser.status}
-                </p>
-              </div>
+              <SceneStatusRail className="absolute left-6 top-1/2 z-30 hidden w-[280px] -translate-y-1/2 xl:block">
+                <WalletStatusCard
+                  className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+                  labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+                  addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+                  statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+                />
+                <SceneStatusCard
+                  eyebrow="小镇动态"
+                  title={`${townSnapshot.totalOnline} 人在线`}
+                  description={`我的小屋当前连续记录 ${townSnapshot.profileStreak} 天。你可以通过地图前往学习小屋、花园社或我的小屋。`}
+                  tone="rose"
+                  className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+                />
+              </SceneStatusRail>
 
               <Link
                 href="/"
@@ -177,6 +185,22 @@ export default function SquarePage() {
               </Link>
             </div>
           </div>
+
+          <SceneStatusRail className="grid px-1 py-4 xl:hidden">
+            <WalletStatusCard
+              className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+              labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+              addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+              statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+            />
+            <SceneStatusCard
+              eyebrow="小镇动态"
+              title={`${townSnapshot.totalOnline} 人在线`}
+              description={`我的小屋当前连续记录 ${townSnapshot.profileStreak} 天。你可以通过地图前往学习小屋、花园社或我的小屋。`}
+              tone="rose"
+              className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+            />
+          </SceneStatusRail>
         </div>
       </main>
 
@@ -204,13 +228,13 @@ export default function SquarePage() {
             </h2>
             <div className="mt-4 rounded-[20px] border border-[rgba(205,186,166,0.24)] bg-white/75 px-4 py-3">
               <p className="text-[11px] uppercase tracking-[0.18em] text-[#9B7E60]">
-                当前看板访客
+                当前看板钱包
               </p>
               <p className="mt-1 text-sm font-semibold tracking-[0.04em] text-[#5D5148]">
-                {mockUser.username}
+                {walletAddress ? formatAddress(walletAddress) : "尚未连接钱包"}
               </p>
               <p className="mt-1 text-xs tracking-[0.08em] text-[#7B6E68]">
-                {mockUser.status}
+                {walletAddress ? "当前钱包已连接" : "连接钱包后，这座小镇会更贴近你的当下状态。"}
               </p>
             </div>
             <div className="mt-5 space-y-3">
@@ -250,4 +274,3 @@ function LandmarkLabel({
     </span>
   );
 }
-

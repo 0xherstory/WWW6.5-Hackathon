@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ReactNode } from "react";
-import { mockUser } from "../lib/mock-user";
+import { WalletStatusCard } from "./wallet-status-card";
 
 type Tone = "rose" | "sage" | "lavender" | "amber";
 
@@ -79,17 +79,12 @@ export function SpacePageShell({
 
             <div className="flex flex-col items-start gap-3 lg:items-end">
               <SpaceBadge tone="rose">{status}</SpaceBadge>
-              <div className="rounded-[24px] border border-[rgba(191,173,181,0.16)] bg-[rgba(255,255,255,0.68)] px-4 py-3 text-left shadow-[0_10px_24px_rgba(110,89,99,0.06)]">
-                <p className="text-[0.68rem] uppercase tracking-[0.18em] text-[#9b7a88]">
-                  当前住客
-                </p>
-                <p className="mt-2 text-sm font-semibold tracking-[0.04em] text-[var(--ami-text-primary)]">
-                  {mockUser.username}
-                </p>
-                <p className="mt-1 text-xs tracking-[0.08em] text-[var(--ami-text-soft)]">
-                  {mockUser.status}
-                </p>
-              </div>
+              <WalletStatusCard
+                className="rounded-[24px] border border-[rgba(191,173,181,0.16)] bg-[rgba(255,255,255,0.68)] px-4 py-3 text-left shadow-[0_10px_24px_rgba(110,89,99,0.06)]"
+                labelClassName="text-[0.68rem] uppercase tracking-[0.18em] text-[#9b7a88]"
+                addressClassName="mt-2 text-sm font-semibold tracking-[0.04em] text-[var(--ami-text-primary)]"
+                statusClassName="mt-1 text-xs tracking-[0.08em] text-[var(--ami-text-soft)]"
+              />
               <Link
                 href="/square"
                 className="inline-flex items-center rounded-full border border-[var(--ami-border-soft)] bg-white/80 px-4 py-2.5 text-sm text-[var(--ami-text-body)] shadow-[0_8px_20px_rgba(110,89,99,0.05)] transition hover:bg-white"
@@ -228,11 +223,15 @@ export function SpaceButton({
   tone = "rose",
   type = "button",
   onClick,
+  disabled,
+  className,
 }: {
   children: ReactNode;
   tone?: Tone;
   type?: "button" | "submit";
   onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
 }) {
   const buttonTones: Record<Tone, string> = {
     rose:
@@ -249,9 +248,11 @@ export function SpaceButton({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={cx(
-        "inline-flex min-w-[190px] items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition hover:-translate-y-0.5",
+        "inline-flex min-w-[190px] items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0",
         buttonTones[tone],
+        className,
       )}
     >
       {children}
