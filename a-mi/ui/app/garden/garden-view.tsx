@@ -3,8 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
+import { WalletStatusCard } from "../components/wallet-status-card";
+import { SceneStatusCard, SceneStatusRail } from "../components/scene-status";
 import { SpaceBadge, SpaceListItem } from "../components/space-shell";
-import { mockUser } from "../lib/mock-user";
+import { useTownSnapshot } from "../lib/ami-world";
 
 type ActiveSpot = "active" | "inactive" | "recommend" | null;
 
@@ -105,6 +107,7 @@ const gardenSpots = [
 
 export default function GardenViewPage() {
   const [activeSpot, setActiveSpot] = useState<ActiveSpot>(null);
+  const townSnapshot = useTownSnapshot();
   const activeSpotConfig = gardenSpots.find((spot) => spot.id === activeSpot) ?? null;
 
   return (
@@ -124,24 +127,31 @@ export default function GardenViewPage() {
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,251,246,0.12)_0%,rgba(255,251,246,0.02)_34%,rgba(100,88,64,0.12)_100%)]" />
 
               <div className="absolute left-5 top-5 z-20 rounded-full border border-[rgba(255,255,255,0.32)] bg-[rgba(255,252,250,0.62)] px-6 py-3 backdrop-blur-sm">
-                <p className="text-[15px] tracking-[0.24em] text-[#7C8B70]">GARDEN CLUB</p>
+                <p className="text-[15px] tracking-[0.24em] text-[#7C8B70]">花园社</p>
               </div>
 
-              <div className="absolute right-5 top-5 z-30 rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]">当前住客</p>
-                <p className="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]">
-                  {mockUser.username}
-                </p>
-                <p className="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]">登录中</p>
-              </div>
-
-              <div className="pointer-events-none absolute left-6 top-24 z-10 max-w-[320px] rounded-[28px] border border-[rgba(255,255,255,0.22)] bg-[rgba(255,251,246,0.42)] px-5 py-4 shadow-[0_18px_40px_rgba(79,64,52,0.08)] backdrop-blur-[6px] max-md:hidden">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[#80916F]">温室里的群组空间</p>
-                <p className="mt-2 text-lg font-semibold text-[#5F5751]">在花盆之间轻轻逛一圈</p>
-                <p className="mt-2 text-sm leading-6 text-[#6C615A]">
-                  左边是还在发芽的群组，中央是最近比较安静的角落，右边放着今天的推荐。
-                </p>
-              </div>
+              <SceneStatusRail className="absolute left-5 top-20 z-30 hidden w-[280px] xl:block">
+                <WalletStatusCard
+                  className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+                  labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+                  addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+                  statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+                />
+                <SceneStatusCard
+                  eyebrow="花园社"
+                  title={`${gardenSpots.length} 组群组角落`}
+                  description="左边花盆是活跃群组，中间花盆是近期安静的群组，右边花盆是推荐群组。状态卡会停在温室入口外侧。"
+                  tone="amber"
+                  className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+                />
+                <SceneStatusCard
+                  eyebrow="其他房间"
+                  title={`学习小屋 ${townSnapshot.studyFocusTime}`}
+                  description={`我的小屋当前连续记录 ${townSnapshot.profileStreak} 天，花园社现在的氛围是“${townSnapshot.gardenMood}”。`}
+                  tone="rose"
+                  className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+                />
+              </SceneStatusRail>
 
               {gardenSpots.map((spot) => (
                 <button
@@ -161,6 +171,29 @@ export default function GardenViewPage() {
               </div>
             </div>
           </div>
+
+          <SceneStatusRail className="grid px-1 py-4 xl:hidden">
+            <WalletStatusCard
+              className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+              labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+              addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+              statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+            />
+            <SceneStatusCard
+              eyebrow="花园社"
+              title={`${gardenSpots.length} 组群组角落`}
+              description="左边花盆是活跃群组，中间花盆是近期安静的群组，右边花盆是推荐群组。状态卡会停在温室入口外侧。"
+              tone="amber"
+              className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+            />
+            <SceneStatusCard
+              eyebrow="其他房间"
+              title={`学习小屋 ${townSnapshot.studyFocusTime}`}
+              description={`我的小屋当前连续记录 ${townSnapshot.profileStreak} 天，花园社现在的氛围是“${townSnapshot.gardenMood}”。`}
+              tone="rose"
+              className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+            />
+          </SceneStatusRail>
         </div>
       </main>
 

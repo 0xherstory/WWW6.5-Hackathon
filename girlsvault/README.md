@@ -2,6 +2,8 @@
 
 > 让每一笔善款都看得见
 
+**线上预览：[https://girlsvault.vercel.app/](https://girlsvault.vercel.app/)**
+
 ---
 
 ## 这个项目是怎么来的
@@ -226,14 +228,14 @@ cd frontend-app && npm run dev
 导入测试账户（Hardhat 默认账户 #0，仅用于本地测试，不要在生产环境使用）：
 
 ```
-私钥: 
+私钥: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
 ### 本地测试参数说明
 
-本地环境与 Fuji 有以下差异：
+本地 Hardhat 节点使用模拟的测试代币（显示为 ETH），不是真实 AVAX，不需要花钱。Fuji 测试网使用真实但免费的测试 AVAX，可从水龙头获取。
 
-| 参数 | 本地 | Fuji |
+| 参数 | 本地（测试 ETH） | Fuji（测试 AVAX） |
 |---|---|---|
 | 验证人质押 | 1 ETH | 0.00001 AVAX |
 | 举报保证金 | 0.00001 ETH | 0.00001 AVAX |

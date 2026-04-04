@@ -1,0 +1,36 @@
+﻿npx : [33m[1mWARNING:[22m[39m You are currently using Node.js v18.19.1, which is not supported by Hardh
+at. This can lead to unexpected behavior. See https://v2.hardhat.org/nodejs-versions
+所在位置 行:1 字符: 68
++ ... athon\PlantDao"; npx hardhat compile --show-stack-traces 2>&1 | Out-F ...
++                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[1mWARNIN...nodejs-versions:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+
+[1m[31mCompilerError:[39m[22m Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `vi
+aIR: true` (standard JSON) while enabling the optimizer. Otherwise, try removing local variables.
+
+
+[31m[1mError[22m[39m [31m[1mHH600:[22m[39m Compilation failed
+
+HardhatError: HH600: Compilation failed
+    at SimpleTaskDefinition.action (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_modu
+les\hardhat\src\builtin-tasks\compile.ts:504:15)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Environment._runTaskDefinition (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_m
+odules\hardhat\src\internal\core\runtime-environment.ts:351:14)
+    at OverriddenTaskDefinition._action (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node
+_modules\@typechain\hardhat\src\index.ts:28:30)
+    at Environment._runTaskDefinition (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_m
+odules\hardhat\src\internal\core\runtime-environment.ts:351:14)
+    at Environment.run (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_modules\hardhat\
+src\internal\core\runtime-environment.ts:184:14)
+    at SimpleTaskDefinition.action (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_modu
+les\hardhat\src\builtin-tasks\compile.ts:1433:63)
+    at Environment._runTaskDefinition (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_m
+odules\hardhat\src\internal\core\runtime-environment.ts:351:14)
+    at Environment.run (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_modules\hardhat\
+src\internal\core\runtime-environment.ts:184:14)
+    at SimpleTaskDefinition.action (C:\Users\Rlchilly\OneDrive\妗岄潰\web3\WWW6.5-Hackathon\PlantDao\node_modu
+les\hardhat\src\builtin-tasks\compile.ts:1513:7)

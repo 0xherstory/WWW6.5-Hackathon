@@ -18,16 +18,13 @@
     <h2>Create Project</h2>
 
     <input id="projectName" placeholder="Project Name">
-
     <input id="projectDesc" placeholder="Description">
-
     <input id="projectTags" placeholder="Tags">
-
-    <input id="projectDuration" placeholder="Duration (hours)">
+    <input id="projectDuration" placeholder="Duration Hours">
 
     <button onclick="createProject()">Create Project</button>
 
-    <h2>View Projects</h2>
+    <h2>Projects</h2>
 
     <button onclick="loadProjects()">Load Projects</button>
 
@@ -38,38 +35,33 @@
     <select id="profileProject"></select>
 
     <input id="profileName" placeholder="Name">
-
     <input id="profileSkills" placeholder="Skills">
-
     <input id="profileContact" placeholder="Contact">
 
     <button onclick="registerProfile()">Register</button>
 
+    <h2>Set Active Profile</h2>
+
+    <select id="activeProject"></select>
+    <!-- Active Profile 自动选择项目第一个 profile -->
+
     <h2>Create Team</h2>
 
-    <select id="teamProject"></select>
-
     <input id="teamName" placeholder="Team Name">
-
     <input id="teamDesc" placeholder="Description">
-
     <input id="teamSize" placeholder="Max Members">
 
     <button onclick="createTeam()">Create Team</button>
 
     <h2>View Teams</h2>
 
-    <select id="viewTeamProject"></select>
-
-    <button onclick="loadTeams()">View Teams</button>
+    <button onclick="loadTeams()">Load Teams</button>
 
     <div id="teams"></div>
 
     <h2>Participants</h2>
 
-    <select id="viewParticipantsProject"></select>
-
-    <button onclick="loadParticipants()">View Participants</button>
+    <button onclick="loadParticipants()">Load Participants</button>
 
     <div id="participants"></div>
 

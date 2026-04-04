@@ -99,9 +99,15 @@ http://localhost:8080
 
 ### 3. 启动前端
 
-- 打开 `index.html`
-- 连接钱包
-- 输入合约地址和 ABI
+```bash
+npm run dev
+```
+
+默认地址：
+
+```
+http://localhost:8081
+```
 
 ---
 

@@ -3,14 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useMemo, useState } from "react";
+import { WalletStatusCard } from "../components/wallet-status-card";
+import { SceneStatusCard, SceneStatusRail } from "../components/scene-status";
 import {
-  SpaceBadge,
   SpaceButton,
+  SpaceBadge,
   SpaceField,
   SpaceInput,
 } from "../components/space-shell";
-import { STUDY_CHECKIN_STORAGE_KEY } from "../lib/ami-world";
-import { mockUser } from "../lib/mock-user";
+import { useWalletConnection } from "../hooks/use-wallet-connection";
+import { STUDY_CHECKIN_STORAGE_KEY, useTownSnapshot } from "../lib/ami-world";
+import { formatAddress } from "../services/support/supportService";
 
 type StudyCheckIn = {
   goal: string;
@@ -29,6 +32,7 @@ type Seat = {
   goal?: string;
   remainingMinutes?: number;
   occupant?: string;
+  isCurrentUser?: boolean;
   x: string;
   y: string;
   width: string;
@@ -79,6 +83,8 @@ const initialSeats: Seat[] = [
 ];
 
 export default function StudyViewPage() {
+  const townSnapshot = useTownSnapshot();
+  const { walletAddress } = useWalletConnection();
   const [seats, setSeats] = useState<Seat[]>(initialSeats);
   const [selectedSeatId, setSelectedSeatId] = useState<string | null>(null);
   const [overlayMode, setOverlayMode] = useState<OverlayMode>(null);
@@ -122,7 +128,8 @@ export default function StudyViewPage() {
           ? {
               ...seat,
               state: "active",
-              occupant: mockUser.username,
+              occupant: walletAddress ? formatAddress(walletAddress) : "我的钱包",
+              isCurrentUser: true,
               goal: finalGoal,
               remainingMinutes: selectedDuration,
             }
@@ -151,21 +158,31 @@ export default function StudyViewPage() {
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,246,0.08)_0%,rgba(255,250,246,0.02)_40%,rgba(120,95,80,0.14)_100%)]" />
 
               <div className="absolute left-5 top-5 z-20 rounded-full border border-[rgba(255,255,255,0.36)] bg-[rgba(255,252,250,0.62)] px-6 py-3 backdrop-blur-sm">
-                <p className="text-[15px] tracking-[0.24em] text-[#8B7A73]">STUDY</p>
+                <p className="text-[15px] tracking-[0.24em] text-[#8B7A73]">学习小屋</p>
               </div>
 
-              <div className="absolute right-5 top-5 z-30 rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]">当前住客</p>
-                <p className="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]">
-                  {mockUser.username}
-                </p>
-                <p className="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]">登录中</p>
-              </div>
-
-              <div className="pointer-events-none absolute left-6 top-24 z-10 max-w-[340px] rounded-[28px] border border-[rgba(255,255,255,0.22)] bg-[rgba(255,251,246,0.4)] px-5 py-4 shadow-[0_18px_40px_rgba(79,64,52,0.08)] backdrop-blur-[6px] max-md:hidden">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[#8C7C72]">安静学习教室</p>
-                <p className="mt-2 text-lg font-semibold text-[#5F5751]">选一个位置，开始今天的专注</p>
-              </div>
+              <SceneStatusRail className="absolute left-5 top-20 z-30 hidden w-[280px] xl:block">
+                <WalletStatusCard
+                  className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+                  labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+                  addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+                  statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+                />
+                <SceneStatusCard
+                  eyebrow="学习小屋"
+                  title={`${seats.filter((seat) => seat.state === "active").length} 个专注座位正在使用`}
+                  description="左侧状态卡会避开中间的座位区域，让你仍然可以轻松点击房间中的学习位置。"
+                  tone="amber"
+                  className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+                />
+                <SceneStatusCard
+                  eyebrow="其他房间"
+                  title={townSnapshot.commitmentTitle}
+                  description={`花园社当前氛围是“${townSnapshot.gardenMood}”，最近的专注记录为 ${townSnapshot.studyFocusTime}。`}
+                  tone="rose"
+                  className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+                />
+              </SceneStatusRail>
 
               <div className="absolute inset-0">
                 {seats.map((seat) => (
@@ -188,6 +205,29 @@ export default function StudyViewPage() {
               </div>
             </div>
           </div>
+
+          <SceneStatusRail className="grid px-1 py-4 xl:hidden">
+            <WalletStatusCard
+              className="rounded-[24px] border border-[rgba(255,255,255,0.34)] bg-[rgba(255,252,250,0.72)] px-4 py-3 shadow-[0_10px_24px_rgba(116,104,97,0.08)] backdrop-blur-sm"
+              labelClassName="text-[11px] uppercase tracking-[0.18em] text-[#8C7B74]"
+              addressClassName="mt-1 text-[15px] font-semibold tracking-[0.08em] text-[#5F5751]"
+              statusClassName="mt-1 text-[12px] tracking-[0.08em] text-[#6E8B67]"
+            />
+            <SceneStatusCard
+              eyebrow="学习小屋"
+              title={`${seats.filter((seat) => seat.state === "active").length} 个专注座位正在使用`}
+              description="左侧状态卡会避开中间的座位区域，让你仍然可以轻松点击房间中的学习位置。"
+              tone="amber"
+              className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+            />
+            <SceneStatusCard
+              eyebrow="其他房间"
+              title={townSnapshot.commitmentTitle}
+              description={`花园社当前氛围是“${townSnapshot.gardenMood}”，最近的专注记录为 ${townSnapshot.studyFocusTime}。`}
+              tone="rose"
+              className="border-[rgba(255,255,255,0.18)] bg-[rgba(255,250,246,0.22)] shadow-[0_18px_40px_rgba(79,64,52,0.10)] backdrop-blur-[6px]"
+            />
+          </SceneStatusRail>
         </div>
       </main>
 
@@ -267,7 +307,7 @@ export default function StudyViewPage() {
 
       <StudyModal
         open={overlayMode === "status" && selectedSeat?.state === "active"}
-        title={selectedSeat?.occupant === mockUser.username ? "我的座位状态" : `${selectedSeat?.occupant ?? "这位同学"} 的座位`}
+        title={selectedSeat?.isCurrentUser ? "我的座位状态" : `${selectedSeat?.occupant ?? "这位同学"} 的座位`}
         subtitle={selectedSeat ? `这是“${selectedSeat.label}”现在的学习状态。` : ""}
         onClose={handleCloseOverlay}
         closeLabel="返回教室"
@@ -279,7 +319,7 @@ export default function StudyViewPage() {
             <StatusCard
               label="座位说明"
               value={
-                selectedSeat.occupant === mockUser.username
+                selectedSeat.isCurrentUser
                   ? "这就是你刚刚坐下来的位置，先安心把这一轮完成。"
                   : "这位同学已经进入专注状态，教室会继续保持安静。"
               }

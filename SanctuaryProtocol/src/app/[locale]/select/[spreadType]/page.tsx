@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -46,6 +46,12 @@ export default function SelectPage() {
   const router = useRouter();
   const spreadType = params.spreadType as SpreadType;
   const spread = getSpread(spreadType);
+
+  // 进入选卡页面时记录会话开始时间
+  useEffect(() => {
+    localStorage.setItem('oh-card-session-start', new Date().toISOString());
+  }, []);
+
   const [activeTab, setActiveTab] = useState<CardTypeTab>("image");
   const [selectedImageIds, setSelectedImageIds] = useState<(string | null)[]>(
     new Array(spread?.cardCount || 1).fill(null)
@@ -208,6 +214,8 @@ export default function SelectPage() {
       return;
     }
 
+    // 清除旧选择，防止脏数据
+    useCardStore.getState().clearSelection();
     setSpreadType(spreadType);
 
     for (let i = 0; i < spread.cardCount; i++) {

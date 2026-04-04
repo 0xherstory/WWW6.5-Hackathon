@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RouteMint | 看看经历</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./routemint.css" />
+  </head>
+  <body class="rm-body rm-page-explore">
+    <div class="rm-shell">
+      <header class="site-header">
+        <a class="brand-mark" href="./routemint.html" aria-label="RouteMint">
+          <span class="brand-logo-view brand-logo-view-header">
+            <img src="./assets/routemint-logo.png" alt="RouteMint" class="brand-logo-img" />
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="./routemint-app.html" data-nav="home">首页</a>
+          <a href="./routemint-ask.html" data-nav="ask">开始提问</a>
+          <a href="./routemint-explore.html" data-nav="browse">看看经历</a>
+          <a href="./routemint-me.html" data-nav="me">我的经验</a>
+        </nav>
+
+        <button class="wallet-pill wallet-pill-minimal" data-open-settings type="button">
+          <span class="wallet-dot"></span>
+          <span id="walletStatePill">未连接</span>
+        </button>
+      </header>
+
+      <main class="page-stack">
+        <section class="page-heading">
+          <h1>先看看别人都在问什么</h1>
+          <p class="page-lead">
+            从你关心的方向开始，先判断这是不是和你相似的问题。
+          </p>
+        </section>
+
+        <section class="filter-panel">
+          <div class="filter-row" id="exploreFilters">
+            <button class="filter-chip is-active" data-category="all" type="button">全部</button>
+            <button class="filter-chip" data-category="0" type="button">留学 / 读研</button>
+            <button class="filter-chip" data-category="1" type="button">求职 / 转型</button>
+            <button class="filter-chip" data-category="2" type="button">创业 / 项目方向</button>
+          </div>
+        </section>
+
+        <section class="explore-grid" id="exploreList"></section>
+      </main>
+    </div>
+
+    <div class="modal hidden" id="settingsModal">
+      <div class="modal-backdrop" data-close-settings></div>
+      <div class="modal-dialog">
+        <div class="modal-head">
+          <div>
+            <p class="section-kicker">Chain setup</p>
+            <h3>链上设置</h3>
+          </div>
+          <button class="icon-btn" id="settingsCloseBtn" type="button">×</button>
+        </div>
+
+        <div class="settings-grid">
+          <div class="settings-row">
+            <span>当前钱包</span>
+            <strong id="settingsWalletLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>当前网络</span>
+            <strong id="settingsNetworkLine">未连接</strong>
+          </div>
+          <div class="settings-row">
+            <span>合约状态</span>
+            <strong id="settingsContractLine">未配置</strong>
+          </div>
+        </div>
+
+        <label class="field-label">
+          RouteMint 合约地址
+          <input id="settingsContractInput" type="text" placeholder="粘贴你部署在 Avalanche Fuji 的 0x 地址" />
+        </label>
+
+        <div class="button-row">
+          <button class="btn btn-secondary" data-switch-network type="button">切到 Fuji</button>
+          <button class="btn btn-secondary" data-connect-wallet type="button">连接钱包</button>
+          <button class="btn btn-primary" id="settingsSaveBtn" type="button">保存地址</button>
+        </div>
+
+        <p class="inline-status" id="settingsStatus">你可以先连接钱包，再保存合约地址。</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script src="./routemint-core.js"></script>
+    <script src="./routemint-explore.js"></script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 40 33% 96%;
+    --foreground: 150 30% 12%;
+
+    --card: 40 30% 98%;
+    --card-foreground: 150 30% 12%;
+
+    --popover: 40 30% 98%;
+    --popover-foreground: 150 30% 12%;
+
+    --primary: 152 45% 28%;
+    --primary-foreground: 40 33% 96%;
+
+    --secondary: 90 20% 88%;
+    --secondary-foreground: 150 30% 12%;
+
+    --muted: 40 20% 92%;
+    --muted-foreground: 150 10% 45%;
+
+    --accent: 38 60% 62%;
+    --accent-foreground: 150 30% 12%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 40 33% 96%;
+
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 152 45% 28%;
+
+    --radius: 0.75rem;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Source Sans 3', sans-serif;
+
+    --gradient-leaf: linear-gradient(135deg, hsl(152 45% 28%), hsl(120 35% 38%));
+    --gradient-warm: linear-gradient(135deg, hsl(38 60% 62%), hsl(28 70% 55%));
+    --shadow-card: 0 4px 20px -4px hsl(150 20% 20% / 0.08);
+    --shadow-hover: 0 8px 30px -6px hsl(150 20% 20% / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}

@@ -1,13 +1,27 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect } from "react";
 import PageWalletBar from "@/components/PageWalletBar";
+import MusicFloatingToggle from "@/components/MusicFloatingToggle";
+import { useBackgroundAudio } from "@/components/BackgroundAudioProvider";
 
 export default function Home() {
+  const { playTrack } = useBackgroundAudio();
+
+  useEffect(() => {
+    playTrack("home", {
+      loop: true,
+      reset: false,
+    });
+  }, [playTrack]);
+
   return (
     <main className="relative min-h-screen bg-[#f7f4ee] text-[#33413a]">
       <PageWalletBar />
+      <MusicFloatingToggle track="home" />
 
       <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-6 py-10 md:px-10 lg:px-16">
-        {/* 顶部 */}
         <div className="mb-10 flex flex-col gap-4">
           <p className="text-sm uppercase tracking-[0.28em] text-[#7b8b7f]">
             Life &amp; Co-Existence
@@ -31,21 +45,16 @@ export default function Home() {
                 for body &amp; mind
               </p>
             </div>
-
           </div>
         </div>
 
-        {/* 卡片 */}
         <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
-          {/* 凯格尔训练 */}
           <Link
             href="/kegel"
             className="group relative overflow-hidden rounded-[32px] border border-[#d7dfd3] bg-gradient-to-br from-[#dfe9dc] via-[#edf3ea] to-[#f5f7f2] p-8 shadow-[0_12px_35px_rgba(97,122,101,0.10)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(97,122,101,0.14)]"
           >
-            {/* 光感 */}
             <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/35 blur-3xl transition group-hover:scale-110" />
 
-            {/* hover 大字 */}
             <div className="pointer-events-none absolute inset-0 flex items-center p-8">
               <div className="max-w-[75%] translate-y-6 text-5xl font-medium leading-[1.08] tracking-tight text-[#c7d3c6]/0 opacity-0 transition-all duration-500 group-hover:translate-y-10 group-hover:text-[#b8c7b6]/60 group-hover:opacity-100 md:text-6xl">
                 把力量
@@ -79,15 +88,12 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* 腹式呼吸 */}
           <Link
             href="/breathing"
             className="group relative overflow-hidden rounded-[32px] border border-[#e4e7e1] bg-gradient-to-br from-[#f6f6f2] via-[#fafaf7] to-[#ffffff] p-8 shadow-[0_10px_30px_rgba(120,120,110,0.10)] transition duration-700 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(120,120,110,0.12)]"
           >
-            {/* 光感 */}
             <div className="absolute -left-12 top-10 h-44 w-44 rounded-full bg-white/40 blur-3xl transition group-hover:scale-110" />
 
-            {/* hover 大字 */}
             <div className="pointer-events-none absolute inset-0 flex items-center p-8">
               <div className="max-w-[75%] translate-y-8 text-5xl font-medium leading-[1.08] tracking-tight text-[#d8ddd5]/0 opacity-0 transition-all duration-500 group-hover:translate-y-10 group-hover:text-[#d8ddd5]/60 group-hover:opacity-100 md:text-6xl">
                 让呼吸
@@ -122,7 +128,6 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* 底部 */}
         <div className="mt-8 border-t border-[#e2e6df] pt-6 text-center text-sm text-[#6b7a70]">
           <p>Breathing Practice · Kegel Exercise · Daily Check-In</p>
         </div>

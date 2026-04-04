@@ -9,20 +9,20 @@ const steps = [
   },
   {
     step: "02",
-    title: "选择对象",
-    desc: "浏览 Mentor 或企业，进入详情页准备评价。",
+    title: "选择企业",
+    desc: "浏览企业详情页，了解带教评价后准备评价。",
     icon: Link2,
   },
   {
     step: "03",
     title: "提交评价",
-    desc: "评分、维度与文字将写入链上或哈希存证。",
+    desc: "撰写文字评价，AI 提取结构化评分，写入链上存证。",
     icon: PenLine,
   },
   {
     step: "04",
-    title: "声誉沉淀",
-    desc: "声誉看板聚合数据，支持第三方组合与审计。",
+    title: "评价存证",
+    desc: "所有评价上链存证，不可篡改，可随时查看。",
     icon: CheckCircle2,
   },
 ] as const;
@@ -35,7 +35,7 @@ export function PlatformFlow() {
           平台流程
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-center text-sm text-muted-foreground">
-          从连接到声誉沉淀，四步完成可验证反馈闭环。
+          从连接到评价存证，四步完成可验证反馈闭环。
         </p>
 
         <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -44,7 +44,7 @@ export function PlatformFlow() {
             return (
               <li
                 key={s.step}
-                className="relative rounded-2xl border border-border/80 bg-card p-5 shadow-sm transition hover:border-accent/30 hover:shadow-md"
+                className="relative rounded-2xl border border-[#E5E6EB] bg-card p-5 shadow-sm transition hover:border-[#165DFF]/30 hover:shadow-md"
               >
                 {i < steps.length - 1 && (
                   <div
@@ -53,11 +53,11 @@ export function PlatformFlow() {
                   />
                 )}
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs font-semibold text-accent">
+                  <span className="font-mono text-xs font-semibold text-[#165DFF]">
                     {s.step}
                   </span>
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border/60 bg-muted/40">
-                    <Icon className="h-5 w-5 text-accent" />
+                    <Icon className="h-5 w-5 text-[#165DFF]" />
                   </div>
                 </div>
                 <h3 className="mt-4 font-medium leading-snug">{s.title}</h3>

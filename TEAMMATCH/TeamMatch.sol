@@ -35,6 +35,7 @@ string name;
 string description;
 uint maxMembers;
 address captain;
+uint captainProfile;
 uint[] members;
 }
 
@@ -52,8 +53,7 @@ bool handled;
 
 mapping(uint=>Project) public projects;
 mapping(uint=>Profile) public profiles;
-mapping(address=>uint) public walletProfile;
-
+mapping(address=>uint[]) public walletProfiles;
 mapping(uint=>Team) public teams;
 
 mapping(uint=>MatchRequest[]) public matchRequests;
@@ -86,7 +86,6 @@ emit ProjectCreated(projectCount,name);
 }
 
 function getProjects() public view returns(Project[] memory){
-
 Project[] memory list = new Project[](projectCount);
 
 for(uint i=1;i<=projectCount;i++){
@@ -104,7 +103,7 @@ string memory contact,
 uint duration
 ) public {
 
-require(walletProfile[msg.sender]==0,"profile exists");
+require(projectId>0 && projectId<=projectCount,"invalid project");
 
 profileCount++;
 
@@ -119,7 +118,7 @@ block.timestamp + duration,
 true
 );
 
-walletProfile[msg.sender]=profileCount;
+walletProfiles[msg.sender].push(profileCount);
 
 emit ProfileCreated(profileCount,name);
 }
@@ -139,12 +138,9 @@ Profile[] memory list = new Profile[](count);
 uint index;
 
 for(uint i=1;i<=profileCount;i++){
-
 if(profiles[i].projectId==projectId && profiles[i].active){
-
-list[index] = profiles[i];
+list[index]=profiles[i];
 index++;
-
 }
 }
 
@@ -153,13 +149,14 @@ return list;
 
 function createTeam(
 uint projectId,
+uint profileId,
 string memory name,
 string memory description,
 uint maxMembers
 ) public {
 
-uint profileId = walletProfile[msg.sender];
-require(profileId!=0,"register first");
+require(profiles[profileId].wallet==msg.sender,"not owner");
+require(profiles[profileId].projectId==projectId,"profile project mismatch");
 
 teamCount++;
 
@@ -171,6 +168,7 @@ t.name = name;
 t.description = description;
 t.maxMembers = maxMembers;
 t.captain = msg.sender;
+t.captainProfile = profileId;
 
 t.members.push(profileId);
 
@@ -192,21 +190,22 @@ Team[] memory list = new Team[](count);
 uint index;
 
 for(uint i=1;i<=teamCount;i++){
-
 if(teams[i].projectId==projectId){
-list[index] = teams[i];
+list[index]=teams[i];
 index++;
 }
-
 }
 
 return list;
 }
 
-function requestJoinTeam(uint teamId) public {
+function requestJoinTeam(uint teamId,uint profileId) public {
 
-uint profileId = walletProfile[msg.sender];
-require(profileId!=0,"no profile");
+require(profiles[profileId].wallet==msg.sender,"not owner");
+
+Team storage t = teams[teamId];
+
+require(profiles[profileId].projectId==t.projectId,"different project");
 
 joinRequests[teamId].push(
 JoinRequest(teamId,profileId,false)
@@ -216,27 +215,36 @@ JoinRequest(teamId,profileId,false)
 function approveJoin(uint teamId,uint requestIndex) public {
 
 Team storage t = teams[teamId];
+
 require(msg.sender==t.captain,"not captain");
 
 JoinRequest storage r = joinRequests[teamId][requestIndex];
-require(!r.handled);
+
+require(!r.handled,"handled");
+
+require(t.members.length < t.maxMembers,"team full");
 
 t.members.push(r.profileId);
+
 r.handled=true;
 }
 
-function requestMatch(uint targetProfileId) public {
+function requestMatch(uint fromProfile,uint toProfile) public {
 
-uint myProfile = walletProfile[msg.sender];
+require(profiles[fromProfile].wallet==msg.sender,"not owner");
+require(profiles[fromProfile].projectId==profiles[toProfile].projectId,"different project");
 
-matchRequests[targetProfileId].push(
-MatchRequest(myProfile,targetProfileId,false)
+matchRequests[toProfile].push(
+MatchRequest(fromProfile,toProfile,false)
 );
 }
 
-function approveMatch(uint myProfile,uint requestIndex) public {
+function approveMatch(uint profileId,uint requestIndex) public {
 
-MatchRequest storage r = matchRequests[myProfile][requestIndex];
+require(profiles[profileId].wallet==msg.sender,"not owner");
+
+MatchRequest storage r = matchRequests[profileId][requestIndex];
+
 require(!r.handled);
 
 r.handled=true;
@@ -257,7 +265,7 @@ Team storage t = teams[teamId];
 Profile[] memory list = new Profile[](t.members.length);
 
 for(uint i=0;i<t.members.length;i++){
-list[i] = profiles[t.members[i]];
+list[i]=profiles[t.members[i]];
 }
 
 return list;

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ AGENT ODYSSEY - CYBERPUNK MODE</title>
+<link rel="stylesheet" href="css/styles-cyberpunk.css">
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<!-- ===== TITLE SCREEN ===== -->
+<div id="screen-title" class="screen active">
+  <div class="card">
+    <span class="title-ship">⚡</span>
+    <h1 class="title-h1">AGENT ODYSSEY</h1>
+    <p class="title-sub">// NEURAL NETWORK TRAINING PROTOCOL INITIATED</p>
+    <div class="title-badges">
+      <span class="badge">21 SECTORS</span>
+      <span class="badge">TRANSFORMER CORE</span>
+      <span class="badge">NEURAL TRAINING</span>
+      <span class="badge">AGENT PROTOCOL</span>
+      <span class="badge">MULTI-LEVEL ACCESS</span>
+    </div>
+    <button class="btn btn-green" style="width:100%;font-size:1rem;padding:16px;margin-top:20px" onclick="goMap()">
+      > INITIALIZE SYSTEM_
+    </button>
+    <p style="margin-top:16px;font-size:.75rem;color:var(--text-muted);text-align:center;text-transform:uppercase;letter-spacing:0.05em">
+      🟢 LEVEL 1: BASIC | 🟡 LEVEL 2: ADVANCED | 🔴 LEVEL 3: HELL MODE
+    </p>
+  </div>
+</div>
+
+<!-- ===== MAP SCREEN ===== -->
+<div id="screen-map" class="screen">
+  <div class="inner">
+    <!-- HUD -->
+    <div class="hud">
+      <div class="hud-item">
+        <span>CREDITS:</span>
+        <span class="val" id="hud-stars">0</span>
+      </div>
+      <div class="hud-item">
+        <span>SECTORS CLEARED:</span>
+        <span class="val" id="hud-planets">0</span>
+      </div>
+    </div>
+
+    <!-- Map Header -->
+    <div class="map-header">
+      <h2>// SECTOR MAP</h2>
+      <p>SELECT TARGET SECTOR FOR INFILTRATION</p>
+    </div>
+
+    <!-- Planets Grid -->
+    <div class="planets-grid" id="planets-grid">
+      <!-- 动态生成 -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEVEL SCREEN ===== -->
+<div id="screen-level" class="screen">
+  <div class="inner" id="level-content">
+    <!-- 动态生成 -->
+  </div>
+</div>
+
+<!-- ===== VICTORY SCREEN ===== -->
+<div id="screen-victory" class="screen">
+  <div class="card" style="text-align:center;max-width:600px;width:90vw">
+    <h2 style="font-size:2.5rem;color:var(--neon-green);text-shadow:0 0 20px var(--neon-green);margin-bottom:20px">
+      // MISSION COMPLETE
+    </h2>
+    <p style="font-size:1.2rem;color:var(--neon-cyan);margin-bottom:30px">
+      ALL SECTORS CLEARED
+    </p>
+    <div style="font-size:4rem;margin:30px 0;filter:drop-shadow(0 0 20px var(--neon-yellow))">
+      ⚡🎯⚡
+    </div>
+    <p style="font-size:1rem;color:var(--text-white);line-height:1.8;margin-bottom:30px">
+      NEURAL NETWORK TRAINING PROTOCOL COMPLETED<br>
+      AGENT SYSTEMS: FULLY OPERATIONAL<br>
+      ACCESS LEVEL: UNRESTRICTED
+    </p>
+    <button class="btn btn-cyan" onclick="goMap()" style="width:100%;padding:16px">
+      > RETURN TO SECTOR MAP_
+    </button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/game-state.js"></script>
+<script src="js/planets/p1-llm.js"></script>
+<script src="js/planets/p2-tool-1.js"></script>
+<script src="js/planets/p3-tool-2.js"></script>
+<script src="js/planets/p4-react-1.js"></script>
+<script src="js/planets/p5-react-2.js"></script>
+<script src="js/planets/p6-memory-1.js"></script>
+<script src="js/planets/p7-memory-2.js"></script>
+<script src="js/planets/p8-multi-agent.js"></script>
+<script src="js/planets/p9-transformer.js"></script>
+<script src="js/planets/p10-pretrain.js"></script>
+<script src="js/planets/p11-posttrain.js"></script>
+<script src="js/planets/p12-practice-1.js"></script>
+<script src="js/planets/p13-practice-2.js"></script>
+<script src="js/planets/p14-framework-1.js"></script>
+<script src="js/planets/p15-framework-2.js"></script>
+<script src="js/planets/p16-final.js"></script>
+<script src="js/planets/p17-empire-1.js"></script>
+<script src="js/planets/p18-empire-2.js"></script>
+<script src="js/planets/p19-empire-3.js"></script>
+<script src="js/planets/p20-empire-4.js"></script>
+<script src="js/planets/p21-empire-5.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/interactions.js"></script>
+<script src="js/main-cyberpunk.js"></script>
+</body>
+</html>

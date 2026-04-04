@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: white;
+            border-right: 1px solid #e9ecef;
+            padding: 24px;
+            position: fixed;
+            height: 100vh;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .nav-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            color: #8b5cf6;
+        }
+        
+        .nav-item svg {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            margin-right: 280px;
+            padding: 24px;
+            max-width: 940px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .token-balance {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+        
+        .language-switcher {
+            margin-right: auto;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .lang-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .profile-username {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .follow-btn {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .follow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+        
+        .social-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        /* Input Area */
+        .input-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .input-box {
+            flex: 1;
+            border: 1px solid #e9ecef;
+            border-radius: 24px;
+            padding: 12px 20px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .input-box:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Encouragement Wall */
+        .encouragement-wall {
+            position: relative;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 48px;
+            min-height: 500px;
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.2);
+            overflow: hidden;
+        }
+        
+        .wall-header {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .wall-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+        
+        .wall-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+        
+        .wall-message {
+            font-size: 14px;
+            color: #8b5cf6;
+            font-weight: 500;
+        }
+        
+        /* Message Bubbles */
+        .message-bubble {
+            position: absolute;
+            background: white;
+            border-radius: 20px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 200px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
+        
+        .message-bubble:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+        
+        .message-content {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .message-translation {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        /* Depth and layering */
+        .message-bubble.depth-1 {
+            z-index: 1;
+            opacity: 0.7;
+            transform: scale(0.9);
+        }
+        
+        .message-bubble.depth-2 {
+            z-index: 2;
+            opacity: 0.85;
+            transform: scale(0.95);
+        }
+        
+        .message-bubble.depth-3 {
+            z-index: 3;
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Right Panel */
+        .right-panel {
+            width: 280px;
+            background-color: white;
+            border-left: 1px solid #e9ecef;
+            padding: 24px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        /* User Posts Section */
+        .user-posts-section {
+            margin-bottom: 48px;
+        }
+        
+        .user-posts-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .post-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .post-user-info {
+            flex: 1;
+        }
+        
+        .post-username {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .post-time {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .post-content {
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo" data-lang-en="LearnStream" data-lang-zh="学会儿嬉">学会儿嬉LearnStream</div>
+            <a href="index.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                </svg>
+                <span data-lang-en="Dashboard" data-lang-zh="仪表盘">Dashboard</span>
+            </a>
+            <a href="learning.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0 0V3.75m0 15v-3" />
+                </svg>
+                <span data-lang-en="My Learning" data-lang-zh="我的学习">My Learning</span>
+            </a>
+            <a href="vocabulary.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21a7.5 7.5 0 00-7.5-7.5v7.5z" />
+                </svg>
+                <span data-lang-en="Vocabulary" data-lang-zh="词汇">Vocabulary</span>
+            </a>
+            <a href="community.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                </svg>
+                <span data-lang-en="Community" data-lang-zh="社区">Community</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                <span data-lang-en="Profile" data-lang-zh="个人资料">Profile</span>
+            </a>
+            <a href="games.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                </svg>
+                <span data-lang-en="Games" data-lang-zh="游戏">Games</span>
+            </a>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="language-switcher">
+                    <button id="en-btn" class="lang-btn active">EN</button>
+                    <button id="zh-btn" class="lang-btn">中文</button>
+                </div>
+                <div class="user-info">
+                    <div class="token-balance">🪙 120</div>
+                    <div class="avatar">XW</div>
+                </div>
+            </div>
+            
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">AL</div>
+                <div class="profile-info">
+                    <div class="profile-username">Alex</div>
+                    <button class="follow-btn" data-lang-en="Follow" data-lang-zh="关注">Follow</button>
+                </div>
+                <div class="social-info">
+                    <div class="social-item" data-lang-en="👀 24 people visited today" data-lang-zh="👀 今天有24人访问">👀 24 people visited today</div>
+                    <div class="social-item" data-lang-en="Followed by 15 learners" data-lang-zh="被15位学习者关注">Followed by 15 learners</div>
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-value" data-lang-en="🔥 5-day streak" data-lang-zh="🔥 5天连续学习">🔥 5-day streak</div>
+                    <div class="stat-label" data-lang-en="Learning streak" data-lang-zh="学习连续天数">Learning streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" data-lang-en="🪙 250 tokens" data-lang-zh="🪙 250代币">🪙 250 tokens</div>
+                    <div class="stat-label" data-lang-en="Total tokens" data-lang-zh="总代币">Total tokens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" data-lang-en="📈 +25 today" data-lang-zh="📈 今日+25">📈 +25 today</div>
+                    <div class="stat-label" data-lang-en="Earned today" data-lang-zh="今日赚取">Earned today</div>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="input-section">
+                <input type="text" class="input-box" placeholder="Send encouragement..." data-lang-en="Send encouragement..." data-lang-zh="发送鼓励...">
+                <button class="send-btn" data-lang-en="Send 💛" data-lang-zh="发送 💛">Send 💛</button>
+            </div>
+            
+            <!-- Encouragement Wall -->
+            <div class="encouragement-wall">
+                <div class="wall-header">
+                    <h2 class="wall-title" data-lang-en="Encouragement Wall 💛" data-lang-zh="鼓励墙 💛">Encouragement Wall 💛</h2>
+                    <p class="wall-subtitle" data-lang-en="Leave a message to encourage this learner!" data-lang-zh="留下鼓励的话给这位学习者！">Leave a message to encourage this learner!</p>
+                </div>
+                
+                <!-- Message Bubbles -->
+                <div class="message-bubble depth-3" style="top: 150px; left: 100px; transform: rotate(-5deg);">
+                    <div class="message-content" data-lang-en="Great job!" data-lang-zh="做得好！">Great job!</div>
+                    <div class="message-translation" data-lang-en="Great job!" data-lang-zh="Great job!">Great job!</div>
+                </div>
+                
+                <div class="message-bubble depth-2" style="top: 200px; right: 150px; transform: rotate(3deg);">
+                    <div class="message-content" data-lang-en="Keep it up!" data-lang-zh="继续加油！">Keep it up!</div>
+                    <div class="message-translation" data-lang-en="Keep it up!" data-lang-zh="Keep it up!">Keep it up!</div>
+                </div>
+                
+                <div class="message-bubble depth-3" style="top: 280px; left: 150px; transform: rotate(-2deg);">
+                    <div class="message-content" data-lang-en="You're amazing!" data-lang-zh="你太棒了！">You're amazing!</div>
+                    <div class="message-translation" data-lang-en="You're amazing!" data-lang-zh="You're amazing!">You're amazing!</div>
+                </div>
+            </div>
+            
+            <!-- User Posts Section -->
+            <div class="user-posts-section">
+                <h2 class="user-posts-title" data-lang-en="Posts" data-lang-zh="发布内容">Posts</h2>
+                
+                <!-- Post 1 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">AL</div>
+                        <div class="post-user-info">
+                            <div class="post-username">Alex</div>
+                            <div class="post-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="post-content">Completed the advanced English grammar quiz today! Scored 95% 🎉 #EnglishGrammar #LanguageLearning</div>
+                    <div class="post-actions">
+                        <button class="action-btn">
+                            👍 <span>15</span>
+                        </button>
+                        <button class="action-btn">
+                            💬 <span>4</span>
+                        </button>
+                        <button class="action-btn">
+                            🪙 <span data-lang-en="Tip" data-lang-zh="投币">Tip</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Post 2 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">AL</div>
+                        <div class="post-user-info">
+                            <div class="post-username">Alex</div>
+                            <div class="post-time">Yesterday</div>
+                        </div>
+                    </div>
+                    <div class="post-content">Practiced English conversation with a native speaker for 45 minutes. Such a great learning experience! 🗣️ #EnglishSpeaking #LanguageExchange</div>
+                    <div class="post-actions">
+                        <button class="action-btn">
+                            👍 <span>12</span>
+                        </button>
+                        <button class="action-btn">
+                            💬 <span>3</span>
+                        </button>
+                        <button class="action-btn">
+                            🪙 <span data-lang-en="Tip" data-lang-zh="投币">Tip</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Post 3 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">AL</div>
+                        <div class="post-user-info">
+                            <div class="post-username">Alex</div>
+                            <div class="post-time">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="post-content">Read a chapter from an English novel today. Vocabulary is challenging but I'm making progress! 📖 #EnglishReading #LanguageSkills</div>
+                    <div class="post-actions">
+                        <button class="action-btn">
+                            👍 <span>18</span>
+                        </button>
+                        <button class="action-btn">
+                            💬 <span>5</span>
+                        </button>
+                        <button class="action-btn">
+                            🪙 <span data-lang-en="Tip" data-lang-zh="投币">Tip</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <h2 class="section-title" data-lang-en="Quick Stats" data-lang-zh="快速统计">Quick Stats</h2>
+            <div style="background: linear-gradient(135deg, #f3e8ff, #fce7f3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;" data-lang-en="Learning Streak" data-lang-zh="学习连续天数">Learning Streak</div>
+                <div style="font-size: 20px; font-weight: 700;" data-lang-en="5 days 🔥" data-lang-zh="5天 🔥">5 days 🔥</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #f3e8ff, #fce7f3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;" data-lang-en="Total Tokens" data-lang-zh="总代币">Total Tokens</div>
+                <div style="font-size: 20px; font-weight: 700;" data-lang-en="250 🪙" data-lang-zh="250 🪙">250 🪙</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #f3e8ff, #fce7f3); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;" data-lang-en="Community Cheers" data-lang-zh="社区鼓励">Community Cheers</div>
+                <div style="font-size: 20px; font-weight: 700;" data-lang-en="28 💛" data-lang-zh="28 💛">28 💛</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 语言切换功能
+        function setLanguage(lang) {
+            // 保存语言选择到本地存储
+            localStorage.setItem('language', lang);
+            
+            // 更新语言按钮状态
+            document.getElementById('en-btn').classList.remove('active');
+            document.getElementById('zh-btn').classList.remove('active');
+            document.getElementById(lang + '-btn').classList.add('active');
+            
+            // 更新所有带有语言数据属性的元素
+            const elements = document.querySelectorAll('[data-lang-en]');
+            elements.forEach(element => {
+                element.textContent = element.getAttribute('data-lang-' + lang);
+            });
+            
+            // 更新输入框占位符
+            const inputBox = document.querySelector('.input-box');
+            if (inputBox) {
+                inputBox.placeholder = inputBox.getAttribute('data-lang-' + lang);
+            }
+        }
+        
+        // 初始化语言
+        function initLanguage() {
+            // 从本地存储加载语言，默认英语
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+        }
+        
+        // 获取URL参数中的用户ID
+        function getUserId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || urlParams.get('username') || 'alex';
+        }
+        
+        // 固定用户数据
+        const users = {
+            alex: {
+                name: "Alex",
+                posts: [
+                    "Learned 20 IELTS words today.",
+                    "Practiced speaking for 30 minutes.",
+                    "Reviewing grammar again."
+                ]
+            },
+            mike: {
+                name: "Mike",
+                posts: [
+                    "今日は日本語の単語を10個覚えた。",
+                    "文法の勉強は難しい。",
+                    "もっと練習が必要です。"
+                ]
+            },
+            sara: {
+                name: "Sara",
+                posts: [
+                    "Sto imparando italiano.",
+                    "Oggi ho studiato nuove parole.",
+                    "È difficile ma interessante."
+                ]
+            }
+        };
+        
+        // 初始化用户主页
+        function initUserProfile() {
+            const userId = getUserId();
+            const user = users[userId];
+            
+            if (user) {
+                // 更新个人信息
+                const profileAvatar = document.querySelector('.profile-avatar');
+                const profileUsername = document.querySelector('.profile-username');
+                
+                if (profileAvatar) profileAvatar.textContent = userId.charAt(0).toUpperCase() + userId.charAt(1).toUpperCase();
+                if (profileUsername) profileUsername.textContent = user.name;
+                
+                // 更新帖子内容
+                const postCards = document.querySelectorAll('.post-card');
+                postCards.forEach((card, index) => {
+                    if (user.posts[index]) {
+                        // 更新帖子内容
+                        const postContent = card.querySelector('.post-content');
+                        if (postContent) {
+                            postContent.textContent = user.posts[index];
+                        }
+                        
+                        // 更新头像
+                        const postAvatar = card.querySelector('.post-avatar');
+                        if (postAvatar) {
+                            postAvatar.textContent = userId.charAt(0).toUpperCase() + userId.charAt(1).toUpperCase();
+                        }
+                        
+                        // 更新用户名
+                        const postUsername = card.querySelector('.post-username');
+                        if (postUsername) {
+                            postUsername.textContent = user.name;
+                        }
+                    }
+                });
+            }
+        }
+        
+        // 初始化事件监听器
+        document.getElementById('en-btn').addEventListener('click', () => setLanguage('en'));
+        document.getElementById('zh-btn').addEventListener('click', () => setLanguage('zh'));
+        
+        // 添加动态效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化语言
+            initLanguage();
+            
+            // 初始化用户主页
+            initUserProfile();
+            
+            const bubbles = document.querySelectorAll('.message-bubble');
+            
+            bubbles.forEach((bubble, index) => {
+                // 随机初始位置调整
+                const randomX = Math.random() * 20 - 10;
+                const randomY = Math.random() * 20 - 10;
+                const initialTransform = bubble.style.transform;
+                
+                // 添加浮动动画
+                setInterval(() => {
+                    const x = Math.sin(Date.now() * 0.001 + index) * 2;
+                    const y = Math.cos(Date.now() * 0.001 + index) * 2;
+                    bubble.style.transform = `${initialTransform} translate(${x}px, ${y}px)`;
+                }, 1000);
+                
+                // 随机旋转动画
+                setInterval(() => {
+                    const randomRotate = (Math.random() * 2 - 1) * 2;
+                    bubble.style.transform = bubble.style.transform.replace(/rotate\([^)]*\)/, `rotate(${randomRotate}deg)`);
+                }, 5000);
+            });
+            
+            // 发送按钮功能
+            const sendBtn = document.querySelector('.send-btn');
+            const inputBox = document.querySelector('.input-box');
+            
+            if (sendBtn && inputBox) {
+                sendBtn.addEventListener('click', function() {
+                    const message = inputBox.value.trim();
+                    if (message) {
+                        // 这里可以添加发送消息的逻辑
+                        alert('Message sent: ' + message);
+                        inputBox.value = '';
+                    }
+                });
+                
+                // 按Enter键发送
+                inputBox.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendBtn.click();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,17 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
+const Database = require('./db/database');
 
-// 数据库连接
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-        console.log("MongoDB Connected");
-    } catch (err) {
-        console.error(err);
-        process.exit(1); // 终止进程
-    }
+const initApp = () => {
+    Database.init();
+    console.log('In-memory database initialized');
 };
 
-// IPFS 配置（IPFS 客户端）
-const { create } = require('ipfs-http-client');
-const ipfs = create({ url: 'https://ipfs.infura.io:5001/api/v0' });
+let ipfs = null;
+try {
+    const { create } = require('ipfs-http-client');
+    ipfs = create({ url: process.env.IPFS_URL || 'https://ipfs.infura.io:5001/api/v0' });
+} catch (err) {
+    console.log('IPFS client not available');
+}
 
-module.exports = { connectDB, ipfs };
+module.exports = { initApp, ipfs };

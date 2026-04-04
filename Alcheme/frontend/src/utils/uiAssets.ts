@@ -1,0 +1,46 @@
+export const uiAssets = {
+  background: '/ui-assets/f41bd8526e24975938d871d048f307c6b265a04c.png',
+  mineBackground: '/ui-assets/2a898e365b213bc787cb0a2765fc5b4c40853d30.png',
+  character: '/ui-assets/f1d6e95b671451fab24fb44b50161720f6f89ad3.png',
+  crystal: '/ui-assets/3426c04b68d9b86397088a381e18adf4fa12dca2.png',
+  magicOrbs: '/ui-assets/28caacd1fffa5b73fafec6bbbc5a0ce3c9ecd880.png',
+  collectButton: '/ui-assets/f103e578864ca4d98d1d93e72ca377df8077381a.png',
+  refineButton: '/ui-assets/bcc24e622f7079ba9837ab4380e8eb2c99b889d1.png',
+  awakenButton: '/ui-assets/5042fea45ce6ca07d2d6371987ccbdb342fe1d29.png',
+  profileButton: '/ui-assets/dd0fae2b566b4d9b18684364e779990d3e3e7890.png',
+  owl: '/ui-assets/5dfb73f2e2092eb765b24ba8c1a852ce5f3731e9.png',
+  logo: '/ui-assets/a82dc1e92d5a60168dfc16bfe3402cf3da775301.png',
+  parchment: '/ui-assets/6e9c0278614ee59e3fa39d8a0594cbf4800e013a.png',
+  crystalCabinet: '/ui-assets/9386d55d614184d987c9810f9d4db867147dc751.png',
+  cauldron: '/ui-assets/c7fbafc3f0498ec8d147582e644dbdc8786df330.png',
+  awakenDoor: '/ui-assets/dacf8af5f4cb3701c8f630102721791cf2d07102.png',
+  medal: '/ui-assets/99b83df7ca82c99f905eaf13a84586014ff41499.png',
+  medalWall: '/ui-assets/8560396036572275c1880d6838191df2c76b4668.png',
+  hexagonCrystal: '/ui-assets/5a1d242ac40a9084376e905bcfa4b5107caa2ba5.png',
+  cardBackgrounds: [
+    '/ui-assets/36f068e9e853e013a326ddfeb3134365b8967d6f.png',
+    '/ui-assets/0beaaa20696396b0997d391dc1ed91d00f9eb7d8.png',
+    '/ui-assets/b24f257b05ef0a618e241f85ac4368499ebda3c0.png',
+  ],
+  stampPatterns: [
+    '/ui-assets/09ac11079bc3070142d0c981f2a1e6f042ae75a2.png',
+    '/ui-assets/d1ca70bd3631afc028f85c903ce19dacbbe493b9.png',
+    '/ui-assets/981b85fbc4b9bb9aba7723567677e46e9d1a3fb8.png',
+  ],
+  crystals: [
+    '/ui-assets/6e4310e7eedb7599a8783ae85915384fa1cdb41a.png',
+    '/ui-assets/c9271aa2b5c4b3ac4fd8114695354054ec89c320.png',
+    '/ui-assets/422998f75fa5b2894d6c25e42f9caa86c99f9321.png',
+    '/ui-assets/4a6ca87b1626e3188c8da1e6e3437313330918fd.png',
+    '/ui-assets/4331dd7b68e3e3da6cc1381fab0958d10762790c.png',
+    '/ui-assets/83aeacc4fc141482124734bd80a9fc84f4b2c521.png',
+    '/ui-assets/631bbd517278741d8b4593c3ac1af0dc44681864.png',
+  ],
+} as const
+
+export const shellNavItems = [
+  { href: '/mining', image: uiAssets.collectButton, label: 'Collect' },
+  { href: '/refining', image: uiAssets.refineButton, label: 'Refine' },
+  { href: '/awakening', image: uiAssets.awakenButton, label: 'Awaken' },
+  { href: '/profile', image: uiAssets.profileButton, label: 'Profile' },
+] as const

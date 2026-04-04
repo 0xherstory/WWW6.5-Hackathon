@@ -1,0 +1,23 @@
+{
+  "name": "hertime",
+  "version": "1.0.0",
+  "description": "HerTime Protocol - Women's Mutual Aid Time Bank",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:fuji": "hardhat run scripts/deploy.js --network fuji",
+    "demo:local": "hardhat run scripts/demo.js --network localhost",
+    "demo:fuji": "hardhat run scripts/demo.js --network fuji"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.0.0",
+    "recharts": "^3.8.1"
+  }
+}

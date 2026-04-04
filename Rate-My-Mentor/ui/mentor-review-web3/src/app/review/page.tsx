@@ -73,11 +73,13 @@ export default function ReviewPage() {
     } catch {
       setSbt(null);
     }
-  }, []);
+
+    }, []);
 
   const [phase, setPhase] = useState<Phase>("input");
-  const [targetType, setTargetType] = useState<TargetType>("mentor");
   const [targetName, setTargetName] = useState("");
+  const [department, setDepartment] = useState("");
+  const [position, setPosition] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [dialog, setDialog] = useState<DialogState>(null);
 
@@ -120,7 +122,7 @@ export default function ReviewPage() {
 
   function resetForm() {
     setPhase("input");
-    setTargetType("mentor");
+    setDepartment("mentor");
     setTargetName("");
     setReviewText("");
     setDialog(null);
@@ -146,7 +148,12 @@ export default function ReviewPage() {
 
   async function handleExtractAI() {
     if (!targetName.trim()) {
-      setAiError("请先填写评价对象");
+      setAiError("请先填写企业名称");
+      return;
+    }
+
+    if (!position.trim()) {
+      setAiError("请填写岗位");
       return;
     }
 
@@ -159,100 +166,75 @@ export default function ReviewPage() {
     setAiError(null);
     setAiResult(null);
 
-    try {
-      const res = await fetch(`${API_BASE}/ai/extract-review`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rawContent: reviewText.trim(),
-        }),
-      });
+    // 模拟 AI 分析结果
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      const json = await res.json();
+    // 模拟正面评价的评分结果
+    const mockResult: AIReviewResult = {
+      overallScore: 4.5,
+      dimensionScores: [
+        { dimension: "成长支持", score: 4.5, comment: "评价中提及成长和学习机会" },
+        { dimension: "预期清晰度", score: 4, comment: "工作内容和目标较为明确" },
+        { dimension: "沟通质量", score: 4.5, comment: "团队沟通和反馈较为顺畅" },
+        { dimension: "工作强度", score: 4, comment: "工作节奏适中" },
+        { dimension: "尊重与包容", score: 4.5, comment: "团队氛围良好" },
+      ],
+      summary: "该企业/部门整体评价正面，团队氛围好，有较多成长机会。",
+      tags: ["团队氛围好", "成长快", "福利好"],
+      isQualified: true,
+      unqualifiedReason: "",
+    };
 
-      if (!json.success) {
-        setAiError(json.message ?? "AI 提取失败");
-        setPhase("input");
-        setDialog("ai_extract_failed");
-        return;
-      }
-
-      const result = json.data as AIReviewResult;
-
-      if (!result.isQualified) {
-        setAiError(`内容不合格：${result.unqualifiedReason}`);
-        setPhase("input");
-        setDialog("ai_extract_failed");
-        return;
-      }
-
-      setAiResult(result);
-      setOverallScore(Math.max(1, Math.min(5, Math.round(result.overallScore))));
-      setDimScores([
-        getScoreOrDefault(result.dimensionScores?.[0]?.score),
-        getScoreOrDefault(result.dimensionScores?.[1]?.score),
-        getScoreOrDefault(result.dimensionScores?.[2]?.score),
-        getScoreOrDefault(result.dimensionScores?.[3]?.score),
-        getScoreOrDefault(result.dimensionScores?.[4]?.score),
-      ]);
-      setPhase("review_ai_result");
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "网络错误";
-      setAiError(msg);
-      setPhase("input");
-      setDialog("ai_extract_failed");
-    }
+    setAiResult(mockResult);
+    setOverallScore(Math.round(mockResult.overallScore));
+    setDimScores([4, 4, 4, 4, 4]);
+    setPhase("review_ai_result");
   }
 
   async function handleSubmit() {
-    if (!sbt) {
-      setDialog("confirm_mint");
-      return;
-    }
-
     setPhase("submitting");
-    setUploadError(null);
 
+    // 模拟保存到本地存储
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // 保存到本地存储（用于在评价广场显示）
     try {
-      const { cidBytes32 } = await uploadReview(reviewText.trim());
+      const newReview = {
+        id: `r-${Date.now()}`,
+        companyId: `c-${targetName.slice(0, 3).toLowerCase()}-01`,
+        companyName: targetName,
+        title: position || "员工",
+        department: department,
+        rating: 10,
+        date: new Date().toISOString().split("T")[0],
+        comment: reviewText.trim(),
+        tags: aiResult?.tags || ["正面评价"],
+        dimScores: { growth: 5, clarity: 5, communication: 5, workload: 5, respect: 5 },
+        isPositive: true,
+      };
 
-      // 转换为 bytes32 格式 (0x... 格式)
-      const cidBytes = cidBytes32.startsWith("0x")
-        ? cidBytes32 as `0x${string}`
-        : `0x${cidBytes32}` as `0x${string}`;
+      // 获取现有评价
+      const existing = JSON.parse(localStorage.getItem("rmm_reviews") || "[]");
+      existing.unshift(newReview); // 添加到第一条
+      localStorage.setItem("rmm_reviews", JSON.stringify(existing));
 
-      writeContract({
-        address: reviewContractAddress,
-        abi: reviewContractAbi,
-        functionName: "submitReview",
-        args: [
-          BigInt(sbt.tokenId),
-          targetId,
-          targetType,
-          overallScore,
-          dimScores,
-          cidBytes,
-        ],
-      });
+      setPhase("submitted");
     } catch (err) {
-      setUploadError(err instanceof Error ? err.message : "上传失败");
       setPhase("review_ai_result");
     }
   }
 
-  if (!isConnected) {
-    return (
-      <div className="mx-auto w-full max-w-lg px-4 py-20 text-center">
-        <div className="mb-4 text-4xl">🔗</div>
-        <h1 className="text-2xl font-semibold">请先连接钱包</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          连接钱包后才能提交评价。
-        </p>
-      </div>
-    );
-  }
+  // if (!isConnected) {
+  //   return (
+  //     <div className="mx-auto w-full max-w-lg px-4 py-20 text-center">
+  //       <div className="mb-4 text-4xl">🔗</div>
+  //       <h1 className="text-2xl font-semibold">请先连接钱包</h1>
+  //       <p className="mt-2 text-sm text-muted-foreground">
+  //         连接钱包后才能提交评价。
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   if (wrongNetwork) {
     return (
@@ -293,7 +275,7 @@ export default function ReviewPage() {
               className="flex-1"
               onClick={() => router.push("/mentors")}
             >
-              查看导师列表
+              查看企业榜单
             </Button>
             <Button className="flex-1" onClick={resetForm}>
               再写一条
@@ -304,7 +286,7 @@ export default function ReviewPage() {
     );
   }
 
-  if (phase === INPUT_PHASE) {
+  if (phase === "input" || phase === "extracting") {
     return (
       <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-12">
         <div>
@@ -337,48 +319,28 @@ export default function ReviewPage() {
         )}
 
         <Card className="space-y-4 p-5">
-          <h2 className="text-sm font-medium">评价对象</h2>
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setTargetType("mentor")}
-              className={`flex-1 rounded-lg border py-2 text-sm transition-colors ${
-                targetType === "mentor"
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border"
-              }`}
-            >
-              导师
-            </button>
-            <button
-              type="button"
-              onClick={() => setTargetType("company")}
-              className={`flex-1 rounded-lg border py-2 text-sm transition-colors ${
-                targetType === "company"
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border"
-              }`}
-            >
-              公司
-            </button>
-          </div>
+          <h2 className="text-sm font-medium">评价内容</h2>
 
           <Input
-            placeholder={
-              targetType === "mentor"
-                ? "输入导师姓名（如：张三）"
-                : "输入公司名称（如：字节跳动）"
-            }
+            placeholder="企业名称（如：字节跳动）"
             value={targetName}
             onChange={(e) => setTargetName(e.target.value)}
           />
-        </Card>
 
-        <Card className="space-y-3 p-5">
-          <h2 className="text-sm font-medium">你的评价</h2>
+          <Input
+            placeholder="机构/部门（如：抖音电商运营部）"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+          />
+
+          <Input
+            placeholder="岗位（如：产品经理）"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+          />
+
           <Textarea
-            placeholder="例如：我在这个组里成长很快，但带教经常临场改需求，反馈不够及时，而且沟通方式有时会让人压力很大。（至少 20 字）"
+            placeholder="写下你的真实评价...（至少 20 字）"
             rows={6}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
@@ -413,7 +375,7 @@ export default function ReviewPage() {
     );
   }
 
-  if (phase === REVIEW_AI_RESULT_PHASE && aiResult) {
+  if ((phase === "review_ai_result" || phase === "submitting") && aiResult) {
     return (
       <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-12">
         <div>

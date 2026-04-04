@@ -4,15 +4,17 @@ import ipfsRouter from './ipfs.routes';
 import aiRouter from './ai.routes';
 
 const rootRouter = Router();
-
 /**
  * 当前 MVP 主链路相关模块
  */
-rootRouter.use('/auth', authRouter);   // 提交 offer → 签发 credential
+//修改接口
+rootRouter.use('/auth', authRouter);  // 提交 offer → 签发 credential
 rootRouter.use('/ipfs', ipfsRouter);   // 上传 review → 返回 cid + bytes32
 rootRouter.use('/ai', aiRouter);       // （如果 OCR / AI 已接入，否则可临时移除）
 
+
 export default rootRouter;
+
 
 
 // G的修改理由：

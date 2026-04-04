@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Drawer,
   DrawerClose,
@@ -23,9 +24,8 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", label: "首页" },
-  { href: "/mentors", label: "Mentor榜单" },
-  { href: "/companies", label: "企业榜单" },
-  { href: "/reputation", label: "声誉看板" },
+  { href: "/search", label: "评价广场" },
+  { href: "/company-ranking", label: "企业榜单" },
 ] as const;
 
 function NavLinks({
@@ -48,10 +48,7 @@ function NavLinks({
       )}
     >
       {NAV_LINKS.map((item) => {
-        const active =
-          item.href === "/"
-            ? pathname === "/"
-            : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         const link = (
           <Link
@@ -61,7 +58,7 @@ function NavLinks({
               "block rounded-lg px-3 py-2 text-sm transition-colors",
               variant === "desktop" && "whitespace-nowrap",
               active
-                ? "bg-accent/10 font-medium text-accent"
+                ? "bg-[#165DFF]/10 font-medium text-[#165DFF]"
                 : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
             )}
           >
@@ -83,20 +80,67 @@ function NavLinks({
   );
 }
 
+function NavSearch() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [value, setValue] = useState(searchParams.get("q") || "");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (value.trim()) {
+      router.push(`/search?q=${encodeURIComponent(value.trim())}`);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="relative hidden items-center md:flex"
+    >
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="搜索企业名称/带教名字..."
+        className="h-9 w-48 rounded-lg border-[#E5E6EB] bg-muted/50 pl-9 pr-9 text-sm focus-visible:ring-2 focus-visible:ring-[#165DFF]/50"
+      />
+      {value && (
+        <button
+          type="button"
+          onClick={() => setValue("")}
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          <X className="h-3 w-3" />
+        </button>
+      )}
+    </form>
+  );
+}
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState("");
+  const router = useRouter();
+
+  const handleMobileSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mobileSearch.trim()) {
+      router.push(`/search?q=${encodeURIComponent(mobileSearch.trim())}`);
+      setMobileOpen(false);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#165DFF]/40 to-transparent" />
 
       <div className="relative mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:h-16 sm:px-6">
         <Link
           href="/"
           className="group flex shrink-0 items-center gap-2.5 rounded-lg outline-none ring-offset-background transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
-          <Avatar className="h-9 w-9 border border-border/80 shadow-sm ring-1 ring-accent/20">
-            <AvatarFallback className="bg-gradient-to-br from-zinc-900 to-zinc-700 text-[11px] font-bold tracking-widest text-white dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900">
+          <Avatar className="h-9 w-9 border border-border/80 shadow-sm ring-1 ring-[#165DFF]/20">
+            <AvatarFallback className="bg-gradient-to-br from-[#165DFF] to-[#0E42D2] text-[11px] font-bold tracking-widest text-white">
               RM
             </AvatarFallback>
           </Avatar>
@@ -105,10 +149,12 @@ export function Navbar() {
               {appConfig.name}
             </span>
             <span className="hidden text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground sm:block">
-              Web3 Reputation
+              去中心化职场Mentor/企业评价平台
             </span>
           </div>
         </Link>
+
+        {/* <NavSearch /> */}
 
         <nav className="hidden flex-1 justify-center md:flex">
           <NavLinks variant="desktop" />
@@ -144,6 +190,20 @@ export function Navbar() {
                   选择页面 · {appConfig.name}
                 </DrawerDescription>
               </DrawerHeader>
+
+              {/* 移动端搜索 */}
+              <form onSubmit={handleMobileSearch} className="px-2 py-4">
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    value={mobileSearch}
+                    onChange={(e) => setMobileSearch(e.target.value)}
+                    placeholder="搜索企业名称/带教名字..."
+                    className="h-10 w-full rounded-lg border-[#E5E6EB] pl-9 text-sm"
+                  />
+                </div>
+              </form>
+
               <div className="flex-1 overflow-y-auto px-2 py-4">
                 <NavLinks
                   variant="drawer"

@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'zpix';
+  src: url('./assets/zpix.ttf') format('truetype');
+}
+
+:root {
+  color: #111111;
+  background: #ffffff;
+  font-family: 'zpix', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #ffffff;
+  color: #111111;
+}
+
+body,
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+textarea {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a4a4a4;
+}
+
+textarea:focus::placeholder {
+  color: transparent;
+}

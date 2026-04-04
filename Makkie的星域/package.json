@@ -1,0 +1,23 @@
+{
+  "name": "mood-realm-contracts",
+  "version": "1.0.0",
+  "description": "情绪星域 MoodRealm Stamp NFT contracts (Avalanche C-Chain)",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:fuji": "npx hardhat run scripts/deploy.ts --network fuji",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network avalanche",
+    "verify:fuji": "npx hardhat verify --network fuji"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0",
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.0.0"
+  }
+}
