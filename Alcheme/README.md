@@ -76,7 +76,9 @@ npm install
 echo "OPENAI_API_KEY=your_api_key_here" > .env
 
 # 4. Start the development server
-npm run dev```
+npm run dev
+
+```
 
 Open [Alcheme Live Demo](https://tux-assist-66534042.figma.site/awaken) to begin your alchemy journey.
 
