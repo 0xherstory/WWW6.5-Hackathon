@@ -1,6 +1,6 @@
 import { emailTransporter } from '../config/email';
 import { env, getAIEnv } from '../config/env';
-import { miniMaxNativeChatCompletion } from '../config/minimax';
+import { miniMaxChatCompletion } from '../config/minimax';
 import { OfferOCRResult } from '../types/auth.types';
 import { generateOTP, getOTPExpireTime } from '../utils/otp.util';
 
@@ -69,7 +69,7 @@ export class AuthService {
                 }
               `;
 
-    const raw = await miniMaxNativeChatCompletion({
+    const raw = await miniMaxChatCompletion({
       model: MINIMAX_VISION_MODEL,
       messages: [
         {
