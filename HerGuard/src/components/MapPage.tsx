@@ -32,21 +32,21 @@ export default function MapPage({ contract }: MapPageProps) {
     );
   }, []);
 
-  // Fetch alerts from contract — poll every 15s for real-time updates
+  // Fetch ALL SOS records from contract (no time/active filter) — poll every 15s
   useEffect(() => {
     if (!contract) return;
     let cancelled = false;
     const fetchAlerts = async () => {
       try {
-        const ids: bigint[] = await contract.getActiveAlerts();
+        const total = Number(await contract.getTotalSOSCount());
         const records: AlertRecord[] = [];
-        for (const id of ids) {
+        for (let id = 1; id <= total; id++) {
           try {
             const rec = await contract.getSOSRecord(id);
             const lat = Number(rec[1]) / 1_000_000;
             const lng = Number(rec[2]) / 1_000_000;
             if (lat !== 0 || lng !== 0) {
-              records.push({ sosId: Number(id), lat, lng, timestamp: Number(rec[3]), caller: rec[0] });
+              records.push({ sosId: id, lat, lng, timestamp: Number(rec[3]), caller: rec[0] });
             }
           } catch { /* skip */ }
         }
@@ -76,7 +76,8 @@ export default function MapPage({ contract }: MapPageProps) {
     return `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`;
   };
 
-  // OSM only supports one marker — always show user position (the blue built-in marker)
+  // OSM iframe only supports one marker — always show USER position (blue dot)
+  // Alert info is shown via the overlay banner + list
   const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${getBbox()}&layer=mapnik&marker=${lat},${lng}`;
 
   return (

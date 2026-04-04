@@ -1,17 +1,20 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Loader2, AlertTriangle } from "lucide-react";
+import { Check, Loader2, AlertTriangle, Share2, Mail, Copy } from "lucide-react";
 import { Contract } from "ethers";
 import { playBeep, startDeterrentAudio, stopDeterrentAudio, isDeterrentPlaying_ } from "@/lib/audio";
 import { addSOSHistory } from "@/lib/localStorage";
 import { useOfflineBuffer } from "@/hooks/useOfflineBuffer";
 import { shortenHash } from "@/hooks/useWallet";
+import { reverseGeocode, generateShareData } from "@/lib/geocode";
+import { loadContacts } from "@/lib/emergencyContacts";
 import { toast } from "sonner";
 
 type SOSState = "idle" | "pressing" | "loading" | "success" | "offline";
 
 interface SOSButtonProps {
   contract: Contract | null;
+  walletAddress: string | null;
   isWalletConnected: boolean;
   isCorrectNetwork: boolean;
   isSilent: boolean;
@@ -21,6 +24,7 @@ interface SOSButtonProps {
 
 export default function SOSButton({
   contract,
+  walletAddress,
   isWalletConnected,
   isCorrectNetwork,
   isSilent,
@@ -32,6 +36,7 @@ export default function SOSButton({
   const [countdown, setCountdown] = useState(3);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [showSafeButton, setShowSafeButton] = useState(false);
+  const [shareData, setShareData] = useState<{ mapLink: string; text: string; smsBody: string } | null>(null);
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const startTimeRef = useRef<number>(0);
@@ -42,6 +47,7 @@ export default function SOSButton({
   const triggerSOS = useCallback(async () => {
     setState("loading");
 
+    // 1. 播放声音和闪光
     if (!isSilent) {
       playBeep();
       const flashEl = document.getElementById("screen-flash");
@@ -55,6 +61,7 @@ export default function SOSButton({
       }
     }
 
+    // 2. 获取地理位置
     let lat = 0, lng = 0;
     try {
       const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
@@ -66,53 +73,75 @@ export default function SOSButton({
       lat = pos.coords.latitude;
       lng = pos.coords.longitude;
     } catch {
-      // fallback to 0,0
+      // 失败则默认为 0,0
     }
 
     const latInt = Math.round(lat * 1_000_000);
     const lngInt = Math.round(lng * 1_000_000);
 
-    addSOSHistory({
-      latitude: latInt,
-      longitude: lngInt,
-      timestamp: Math.floor(Date.now() / 1000),
-      status: "pending",
-    });
+    // 3. 【核心改动】立即发送后端邮件，不等区块链
+    const addressPromise = reverseGeocode(lat, lng);
+    const contacts = loadContacts();
 
-    // Start deterrent audio if sound is on
+    // 启动一个不带 await 的异步任务发送邮件，防止区块链报错导致程序中断
+    (async () => {
+      try {
+        const address = await addressPromise;
+        if (contacts.length > 0) {
+          const payload = {
+            walletAddress: walletAddress || "",
+            latitude: Number(lat) || 0,
+            longitude: Number(lng) || 0,
+            address: address || "未知位置",
+            emergencyContacts: contacts.map((c) => ({
+              name: c.name,
+              email: c.email,
+            })),
+          };
+          console.log("🚀 正在紧急发送邮件到后端...", payload);
+          const resp = await fetch("https://herguard-backend.onrender.com/api/send-sos-sms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (resp.ok && !isSilent) toast.success("📧 求救邮件已发出！");
+        }
+      } catch (err) {
+        console.error("邮件发送失败:", err);
+      }
+    })();
+
+    // 4. 启动音频防卫
     if (voiceDeterrent && !isSilent) {
       startDeterrentAudio(customAudioUrl);
       setShowSafeButton(true);
     }
 
+    // 5. 最后再尝试区块链存证（即使报错也不会影响邮件）
     if (contract && isWalletConnected && isCorrectNetwork) {
       try {
-        if (!isSilent) toast("正在上链...");
+        if (!isSilent) toast("正在尝试区块链存证...");
         const tx = await contract.triggerSOS(latInt, lngInt, "");
         const receipt = await tx.wait();
-        const hash = receipt.hash || tx.hash;
-        setTxHash(hash);
+        setTxHash(receipt.hash || tx.hash);
         setState("success");
-
-        addSOSHistory({
-          latitude: latInt,
-          longitude: lngInt,
-          timestamp: Math.floor(Date.now() / 1000),
-          txHash: hash,
-          status: "success",
-        });
-
-        if (!isSilent) toast.success("✅ 已安全存证");
-        return;
-      } catch {
-        // Fall through to offline
+        if (!isSilent) toast.success("✅ 区块链已存证");
+      } catch (e) {
+        console.error("区块链存证报错（可能是 SOS ID 问题）:", e);
+        addRecord(lat, lng);
+        setState("offline");
+        if (!isSilent) toast("⚠️ 存证未成功，已暂存本地");
       }
+    } else {
+      addRecord(lat, lng);
+      setState("offline");
     }
 
-    addRecord(lat, lng);
-    setState("offline");
-    if (!isSilent) toast("⚠️ 已本地存储，等待网络恢复");
-  }, [contract, isWalletConnected, isCorrectNetwork, isSilent, voiceDeterrent, customAudioUrl, addRecord]);
+    // 生成分享数据
+    const address = await addressPromise;
+    setShareData(generateShareData(lat, lng, address));
+    
+  }, [contract, walletAddress, isWalletConnected, isCorrectNetwork, isSilent, voiceDeterrent, customAudioUrl, addRecord]);
 
   const handlePointerDown = useCallback(() => {
     if (state === "loading" || state === "success") return;
@@ -149,6 +178,24 @@ export default function SOSButton({
     setState("idle");
     setProgress(0);
     setTxHash(null);
+    setShareData(null);
+  };
+
+  const handleCopyShare = () => {
+    if (!shareData) return;
+    navigator.clipboard.writeText(shareData.text).then(() => toast.success("已复制到剪贴板")).catch(() => {});
+  };
+
+  const handleEmailShare = () => {
+    if (!shareData) return;
+    const contacts = loadContacts();
+    const emails = contacts.map((c) => c.email).join(",");
+    window.open(`mailto:${emails}?subject=${encodeURIComponent("[紧急求救] HerGuard")}&body=${encodeURIComponent(shareData.text)}`, "_self");
+  };
+
+  const handleWhatsAppShare = () => {
+    if (!shareData) return;
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text)}`, "_blank");
   };
 
   const resetAfterDelay = () => {
@@ -157,8 +204,9 @@ export default function SOSButton({
         setState("idle");
         setProgress(0);
         setTxHash(null);
+        setShareData(null);
       }
-    }, 8000);
+    }, 30000);
   };
 
   if (state === "success" || state === "offline") {
@@ -192,7 +240,7 @@ export default function SOSButton({
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        className={`relative aspect-square w-[80vw] max-w-[360px] select-none rounded-full ${bgColor} ${glowClass} transition-colors duration-500`}
+        className={`relative aspect-square w-[70vw] max-w-[320px] select-none rounded-full ${bgColor} ${glowClass} transition-colors duration-500`}
         whileTap={state === "idle" ? { scale: 0.95 } : {}}
         style={{ touchAction: "none" }}
       >
@@ -249,7 +297,7 @@ export default function SOSButton({
         </div>
       </motion.button>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-4 text-center text-sm text-muted-foreground">
         {state === "idle" && "长按 3 秒触发"}
         {state === "pressing" && "继续按住..."}
         {state === "loading" && "正在获取位置并上链"}
@@ -257,12 +305,35 @@ export default function SOSButton({
         {state === "offline" && "离线，数据已暂存本地"}
       </p>
 
+      {/* Share buttons */}
+      <AnimatePresence>
+        {shareData && (state === "success" || state === "offline") && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
+            className="mt-4 flex flex-col items-center gap-2 w-full max-w-xs"
+          >
+            <p className="text-xs text-muted-foreground">📍 分享位置给紧急联系人</p>
+            <div className="flex gap-2 w-full">
+              <button onClick={handleEmailShare} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-foreground">
+                <Mail className="h-3.5 w-3.5" /> 邮件
+              </button>
+              <button onClick={handleWhatsAppShare} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-foreground">
+                <Share2 className="h-3.5 w-3.5" /> WhatsApp
+              </button>
+              <button onClick={handleCopyShare} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-foreground">
+                <Copy className="h-3.5 w-3.5" /> 复制
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {showSafeButton && (
           <motion.button
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
             onClick={handleSafe}
-            className="mt-6 rounded-full bg-sos-success px-8 py-3 text-base font-bold text-primary-foreground"
+            className="mt-4 rounded-full bg-sos-success px-8 py-3 text-base font-bold text-primary-foreground"
           >
             我已安全
           </motion.button>
