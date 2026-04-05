@@ -1,0 +1,561 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 古籍风格设计系统 - 传统中国水墨色彩 */
+
+@layer base {
+  :root {
+    /* 宣纸背景色系 - 基于上传图片的暖棕色调 */
+    --background: 28 25% 92%;
+    --foreground: 30 15% 15%;
+
+    /* 卡片 - 古籍页面色 - 暖棕调 */
+    --card: 28 20% 94%;
+    --card-foreground: 30 15% 15%;
+    --card-shadow: 30 20% 20% / 0.15;
+
+    --popover: 28 25% 92%;
+    --popover-foreground: 30 15% 15%;
+
+    /* 传统色彩：竹青色系 - 基于竹青色#2E6F56 */
+    --primary: 158 30% 33%;  /* 竹青色 #2E6F56 */
+    --primary-foreground: 28 25% 92%;
+
+    /* 次要色 - 浅竹青色 */
+    --secondary: 158 20% 60%; /* 浅竹青 */
+    --secondary-foreground: 30 15% 15%;
+
+    /* 柔和色 - 更浅竹青调 */
+    --muted: 158 15% 85%;
+    --muted-foreground: 158 20% 45%;
+
+    /* 强调色 - 中等竹青色 */
+    --accent: 158 25% 45%; /* 中竹青强调色 */
+    --accent-foreground: 46 40% 96%;
+
+    /* 砖红色系 - 基于砖红色#B0452E */
+    --brick-red: 15 60% 43%; /* 砖红色 #B0452E */
+    --brick-red-light: 15 50% 55%;
+    
+    /* 渐变色 - 砖红到竹青渐变 */
+    --gradient-start: 15 60% 43%; /* 砖红色起点 */
+    --gradient-end: 158 30% 33%;   /* 竹青色终点 */
+
+    /* 传统水墨色 */
+    --ink-light: 0 0% 75%;
+    --ink-medium: 0 0% 50%;
+    --ink-dark: 0 0% 20%;
+
+    /* 古籍装饰色 */
+    --seal-red: 15 65% 50%;
+    --gold-accent: 45 70% 60%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 46 40% 96%;
+
+    --border: 28 18% 85%;
+    --input: 28 20% 90%;
+    --ring: 28 45% 40%;
+
+    --radius: 1.25rem; /* 20px 圆角 */
+
+    --sidebar-background: 28 20% 94%;
+    --sidebar-foreground: 30 15% 15%;
+    --sidebar-primary: 28 45% 40%;
+    --sidebar-primary-foreground: 28 25% 92%;
+    --sidebar-accent: 28 22% 88%;
+    --sidebar-accent-foreground: 30 15% 15%;
+    --sidebar-border: 28 18% 85%;
+    --sidebar-ring: 28 45% 40%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+/* 古籍渐变和纹理 */
+.gradient-ink {
+  background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.enhanced-title {
+  position: relative;
+  background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.7);
+  text-stroke: 0.5px rgba(255, 255, 255, 0.7);
+}
+
+.enhanced-title::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: -8%;
+  right: -8%;
+  bottom: 15%;
+  background: transparent;
+  border-radius: 16px;
+  z-index: -1;
+}
+
+/* 白色边框效果 */
+.white-border {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+  text-stroke: 1px rgba(255, 255, 255, 0.8);
+}
+
+.medium-white-border {
+  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.6);
+  text-stroke: 0.5px rgba(255, 255, 255, 0.6);
+}
+
+/* 古风书签标签导航 */
+.bookmark-tab {
+  position: relative;
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px 8px 0 0;
+  padding: 8px 16px 12px;
+  margin-bottom: -4px;
+  transition: all 0.3s ease;
+  z-index: 10;
+  font-family: 'Noto Serif SC', serif;
+}
+
+.bookmark-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid hsl(var(--border));
+}
+
+.bookmark-tab:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--card)));
+}
+
+.bookmark-tab.active {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+/* 水墨线条进度条 */
+.ink-progress {
+  position: relative;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    hsl(var(--muted)) 0%,
+    hsl(var(--border)) 100%);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.ink-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg,
+    hsl(var(--ink-dark)) 0%,
+    hsl(var(--primary)) 50%,
+    hsl(var(--ink-medium)) 100%);
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: ink-flow 2s ease-in-out infinite;
+}
+
+@keyframes ink-flow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* 古籍装帧效果 */
+.book-spine {
+  position: relative;
+  background: linear-gradient(180deg,
+    hsl(var(--card)) 0%,
+    hsl(var(--muted)) 50%,
+    hsl(var(--card)) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: 4px;
+  box-shadow: 
+    inset 2px 0 4px hsl(var(--background) / 0.5),
+    inset -2px 0 4px hsl(var(--ink-dark) / 0.1);
+}
+
+.book-spine::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: hsl(var(--border));
+  opacity: 0.3;
+}
+
+.book-spine::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: hsl(var(--border));
+  opacity: 0.3;
+}
+
+/* 双页布局 */
+.dual-page-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .dual-page-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* 模块化书页效果 */
+.book-module {
+  background: linear-gradient(145deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--card)) 50%,
+    hsl(var(--muted)) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: 
+    0 2px 8px hsl(var(--ink-dark) / 0.1),
+    inset 0 1px 0 hsl(var(--background) / 0.8);
+  transition: all 0.3s ease;
+}
+
+.book-module::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg,
+    hsl(var(--primary)) 0%,
+    hsl(var(--accent)) 100%);
+  border-radius: 4px 0 0 4px;
+}
+
+/* 古籍卡片样式 */
+.ancient-card {
+  @apply bg-card rounded-[20px] shadow-sm border border-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-md;
+}
+
+.ancient-card:hover {
+  box-shadow: 0 8px 25px -5px hsl(var(--card-shadow));
+}
+
+/* 弹层专用：与 Dialog 的 translate(-50%,-50%) 居中共存，禁止 hover 改 translate 导致抖动 */
+.ancient-card-dialog {
+  @apply bg-card rounded-[20px] shadow-lg border border-border/50;
+}
+
+/* 水墨纹理背景 */
+.ink-texture {
+  background: 
+    radial-gradient(circle at 20% 80%, hsl(var(--ink-light)) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, hsl(var(--ink-light)) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, hsl(var(--muted)) 0%, transparent 50%);
+}
+
+/* 水墨山水滚动布局 */
+.scroll-layout {
+  background: url('https://images.unsplash.com/photo-1533050487297-09b4501313b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=60') no-repeat center top fixed;
+  background-size: cover;
+}
+
+/* 顶部标题 */
+.site-header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(4px);
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.intro {
+  font-size: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* 长卷容器 */
+.scroll-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 24px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 卡片样式 */
+.scroll-card {
+  flex: 0 0 300px;
+  scroll-snap-align: start;
+  background: hsl(var(--card)) url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 12px hsl(var(--card-shadow));
+  position: relative;
+  padding: 20px;
+  border: 2px solid hsl(var(--border));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px -5px hsl(var(--card-shadow));
+}
+
+.card-content img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.scroll-card h2 {
+  background: linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* 表单样式 */
+.scroll-card input, 
+.scroll-card textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--input));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+
+/* 底部样式 */
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255,255,255,0.9);
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.footer-link {
+  color: hsl(var(--accent));
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+/* Bento Grid 布局系统 */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bento-card {
+  @apply ancient-card p-6;
+}
+
+.bento-large {
+  grid-column: span 2;
+  min-height: 350px;
+}
+
+.bento-medium {
+  grid-column: span 1;
+  min-height: 280px;
+}
+
+.bento-tall {
+  grid-row: span 2;
+  min-height: 600px;
+}
+
+/* 响应式 Bento Grid */
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .bento-large,
+  .bento-medium,
+  .bento-tall {
+    grid-column: span 1;
+    grid-row: span 1;
+    min-height: auto;
+  }
+}
+
+/* 宣纸纹理背景 */
+.rice-paper-bg {
+  background: 
+    radial-gradient(circle at 25% 25%, hsl(var(--muted)) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, hsl(var(--muted)) 0%, transparent 50%),
+    linear-gradient(45deg, hsl(var(--background)) 0%, hsl(var(--card)) 100%);
+}
+
+/* 水墨晕染效果 */
+.ink-wash {
+  background: 
+    radial-gradient(ellipse at top left, hsl(var(--ink-light) / 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, hsl(var(--ink-light) / 0.2) 0%, transparent 50%);
+}
+
+/* 响应式：手机改为上下滚动 */
+@media (max-width: 768px) {
+  .scroll-container {
+    flex-direction: column;
+    overflow-x: unset;
+  }
+  
+  .scroll-card {
+    flex: auto;
+    margin-bottom: 20px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  /* 字体层次 */
+  .title-large {
+    @apply text-4xl md:text-5xl font-bold;
+  }
+  
+  .title-medium {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+  
+  .title-small {
+    @apply text-xl font-medium;
+  }
+  
+  .text-accent-color {
+    color: hsl(var(--accent));
+  }
+}
