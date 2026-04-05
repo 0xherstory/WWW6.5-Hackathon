@@ -1,0 +1,13 @@
+ui/node_modules/
+ui/dist/
+ui/.vite/
+ui/.env
+ui/.env.local
+
+contracts/.env
+contracts/node_modules/
+contracts/artifacts/
+contracts/deployments/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
