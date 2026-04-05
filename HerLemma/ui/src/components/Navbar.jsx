@@ -47,7 +47,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.08] bg-[rgba(255,255,255,0.04)] backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.10] bg-[rgba(255,255,255,0.06)] backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link to="/" className="group shrink-0">
           <motion.span

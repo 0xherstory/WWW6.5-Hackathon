@@ -172,7 +172,7 @@ export default function Profile() {
                 🌸
               </motion.div>
               <div>
-                <h1 className="text-2xl font-bold text-white md:text-3xl">{summary ? '链上讲解者' : '小花'}</h1>
+                <h1 className="text-2xl font-bold text-white md:text-3xl">{summary ? '链上讲解者' : '佳佳'}</h1>
                 <p className="mt-1 font-mono text-sm text-white/50">{summary ? shortenAddress(summary.address) : '0x3f…a2'}</p>
               </div>
             </div>

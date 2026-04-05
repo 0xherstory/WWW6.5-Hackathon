@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiSparkles } from 'react-icons/hi2'
-import { generateExplanations, generateAnimation, chatWithAssistant, generateImage } from '../utils/ai'
+import { generateExplanations, generateAnimation, generateImage, chatWithAssistant } from '../utils/ai'
 import { mockChainSubmit } from '../utils/chain'
 import { DERIVATIVE_TREE, TOPICS } from '../data/mockTree'
 
@@ -100,6 +100,10 @@ export default function Create() {
 
   const [animHtml, setAnimHtml] = useState('')
   const [animLoading, setAnimLoading] = useState(false)
+  const [diagramHtml, setDiagramHtml] = useState('')
+  const [diagramLoading, setDiagramLoading] = useState(false)
+
+  const [uploadedNotes, setUploadedNotes] = useState([])
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [txResult, setTxResult] = useState(null)
@@ -122,6 +126,7 @@ export default function Create() {
     setEditedTexts(['', '', ''])
     setGeneratedImages([null, null, null])
     setAnimHtml('')
+    setDiagramHtml('')
     setTxResult(null)
     try {
       const raw = await generateExplanations('导数', textbook.content)
@@ -143,6 +148,7 @@ export default function Create() {
   }, [textbook.content])
 
   const handleGenerateImage = useCallback(async (idx) => {
+    setSelectedIdx(idx)
     setImageLoading(idx)
     try {
       const text = editedTexts[idx] || aiResults[idx]?.explanation || ''
@@ -150,8 +156,7 @@ export default function Create() {
       const url = await generateImage(text, style)
       setGeneratedImages(prev => { const next = [...prev]; next[idx] = url; return next })
     } catch {
-      const fallback = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240"><rect fill="#1a1028" width="400" height="240"/><text x="200" y="120" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="14" font-family="system-ui">图片生成失败，请重试</text></svg>`)
-      setGeneratedImages(prev => { const next = [...prev]; next[idx] = fallback; return next })
+      setGeneratedImages(prev => { const next = [...prev]; next[idx] = null; return next })
     }
     setImageLoading(-1)
   }, [editedTexts, aiResults])
@@ -218,7 +223,7 @@ export default function Create() {
               whileTap={{ scale: 0.99 }}
             >
               <HiSparkles className="inline mr-1.5" />
-              {isGenerating ? '生成中…' : 'AI 帮我讲解'}
+              {isGenerating ? '生成中…' : 'AI 提供思路'}
             </motion.button>
           </div>
 
@@ -242,19 +247,19 @@ export default function Create() {
                         onClick={() => setSelectedIdx(i)}
                         className={`${glass} overflow-hidden cursor-pointer transition-all ${isSelected ? `ring-2 ring-[${c.accent}]/60 shadow-[0_0_30px_${c.accent}20]` : 'hover:border-white/15'}`}
                       >
-                        {/* 配图区 */}
-                        <div className={`relative h-32 flex items-center justify-center bg-gradient-to-br ${c.bg}`}>
-                          {img ? (
-                            <img src={img} alt="" className="w-full h-full object-cover" />
-                          ) : imageLoading === i ? (
-                            <motion.div className="h-8 w-8 rounded-full border-2 border-t-white/60 border-r-transparent border-b-white/20 border-l-transparent" animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} />
-                          ) : (
-                            <span className="text-4xl select-none">{item.scene || ['🚲⛰️','🔍📐','📱☕'][i]}</span>
-                          )}
-                          <div className="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-[#0a0612]/80 to-transparent" />
-                        </div>
-
                         <div className="p-4 space-y-2">
+                          {/* emoji（无配图时） */}
+                          {!img && imageLoading !== i && (
+                            <div className={`flex items-center justify-center h-14 rounded-xl bg-gradient-to-br ${c.bg}`}>
+                              <span className="text-3xl select-none">{item.scene || ['🚲⛰️','🔍📐','📱☕'][i]}</span>
+                            </div>
+                          )}
+                          {imageLoading === i && (
+                            <div className={`flex items-center justify-center h-14 rounded-xl bg-gradient-to-br ${c.bg}`}>
+                              <motion.div className="h-6 w-6 rounded-full border-2 border-t-white/60 border-r-transparent border-b-white/20 border-l-transparent" animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} />
+                            </div>
+                          )}
+
                           <span className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${c.border} bg-white/[0.03]`} style={{ color: c.accent }}>
                             {item.style}
                           </span>
@@ -283,12 +288,16 @@ export default function Create() {
                           {!img && imageLoading !== i && (
                             <button
                               onClick={e => { e.stopPropagation(); handleGenerateImage(i) }}
-                              className="w-full mt-1 rounded-lg border border-dashed border-white/15 py-2 text-xs text-white/40 hover:text-white/70 hover:border-white/30 transition-colors"
+                              className="w-full rounded-lg border border-dashed border-white/15 py-2 text-xs text-white/40 hover:text-white/70 hover:border-white/30 transition-colors"
                             >
                               🎨 生成配图
                             </button>
                           )}
-                          {img && <p className="text-[10px] text-emerald-400/60 mt-1">✅ 配图已生成</p>}
+
+                          {/* 配图：文字下方，填满宽度 */}
+                          {img && (
+                            <img src={img} alt="" className="w-full rounded-xl border border-white/[0.08]" />
+                          )}
                         </div>
                       </motion.div>
                     )
@@ -304,7 +313,7 @@ export default function Create() {
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                 <p className="text-xs font-semibold text-white/30 uppercase tracking-widest">3 · 增强讲解（可选）</p>
 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-3">
                   {/* 数学动画 */}
                   <div className={`${glass} p-5`}>
                     <div className="flex items-center justify-between mb-3">
@@ -325,10 +334,10 @@ export default function Create() {
                       </div>
                     )}
                     {animHtml && !animLoading && (
-                      <iframe srcDoc={animHtml} title="动画" sandbox="allow-scripts" className="w-full rounded-lg border border-white/[0.08]" style={{ height: 280 }} />
+                      <iframe srcDoc={animHtml} title="动画" sandbox="allow-scripts" className="w-full rounded-lg border border-white/[0.08]" style={{ height: 260 }} />
                     )}
                     {!animHtml && !animLoading && (
-                      <p className="text-xs text-white/25 text-center py-8">AI 将根据你的讲解生成数学可视化动画</p>
+                      <p className="text-xs text-white/25 text-center py-8">AI 生成带动态效果的数学可视化</p>
                     )}
                   </div>
 
@@ -374,6 +383,45 @@ export default function Create() {
                       )}
                     </div>
                   </div>
+                  {/* 手写笔记上传 */}
+                  <div className={`${glass} p-5`}>
+                    <p className="text-sm font-semibold text-white/70 mb-3">📝 手写笔记（可选）</p>
+                    <div className="space-y-3">
+                      {uploadedNotes.length > 0 && (
+                        <div className="grid grid-cols-2 gap-2">
+                          {uploadedNotes.map((src, i) => (
+                            <div key={i} className="relative group">
+                              <img src={src} alt={`笔记 ${i + 1}`} className="w-full h-28 object-cover rounded-lg border border-white/10" />
+                              <button
+                                onClick={() => setUploadedNotes(prev => prev.filter((_, j) => j !== i))}
+                                className="absolute top-1 right-1 h-5 w-5 rounded-full bg-black/60 text-white/70 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >✕</button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <label className="flex flex-col items-center justify-center w-full py-6 rounded-xl border-2 border-dashed border-white/15 cursor-pointer hover:border-white/30 transition-colors">
+                        <span className="text-2xl mb-1">📷</span>
+                        <span className="text-xs text-white/40">拍照或上传手写笔记</span>
+                        <span className="text-[10px] text-white/20 mt-0.5">支持 JPG / PNG</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          className="hidden"
+                          onChange={(e) => {
+                            const files = Array.from(e.target.files || [])
+                            files.forEach(file => {
+                              const reader = new FileReader()
+                              reader.onload = (ev) => setUploadedNotes(prev => [...prev, ev.target.result])
+                              reader.readAsDataURL(file)
+                            })
+                            e.target.value = ''
+                          }}
+                        />
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -385,17 +433,15 @@ export default function Create() {
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className={`${glass} p-5`}>
                 <p className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-3">4 · 定稿</p>
                 <div className="rounded-xl bg-black/20 border border-white/[0.06] p-4 mb-4">
-                  <div className="flex gap-4">
-                    {generatedImages[selectedIdx] && (
-                      <img src={generatedImages[selectedIdx]} alt="" className="w-28 h-20 rounded-lg object-cover shrink-0" />
-                    )}
+                  <div>
                     <div>
                       <p className="text-xs text-[#f9ca24]/70 font-medium mb-1">{aiResults[selectedIdx]?.style}</p>
                       <p className="text-sm text-white/85 leading-relaxed">{editedTexts[selectedIdx]}</p>
                     </div>
                   </div>
-                  {animHtml && <p className="text-xs text-violet-300/50 mt-2">📊 附带数学动画</p>}
+                  {animHtml && <p className="text-xs text-violet-300/50 mt-2">✨ 附带数学动画</p>}
                   {recorder.audioUrl && <p className="text-xs text-[#ff6b6b]/50 mt-1">🎙️ 附带语音讲解</p>}
+                  {uploadedNotes.length > 0 && <p className="text-xs text-[#f9ca24]/50 mt-1">📝 附带 {uploadedNotes.length} 张手写笔记</p>}
                 </div>
                 <motion.button
                   onClick={handleSubmit}

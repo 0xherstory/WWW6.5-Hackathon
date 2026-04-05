@@ -1,6 +1,6 @@
-const TEXT_API_KEY = 'sk-nKZQrY5fPKvbSQPyBdEfD7079a994bE2B30d7fA00aFaCfB7'
-const TEXT_API_URL = 'https://api.edgefn.net/v1/chat/completions'
-const TEXT_MODEL = 'GLM-5'
+const TEXT_API_KEY = 'sk-940f712454584ce1b906db510223ef61'
+const TEXT_API_URL = 'https://api.deepseek.com/v1/chat/completions'
+const TEXT_MODEL = 'deepseek-chat'
 
 const IMAGE_API_KEY = '27368a1e-f69c-499e-bf50-a0c2c640fd13'
 const IMAGE_API_URL = 'https://ark.cn-beijing.volces.com/api/v3/images/generations'
@@ -14,6 +14,19 @@ async function chatCompletion(messages, { temperature = 0.7, max_tokens = 1000 }
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ model: TEXT_MODEL, messages, temperature, max_tokens }),
+  })
+  const data = await res.json()
+  return data.choices?.[0]?.message?.content?.trim() || '让我换个方式帮你想想这个问题～'
+}
+
+async function rawChatCompletion(messages, opts = {}) {
+  const res = await fetch(TEXT_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${TEXT_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ model: TEXT_MODEL, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.max_tokens ?? 1000 }),
   })
   const data = await res.json()
   return data.choices?.[0]?.message?.content || ''
@@ -31,7 +44,7 @@ export async function generateExplanations(topic, textbookContent) {
 教材原文：${textbookContent}
 知识点：${topic}
 
-每种讲解还需要配一个 "scene" 字段：2-3 个 emoji 组成的场景图，例如 "🚲⛰️" 或 "☕📉"。
+每种讲解还需要配一个 "scene" 字段：2-3 个 emoji 组成的场景图。
 
 请严格按以下JSON格式返回（不要添加任何其他内容）：
 [
@@ -48,15 +61,15 @@ export async function generateExplanations(topic, textbookContent) {
 // ── Chatbot ──
 export async function chatWithAssistant(history) {
   const messages = [
-    { role: 'system', content: '你是一个专门帮助高中女生理解数学概念的助手。你的讲解方式是：用10岁小孩都能听懂的例子来解释高中数学。不用公式，不用术语，只用日常生活中最简单直观的比喻。回答简洁，控制在3-4句话。' },
+    { role: 'system', content: '你是帮助高中女生理解数学的助手。用10岁小孩能听懂的例子解释。不用公式术语。直接回答，2-3句话，不要分析过程。如果问题不清楚就猜她想问什么。' },
     ...history,
   ]
-  return chatCompletion(messages, { temperature: 0.7, max_tokens: 300 })
+  return chatCompletion(messages, { temperature: 0.7, max_tokens: 400 })
 }
 
-// ── 图片生成 ──
+// ── 教学图生成（豆包）──
 export async function generateImage(explanationText, style) {
-  const prompt = `数学教育插画，可爱温暖的风格，暗色背景(#0a0612)。画面内容：${explanationText}。风格：${style}，适合高中女生，色彩明亮柔和，有数学元素融入日常场景。`
+  const prompt = `数学概念教学插图，简洁直观，深色背景。用生活场景图形化展示：${explanationText}。要求：画面清晰易懂，用图形和场景表达数学概念，配色鲜明温暖，风格适合高中女生，可爱友好，不要出现任何文字、字母、数字、公式。`
 
   const res = await fetch(IMAGE_API_URL, {
     method: 'POST',
@@ -76,6 +89,36 @@ export async function generateImage(explanationText, style) {
   })
   const data = await res.json()
   return data.data?.[0]?.url || null
+}
+
+// ── 教学图生成（AI 代码绘制）──
+export async function generateDiagram(explanationText, topic) {
+  const prompt = `你是一个数学教学图绘制专家。请根据以下讲解，生成一段完整的 HTML + Canvas 代码，画一张**静态的数学教学示意图**（不是动画）。
+
+讲解内容："${explanationText}"
+知识点：${topic}
+
+要求：
+1. 输出完整 HTML（含 <!DOCTYPE html>）
+2. 用 Canvas 2D 画一张教学图，包含：
+   - 坐标轴（带箭头）
+   - 一条相关的函数曲线（#ff6b6b 颜色）
+   - 在曲线上标记 2-3 个关键点（用黄色圆点 #f9ca24）
+   - 在关键点处画辅助线（切线/垂线等，用 #00d2d3 颜色）
+   - 用中文标注每个关键点的含义（如"这里最陡"、"这里走平了"）
+3. 背景色 #0a0612，画布宽 100%、高 350px
+4. 不要用 requestAnimationFrame，画一次就行
+5. 标注文字要清晰可读（白色，14px）
+6. 整体像一张精美的教科书彩色插图
+
+只输出 HTML 代码，不要任何解释。不要用 markdown 代码块。`
+
+  const raw = await rawChatCompletion([{ role: 'user', content: prompt }], { temperature: 0.4, max_tokens: 2000 })
+  let html = raw.replace(/```html\n?/gi, '').replace(/```\n?/g, '').trim()
+  if (!html.includes('<!DOCTYPE') && !html.includes('<html')) {
+    html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{margin:0;padding:0}body{background:#0a0612;overflow:hidden}</style></head><body><canvas id="c"></canvas><script>${html}</script></body></html>`
+  }
+  return html
 }
 
 // ── 数学动画生成 ──
@@ -141,7 +184,7 @@ export async function generateAnimation(explanationText, topic) {
 
 用户的讲解是："${explanationText}"
 
-请输出两段 JavaScript 代码（不需要完整 HTML，只要 JS）：
+请输出两段 JavaScript 代码：
 
 **第一段 MATH_FUNCTION：** 定义数学函数，比如：
 function f(x) { return x * x; }
@@ -150,18 +193,18 @@ const originX = W / 2, originY = H * 0.65;
 function toScreen(x, y) { return [originX + x * 60, originY - y * 60]; }
 
 **第二段 ANIMATION_CODE：** 定义 animate(t) 函数，要求：
-- 调用 drawAxes(originX, originY) 画坐标轴
-- 画出函数曲线（用 #ff6b6b 颜色，lineWidth 2.5）
-- 一个发光的点沿曲线移动（位置用 sin(t) 控制），点用 #f9ca24，半径 6
-- 在移动点处画切线（用 #00d2d3 颜色）
-- 显示动态数值，用 label() 函数
-- 用 label() 在画面上方标注概念名称
+- 调用 drawAxes(originX, originY)
+- 画函数曲线（#ff6b6b，lineWidth 2.5）
+- 一个发光点沿曲线移动（#f9ca24）
+- 在移动点处画切线（#00d2d3）
+- 用 label() 显示动态数值
+- 加轨迹残影效果
 
-请严格按以下 JSON 格式返回，不要加任何其他内容：
-{"mathFunction": "这里放第一段代码...", "animationCode": "这里放第二段代码..."}`
+请严格按以下 JSON 格式返回：
+{"mathFunction": "代码...", "animationCode": "代码..."}`
 
-  const content = await chatCompletion([{ role: 'user', content: prompt }], { temperature: 0.5, max_tokens: 2000 })
-  const cleaned = content.replace(/^```json\n?/i, '').replace(/```\n?$/g, '').trim()
+  const content = await rawChatCompletion([{ role: 'user', content: prompt }], { temperature: 0.5, max_tokens: 2000 })
+  const cleaned = content.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim()
 
   try {
     const { mathFunction, animationCode } = JSON.parse(cleaned)

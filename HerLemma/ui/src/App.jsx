@@ -11,7 +11,7 @@ export default function App() {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-[#0a0612] bg-mesh text-[#f0eef5]">
+    <div className="min-h-screen bg-[#16122a] bg-mesh text-[#f0eef5]">
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.div

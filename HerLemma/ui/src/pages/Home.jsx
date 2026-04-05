@@ -15,14 +15,15 @@ const item = {
 }
 
 const DEMO_EXPLANATIONS = [
-  { style: '🚲 骑车上坡', text: '导数就是你脚底下这一小段路有多陡。上坡=正，下坡=负，山顶=零。', author: '小雨', avatar: '🦊', votes: 312 },
-  { style: '✏️ 画眉毛', text: '导数就是"眉笔在这一点该往哪个方向画"。眉头上扬=正，眉峰=零，眉尾下降=负。', author: '小鹿', avatar: '🐚', votes: 321 },
-  { style: '🌸 花开延时', text: '导数就是"花瓣此刻张开的速度"。含苞时慢，盛开前最快，全开后就不动了。', author: '一一', avatar: '🍀', votes: 267 },
+  { style: '🚲 导数 · 骑车上坡', text: '导数就是你脚底下这一小段路有多陡。上坡=正，下坡=负，山顶=零。', author: '小雨', avatar: '🦊', votes: 312, topic: '导数' },
+  { style: '🎢 函数 · 过山车', text: '二次函数就像过山车轨道——开口朝上是先冲下去再飞起来，开口朝下是先飞起来再掉下来。最高点或最低点就是顶点。', author: '悠悠', avatar: '🦢', votes: 289, topic: '函数' },
+  { style: '🧧 数列 · 压岁钱', text: '等比数列就像压岁钱翻倍——今年给100，明年200，后年400。每年都是前一年的两倍，比值永远不变。', author: '糖糖', avatar: '🎀', votes: 256, topic: '数列' },
 ]
 
 const RELAY_STORIES = [
   { from: '小雨', fromAvatar: '🦊', to: '小鱼', toAvatar: '🌸', concept: '导数定义', quote: '小雨用"骑车上坡"讲导数，小鱼听懂后写了"每天称体重"的版本' },
-  { from: '小鹿', fromAvatar: '🐚', to: '糖糖', toAvatar: '🎀', concept: '导数定义', quote: '小鹿用"画眉毛"讲导数，糖糖受启发写了"烤蛋糕温度曲线"' },
+  { from: '悠悠', fromAvatar: '🦢', to: '小夏', toAvatar: '🌙', concept: '二次函数', quote: '悠悠用"过山车"讲抛物线，小夏受启发写了"投篮弧线"的版本' },
+  { from: '圆圆', fromAvatar: '💫', to: '阿月', toAvatar: '🌺', concept: '条件概率', quote: '圆圆用"下雨带伞"讲条件概率，阿月写了"追剧猜剧情"的版本' },
 ]
 
 const FALLBACK_STATS = {
@@ -128,12 +129,7 @@ export default function Home() {
             <p className="mt-2 text-sm text-white/40">不是标准答案不够好，是每个人卡住的地方不一样</p>
           </div>
 
-          <div className="glass rounded-2xl p-5 border border-white/[0.08] mb-4">
-            <p className="text-xs text-[#ff6b6b]/60 font-medium">📖 教材写的</p>
-            <p className="text-sm text-white/50 mt-1 font-mono">f'(x₀) = lim(Δx→0) [f(x₀+Δx) - f(x₀)] / Δx</p>
-          </div>
-
-          <p className="text-xs text-white/30 text-center mb-3">↓ 她们是这样理解的 ↓</p>
+          <p className="text-xs text-white/30 text-center mb-3">教材写的她们看不懂，但换一种方式就听懂了 ↓</p>
 
           <div className="grid gap-3 md:grid-cols-3">
             {DEMO_EXPLANATIONS.map((e, i) => (
@@ -198,9 +194,9 @@ export default function Home() {
 
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              { avatar: '🦊', name: '小雨', from: '高二开始在平台讲导数', to: '北京大学 · 数学科学学院', year: '2025', stat: '她的讲解帮助了 312 人', tag: '🏅 平台讲解量 Top 3', color: 'from-[#ff6b6b]/15 to-[#ff6b6b]/5', border: 'border-[#ff6b6b]/25' },
-              { avatar: '🐚', name: '小鹿', from: '用"画眉毛"讲导数走红', to: 'MIT · 数学系全额奖学金', year: '2026', stat: '单条讲解 321 人说听懂', tag: '🔥 阅读量最高讲解', color: 'from-[#f9ca24]/15 to-[#f9ca24]/5', border: 'border-[#f9ca24]/25' },
-              { avatar: '🌙', name: '小月', from: '在平台讲几何意义和竞赛题', to: 'CMO 银牌 → 清华大学姚班', year: '2025', stat: '她的讲解被 3 所高中引用', tag: '🏆 竞赛方向标杆', color: 'from-[#a29bfe]/15 to-[#a29bfe]/5', border: 'border-[#a29bfe]/25' },
+              { avatar: '🦊', name: '小雨', from: '用生活类比讲导数和函数', to: '北京大学 · 数学科学学院', year: '2025', stat: '讲解覆盖导数+函数共 47 条', tag: '📐 导数方向 Top 1', color: 'from-[#ff6b6b]/15 to-[#ff6b6b]/5', border: 'border-[#ff6b6b]/25' },
+              { avatar: '🦢', name: '悠悠', from: '擅长用故事讲概率和数列', to: '复旦大学 · 数据科学专业', year: '2025', stat: '概率+数列讲解被 892 人认可', tag: '🎲 概率方向标杆', color: 'from-[#f9ca24]/15 to-[#f9ca24]/5', border: 'border-[#f9ca24]/25' },
+              { avatar: '🐚', name: '小鹿', from: '全科讲解者，导数+函数+概率', to: 'MIT · 数学系全额奖学金', year: '2026', stat: '跨 4 个主题累计 1356 人听懂', tag: '🔥 全科最高人气', color: 'from-[#a29bfe]/15 to-[#a29bfe]/5', border: 'border-[#a29bfe]/25' },
             ].map((p, i) => (
               <motion.div
                 key={i}
