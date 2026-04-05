@@ -1,0 +1,14 @@
+{
+  "name": "herlemma-contracts",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "compile:node": "node tools/compile.mjs",
+    "deploy:fuji": "node tools/deploy-fuji.mjs"
+  },
+  "dependencies": {
+    "ethers": "^6.16.0",
+    "solc": "^0.8.24"
+  }
+}
