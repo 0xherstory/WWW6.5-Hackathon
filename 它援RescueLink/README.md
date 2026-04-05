@@ -183,8 +183,10 @@ RescueLink 不希望只停留在一次性的情绪触动或短期曝光，而是
 
 ## 🔗 Demo
 
-- **Demo：** [https://www-rescue-link.vercel.app/](https://www-rescue-link.vercel.app/)
+- **Demo：** [https://www-rescue-link.vercel.app/](https://www-rescue-link.vercel.app/)。（上链版demo 用户不用连钱包）
+- **Prototype：** [https://www-rescue-link.lovable.app/] 
 - **GitHub：** [https://github.com/nomia72/WWW6.5-Hackathon](https://github.com/nomia72/WWW6.5-Hackathon)
+- **Presentation Deck:** [https://bit.ly/www-rescue-link] 
 
 ---
 
