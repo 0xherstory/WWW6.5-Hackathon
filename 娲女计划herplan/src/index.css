@@ -315,6 +315,11 @@
   box-shadow: 0 8px 25px -5px hsl(var(--card-shadow));
 }
 
+/* 弹层专用：与 Dialog 的 translate(-50%,-50%) 居中共存，禁止 hover 改 translate 导致抖动 */
+.ancient-card-dialog {
+  @apply bg-card rounded-[20px] shadow-lg border border-border/50;
+}
+
 /* 水墨纹理背景 */
 .ink-texture {
   background: 

@@ -4,67 +4,92 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useWeb3 } from "@/contexts/Web3Context";
 import { Wallet, User, ChevronDown, LogOut, Shield } from "lucide-react";
 
-interface WalletInfo {
-  address: string;
-  ensName?: string;
-  balance?: string;
+function connectErrorMessage(err: unknown): string {
+  const code =
+    err && typeof err === "object" && "code" in err
+      ? (err as { code: unknown }).code
+      : null;
+  if (code === 4001) {
+    return "您已取消连接或签名请求";
+  }
+  if (err instanceof Error) {
+    if (err.message === "NO_WALLET") {
+      return "请安装 MetaMask 或 Core 等浏览器钱包";
+    }
+    if (err.message === "NO_ACCOUNTS") {
+      return "未获得账户授权，请在钱包中允许连接";
+    }
+  }
+  return "连接失败，请稍后重试";
 }
 
 export const Web3WalletConnect = () => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const {
+    address,
+    balanceLabel,
+    isConnected,
+    isFujiChain,
+    isConnecting,
+    connect,
+    disconnect,
+    ensureFuji,
+    refreshBalance,
+  } = useWeb3();
   const { toast } = useToast();
+  const [isSwitchingChain, setIsSwitchingChain] = useState(false);
 
   const connectWallet = async () => {
-    setIsConnecting(true);
-    
-    // 模拟钱包连接过程
     try {
-      // 这里将来会接入真实的Web3钱包
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const mockWallet = {
-        address: "0x1234...5678",
-        ensName: "user.eth",
-        balance: "2.5 ETH"
-      };
-      
-      setWalletInfo(mockWallet);
-      setIsConnected(true);
-      
+      await connect();
       toast({
         title: "钱包连接成功",
-        description: "您已成功连接到Web3钱包",
+        description: "已连接并切换到 Avalanche Fuji 测试网",
       });
     } catch (error) {
       toast({
         title: "连接失败",
-        description: "请确保您已安装MetaMask钱包",
-        variant: "destructive"
+        description: connectErrorMessage(error),
+        variant: "destructive",
       });
-    } finally {
-      setIsConnecting(false);
     }
   };
 
   const disconnectWallet = () => {
-    setIsConnected(false);
-    setWalletInfo(null);
-    
+    disconnect();
     toast({
       title: "钱包已断开",
       description: "您已成功断开钱包连接",
     });
   };
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const switchToFuji = async () => {
+    setIsSwitchingChain(true);
+    try {
+      await ensureFuji();
+      await refreshBalance();
+      toast({
+        title: "已切换到 Fuji",
+        description: "当前网络：Avalanche Fuji C-Chain",
+      });
+    } catch (error) {
+      toast({
+        title: "切换失败",
+        description: connectErrorMessage(error),
+        variant: "destructive",
+      });
+    } finally {
+      setIsSwitchingChain(false);
+    }
   };
 
-  if (isConnected && walletInfo) {
+  const formatAddress = (addr: string) => {
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  };
+
+  if (isConnected && address) {
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -76,24 +101,24 @@ export const Web3WalletConnect = () => {
             </Avatar>
             <div className="hidden md:flex flex-col">
               <span className="text-sm font-medium font-fangsong">
-                {walletInfo.ensName || formatAddress(walletInfo.address)}
+                {formatAddress(address)}
               </span>
               <span className="text-xs text-muted-foreground">
-                {walletInfo.balance}
+                {balanceLabel ?? "—"}
               </span>
             </div>
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </div>
         </DialogTrigger>
-        
-        <DialogContent className="ancient-card max-w-md">
+
+        <DialogContent className="ancient-card-dialog max-w-md">
           <DialogHeader>
             <DialogTitle className="font-fangsong flex items-center gap-2">
               <Shield className="w-5 h-5 text-primary" />
               Web3 身份
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
               <Avatar className="w-10 h-10">
@@ -102,15 +127,31 @@ export const Web3WalletConnect = () => {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium font-fangsong">
-                  {walletInfo.ensName || formatAddress(walletInfo.address)}
+                <p className="font-medium font-fangsong">{formatAddress(address)}</p>
+                <p className="text-xs font-mono text-muted-foreground break-all">{address}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Fuji 余额（链上查询）：{balanceLabel ?? "—"}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  余额：{walletInfo.balance}
-                </p>
+                {!isFujiChain && (
+                  <div className="mt-2 space-y-2">
+                    <p className="text-xs text-destructive font-fangsong">
+                      当前钱包网络不是 Fuji，链上存证需要 Avalanche Fuji C-Chain。
+                    </p>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="w-full font-fangsong"
+                      disabled={isSwitchingChain}
+                      onClick={() => void switchToFuji()}
+                    >
+                      {isSwitchingChain ? "切换中..." : "切换到 Fuji 测试网"}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <h4 className="font-medium font-fangsong text-primary">已获得徽章</h4>
               <div className="grid grid-cols-3 gap-2">
@@ -125,12 +166,8 @@ export const Web3WalletConnect = () => {
                 </Badge>
               </div>
             </div>
-            
-            <Button 
-              variant="outline" 
-              onClick={disconnectWallet}
-              className="w-full font-fangsong"
-            >
+
+            <Button variant="outline" onClick={disconnectWallet} className="w-full font-fangsong">
               <LogOut className="w-4 h-4 mr-2" />
               断开连接
             </Button>

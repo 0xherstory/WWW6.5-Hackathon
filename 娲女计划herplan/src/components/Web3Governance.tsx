@@ -160,7 +160,7 @@ export const Web3Governance = () => {
                 发起提案
               </Button>
             </DialogTrigger>
-            <DialogContent className="ancient-card max-w-2xl">
+            <DialogContent className="ancient-card-dialog max-w-2xl">
               <DialogHeader>
                 <DialogTitle className="font-fangsong flex items-center gap-2">
                   <PenTool className="w-5 h-5 text-primary" />

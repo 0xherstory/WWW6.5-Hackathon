@@ -149,7 +149,7 @@ export const FunctionalModules = () => {
                 </div>
               </div>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl ancient-card">
+            <DialogContent className="max-w-2xl ancient-card-dialog">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2 font-fangsong">
                   <IconComponent className={`w-6 h-6 ${module.color}`} />

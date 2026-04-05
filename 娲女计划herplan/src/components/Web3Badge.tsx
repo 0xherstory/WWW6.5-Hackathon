@@ -192,7 +192,7 @@ export const Web3Badge = ({ userAddress, size = "medium", showTitle = true }: We
                       </div>
                     </DialogTrigger>
                     
-                    <DialogContent className="ancient-card max-w-md">
+                    <DialogContent className="ancient-card-dialog max-w-md">
                       <DialogHeader>
                         <DialogTitle className="font-fangsong flex items-center gap-2">
                           <IconComponent className={`w-6 h-6 ${getRarityColor(badge.rarity).split(' ')[0]}`} />

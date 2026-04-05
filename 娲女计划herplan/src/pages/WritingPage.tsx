@@ -275,11 +275,10 @@ const WritingPage = () => {
                         <Badge variant="outline" className="text-xs">
                           {work.category}
                         </Badge>
-                        <Web3ContentProof 
+                        <Web3ContentProof
                           contentId={`work-${index}`}
                           title={work.title}
                           author={work.author}
-                          isProven={index === 0}
                           size="small"
                         />
                       </div>

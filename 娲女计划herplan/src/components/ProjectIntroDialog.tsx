@@ -13,7 +13,7 @@ export const ProjectIntroDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent 
-        className="max-w-4xl max-h-[80vh] overflow-y-auto ancient-card relative"
+        className="max-w-4xl max-h-[80vh] overflow-y-auto ancient-card-dialog relative"
         style={{
           backgroundImage: `url(${bambooBirdsBg})`,
           backgroundSize: 'cover',
