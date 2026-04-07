@@ -1,0 +1,795 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Long+Cang&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 手账水彩：暖纸、柔彩晕染、低对比墨迹 */
+    --background: 38 42% 96%;
+    --foreground: 25 22% 28%;
+
+    --card: 40 38% 98%;
+    --card-foreground: 25 22% 28%;
+
+    --popover: 40 38% 98%;
+    --popover-foreground: 25 22% 28%;
+
+    /* 主色：薄荷水彩 */
+    --primary: 168 38% 42%;
+    --primary-foreground: 40 50% 99%;
+
+    /* 辅色：豆沙玫瑰 */
+    --secondary: 12 32% 52%;
+    --secondary-foreground: 40 50% 99%;
+
+    --muted: 35 28% 90%;
+    --muted-foreground: 25 12% 46%;
+
+    --accent: 280 28% 88%;
+    --accent-foreground: 25 22% 28%;
+
+    --destructive: 0 55% 55%;
+    --destructive-foreground: 40 50% 99%;
+
+    --border: 32 25% 86%;
+    --input: 32 22% 88%;
+    --ring: 168 35% 50%;
+
+    --radius: 1rem;
+
+    --ink: 25 22% 28%;
+    --paper: 38 42% 96%;
+    --paper-light: 40 38% 98%;
+    --gold: 28 38% 48%;
+    /* 水彩强调（沿用 cyber 变量名以兼容组件） */
+    --cyber: 168 38% 42%;
+    --cyber-glow: 195 42% 72%;
+
+    /* 手写层：行书日记感 + 柔和西文手写 + 小薇体兜底（笔画带手绘韵味） */
+    --font-hand: 'Long Cang', 'Caveat', 'ZCOOL XiaoWei', cursive;
+    /* 正文：衬线更贴近手账内页、水彩插画的文艺排版 */
+    --font-body: 'Noto Serif SC', 'Noto Sans SC', Georgia, 'Songti SC', serif;
+
+    --shadow-card:
+      0 2px 0 rgba(255, 255, 255, 0.85) inset,
+      0 8px 24px rgba(120, 90, 70, 0.08),
+      0 2px 8px rgba(90, 70, 55, 0.06);
+    --shadow-card-hover:
+      0 2px 0 rgba(255, 255, 255, 0.9) inset,
+      0 12px 32px rgba(120, 90, 70, 0.12),
+      0 4px 12px rgba(90, 70, 55, 0.08);
+  }
+}
+
+@layer base {
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+    line-height: 1.7;
+    font-weight: 400;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(ellipse 95% 65% at 10% 14%, hsl(347 70% 92% / 0.34) 0%, transparent 58%),
+      radial-gradient(ellipse 85% 62% at 90% 88%, hsl(198 72% 90% / 0.28) 0%, transparent 56%),
+      url("/image.png");
+    background-size: auto, auto, cover;
+    background-position: 0 0, 0 0, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-hand);
+    letter-spacing: 0.04em;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+}
+
+@layer utilities {
+  .text-hand {
+    font-family: var(--font-hand);
+  }
+
+  .watercolor-bg-effects {
+    position: fixed;
+    inset: -12vmax;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    filter: saturate(1.08);
+  }
+
+  .wash-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(28px);
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    transform-origin: center;
+    animation: watercolor-drift 18s ease-in-out infinite alternate;
+  }
+
+  .orb-a {
+    width: 48vmax;
+    height: 44vmax;
+    left: 4%;
+    top: 2%;
+    background:
+      radial-gradient(circle at 35% 32%, hsl(203 82% 86% / 0.76) 0%, hsl(203 82% 86% / 0) 66%),
+      radial-gradient(circle at 68% 64%, hsl(342 76% 88% / 0.62) 0%, hsl(342 76% 88% / 0) 63%);
+  }
+
+  .orb-b {
+    width: 52vmax;
+    height: 46vmax;
+    right: -4%;
+    top: 18%;
+    background:
+      radial-gradient(circle at 65% 28%, hsl(164 70% 84% / 0.68) 0%, hsl(164 70% 84% / 0) 62%),
+      radial-gradient(circle at 28% 70%, hsl(44 84% 87% / 0.6) 0%, hsl(44 84% 87% / 0) 66%);
+    animation-delay: 2.3s;
+    animation-duration: 22s;
+  }
+
+  .orb-c {
+    width: 44vmax;
+    height: 40vmax;
+    left: 30%;
+    bottom: -6%;
+    background:
+      radial-gradient(circle at 48% 30%, hsl(280 60% 88% / 0.58) 0%, hsl(280 60% 88% / 0) 64%),
+      radial-gradient(circle at 62% 72%, hsl(193 78% 88% / 0.56) 0%, hsl(193 78% 88% / 0) 64%);
+    animation-delay: 1.1s;
+    animation-duration: 20s;
+  }
+
+  .spark-layer {
+    position: absolute;
+    inset: 6%;
+    background:
+      radial-gradient(circle, hsl(0 0% 100% / 0.42) 0.85px, transparent 1.35px) 0 0 / 44px 44px,
+      radial-gradient(circle, hsl(195 90% 92% / 0.28) 1px, transparent 1.6px) 18px 24px / 56px 56px;
+    opacity: 0.55;
+    animation: sparkle-drift 24s linear infinite;
+  }
+
+  .paper-card {
+    @apply bg-card relative overflow-hidden;
+    isolation: isolate;
+    border-radius: 1.28rem 1.04rem 1.36rem 1.12rem / 1.06rem 1.34rem 1.08rem 1.3rem;
+    border: 1.35px solid transparent;
+    box-shadow:
+      var(--shadow-card),
+      0 0 0 1px hsl(36 38% 98% / 0.82) inset,
+      0 14px 28px rgba(116, 95, 83, 0.1);
+    transition: box-shadow 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+    background-image:
+      radial-gradient(circle at 14% 18%, hsl(201 42% 86% / 0.34), transparent 36%),
+      radial-gradient(circle at 86% 84%, hsl(339 34% 86% / 0.31), transparent 34%),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 22px,
+        hsl(35 22% 78% / 0.16) 23px,
+        transparent 24px
+      ),
+      linear-gradient(165deg, hsl(var(--card) / 0.92) 0%, hsl(var(--card) / 0.97) 44%, hsl(40 34% 95% / 0.62) 100%),
+      linear-gradient(
+        132deg,
+        hsl(158 24% 80% / 0.52),
+        hsl(332 23% 82% / 0.45) 26%,
+        hsl(42 28% 82% / 0.5) 52%,
+        hsl(203 26% 82% / 0.5) 76%,
+        hsl(158 24% 80% / 0.48)
+      );
+    background-origin: border-box;
+    background-clip: padding-box, padding-box, padding-box, padding-box, border-box;
+    will-change: transform, box-shadow, filter;
+  }
+
+  .paper-card:hover {
+    box-shadow:
+      var(--shadow-card-hover),
+      0 0 0 1px hsl(35 42% 98% / 0.85) inset,
+      0 0 0 2px hsl(197 45% 88% / 0.42),
+      0 14px 30px hsl(334 30% 74% / 0.18);
+    transform: translateY(-4px) rotate(-0.4deg) scale(1.008);
+  }
+
+  .paper-card::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 1.18rem 0.96rem 1.3rem 1.02rem / 0.98rem 1.26rem 1.02rem 1.22rem;
+    border: 1px dashed hsl(30 20% 52% / 0.28);
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+  }
+
+  .paper-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 6% 10%, hsl(197 28% 84% / 0.24), transparent 23%),
+      radial-gradient(circle at 96% 8%, hsl(343 27% 84% / 0.22), transparent 22%),
+      radial-gradient(circle at 8% 92%, hsl(158 24% 82% / 0.24), transparent 24%),
+      radial-gradient(circle at 94% 94%, hsl(41 30% 80% / 0.24), transparent 24%),
+      radial-gradient(circle at 84% 28%, hsl(199 31% 82% / 0.14), transparent 16%),
+      radial-gradient(circle at 14% 64%, hsl(336 26% 82% / 0.14), transparent 15%);
+    mix-blend-mode: multiply;
+    background-size: 100% 100%;
+    animation: card-wash-drift 12s ease-in-out infinite alternate;
+  }
+
+  .paper-card:hover::after {
+    animation-duration: 5.8s;
+    opacity: 0.92;
+  }
+
+  .paper-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 柔和水彩光晕（原 glow-cyber） */
+  .glow-cyber {
+    box-shadow:
+      0 4px 18px hsl(168 38% 42% / 0.22),
+      0 2px 8px hsl(195 40% 70% / 0.18);
+  }
+
+  /* 水彩渐变条 / 按钮（原 gradient-cyber） */
+  .gradient-cyber {
+    background: linear-gradient(
+      118deg,
+      hsl(168 36% 48%) 0%,
+      hsl(188 38% 58%) 38%,
+      hsl(210 42% 72%) 72%,
+      hsl(275 32% 78%) 100%
+    );
+    background-size: 140% 140%;
+    animation: gradient-flow 6s ease-in-out infinite;
+  }
+
+  .ink-underline {
+    position: relative;
+  }
+
+  .ink-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      hsl(168 38% 42% / 0.35),
+      hsl(12 32% 52% / 0.45),
+      hsl(168 38% 42% / 0.3)
+    );
+    border-radius: 40% 60% 50% 50% / 60% 40% 55% 45%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+    opacity: 0.9;
+  }
+
+  .ink-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  .journal-screen {
+    @apply rounded-[1.6rem] border border-[hsl(var(--border)_/_0.7)] px-5 py-10 md:px-10 md:py-12;
+    min-height: 72vh;
+    background:
+      linear-gradient(175deg, hsl(var(--paper-light) / 0.95), hsl(var(--paper) / 0.9));
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.85) inset,
+      0 18px 36px rgba(120, 92, 73, 0.08);
+    position: relative;
+  }
+
+  .watercolor-wash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 10% 16%, hsl(202 66% 90% / 0.52) 0%, transparent 36%),
+      radial-gradient(circle at 86% 10%, hsl(346 62% 91% / 0.44) 0%, transparent 38%),
+      radial-gradient(circle at 82% 86%, hsl(156 44% 88% / 0.44) 0%, transparent 37%);
+    mix-blend-mode: multiply;
+  }
+
+  .mint-wash::before {
+    background:
+      radial-gradient(circle at 8% 22%, hsl(152 52% 86% / 0.6) 0%, transparent 38%),
+      radial-gradient(circle at 84% 82%, hsl(202 64% 89% / 0.44) 0%, transparent 34%);
+  }
+
+  .blue-wash::before {
+    background:
+      radial-gradient(circle at 12% 14%, hsl(198 72% 90% / 0.58) 0%, transparent 36%),
+      radial-gradient(circle at 86% 84%, hsl(39 80% 90% / 0.45) 0%, transparent 33%);
+  }
+
+  .pink-wash::before {
+    background:
+      radial-gradient(circle at 10% 12%, hsl(339 85% 91% / 0.52) 0%, transparent 36%),
+      radial-gradient(circle at 88% 84%, hsl(156 50% 88% / 0.48) 0%, transparent 35%);
+  }
+
+  .hand-note-card {
+    @apply paper-card p-5 md:p-7 rounded-[1.3rem];
+    background:
+      linear-gradient(155deg, hsl(352 66% 94% / 0.6), hsl(35 72% 96% / 0.7) 36%, hsl(196 74% 94% / 0.58));
+    border-style: dashed;
+    border-color: hsl(33 28% 78% / 0.85);
+  }
+
+  .journal-chip {
+    @apply px-3 py-1.5 rounded-full text-sm md:text-base border;
+    background: hsl(40 55% 97% / 0.76);
+    border-color: hsl(var(--border) / 0.8);
+  }
+
+  .journal-sticker {
+    @apply absolute z-10 rounded-xl px-2 py-1 text-lg md:text-xl;
+    background: hsl(40 55% 97% / 0.75);
+    border: 1px dashed hsl(var(--border) / 0.85);
+    box-shadow: 0 8px 14px rgba(125, 101, 80, 0.12);
+    transform: rotate(-4deg);
+  }
+
+  .journal-tape {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    width: 190px;
+    height: 22px;
+    transform: translateX(-50%) rotate(-2deg);
+    border-radius: 10px;
+    background: linear-gradient(90deg, hsl(201 72% 90% / 0.65), hsl(35 78% 93% / 0.62));
+    border: 1px solid hsl(var(--border) / 0.65);
+    pointer-events: none;
+  }
+
+  .watercolor-title {
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95),
+      0 6px 16px rgba(165, 124, 95, 0.18);
+  }
+
+  .brain-sketch {
+    position: relative;
+    min-height: 320px;
+    border-radius: 42% 58% 47% 53% / 52% 49% 51% 48%;
+    border: 1px dashed hsl(198 32% 68% / 0.85);
+    background:
+      radial-gradient(ellipse at 52% 50%, hsl(203 72% 87% / 0.85) 0%, hsl(198 58% 92% / 0.45) 55%, transparent 76%),
+      linear-gradient(165deg, hsl(199 62% 94% / 0.75), hsl(42 66% 94% / 0.44));
+    box-shadow: 0 10px 24px rgba(96, 132, 145, 0.15);
+  }
+
+  .brain-tag {
+    @apply absolute px-3 py-1.5 rounded-full text-sm border;
+    background: hsl(43 86% 88% / 0.86);
+    border-color: hsl(42 40% 64% / 0.9);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .brain-tag.active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(177, 153, 84, 0.22);
+  }
+
+  .brain-signal {
+    position: absolute;
+    font-size: 1.2rem;
+    animation: signal-float 2.4s ease-in-out infinite;
+  }
+
+  .brain-signal.one {
+    right: 18%;
+    top: 16%;
+  }
+
+  .brain-signal.two {
+    right: 11%;
+    top: 42%;
+    animation-delay: 0.35s;
+  }
+
+  .brain-signal.three {
+    right: 22%;
+    top: 64%;
+    animation-delay: 0.65s;
+  }
+
+  .watercolor-glow {
+    box-shadow:
+      0 10px 24px rgba(114, 170, 182, 0.18),
+      0 0 0 2px hsl(200 58% 88% / 0.55);
+  }
+
+  .journal-cta {
+    @apply font-hand text-2xl md:text-3xl px-8 py-4 rounded-[999px] border;
+    color: hsl(23 26% 33%);
+    border-color: hsl(329 38% 74% / 0.85);
+    background:
+      linear-gradient(120deg, hsl(203 80% 90%), hsl(334 75% 90%) 60%, hsl(41 78% 91%));
+    box-shadow:
+      0 9px 22px rgba(164, 116, 133, 0.2),
+      0 2px 0 rgba(255, 255, 255, 0.65) inset;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .journal-cta::after {
+    content: '';
+    position: absolute;
+    top: -90%;
+    left: -35%;
+    width: 34%;
+    height: 280%;
+    transform: rotate(16deg);
+    background: linear-gradient(180deg, transparent, hsl(0 0% 100% / 0.55), transparent);
+    animation: cta-shine 3.8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .intro-canvas {
+    min-height: calc(100vh - 11rem);
+    position: relative;
+  }
+
+  .screen-layer {
+    @apply journal-screen px-4 py-8 md:px-8 md:py-10;
+    min-height: calc(100vh - 11rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .intro-dots {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    z-index: 20;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(34 30% 90% / 0.85);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .dot.active {
+    transform: scale(1.2);
+    background: hsl(168 35% 50% / 0.9);
+  }
+
+  .scribble-arrow {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    font-size: 1.9rem;
+    color: hsl(29 84% 31%);
+    animation: arrow-bounce 1.5s ease-in-out infinite;
+  }
+
+  .scribble-arrow.down {
+    right: 16px;
+    bottom: 14px;
+  }
+
+  .hover-sparkle:hover {
+    box-shadow:
+      0 12px 28px rgba(247, 170, 196, 0.22),
+      0 0 0 2px hsl(334 80% 90% / 0.45);
+  }
+
+  .star-shimmer {
+    text-shadow:
+      0 0 8px hsl(353 100% 86% / 0.55),
+      0 0 2px hsl(353 100% 88% / 0.85);
+    animation: shimmer 1s ease-in-out infinite;
+  }
+
+  .breathing {
+    animation: breathing 3s ease-in-out infinite;
+  }
+
+  .stamp-watermark {
+    font-family: var(--font-hand);
+    font-size: 2rem;
+    color: hsl(29 84% 31% / 0.45);
+    letter-spacing: 0.1em;
+    transform: rotate(-8deg);
+  }
+
+  .reference-sidebar {
+    min-height: calc(100vh - 7.5rem);
+    transition: width 0.35s ease;
+    background:
+      linear-gradient(170deg, hsl(40 58% 98% / 0.98), hsl(34 45% 96% / 0.95)),
+      radial-gradient(circle at 86% 10%, hsl(202 100% 92% / 0.35), transparent 35%);
+  }
+
+  .journal-collapse-btn {
+    @apply rounded-full border p-1.5;
+    border-color: hsl(var(--border) / 0.9);
+    background: linear-gradient(125deg, hsl(205 80% 93%), hsl(332 90% 93%));
+  }
+
+  .ref-nav-btn {
+    @apply h-10 rounded-xl border border-[hsl(var(--border)_/_0.75)] flex items-center gap-1.5 px-2 text-[hsl(29_84%_31%)];
+  }
+
+  .ref-nav-btn-active {
+    box-shadow:
+      0 0 0 2px hsl(199 78% 85% / 0.45),
+      0 8px 14px rgba(135, 113, 95, 0.12);
+  }
+
+  .ref-module-title {
+    @apply font-hand text-xl;
+  }
+
+  .ref-theme-behavior.ref-module-title {
+    color: hsl(202 70% 55%);
+    text-shadow: -1px 0 hsl(29 84% 31% / 0.45);
+  }
+
+  .ref-theme-mindset.ref-module-title {
+    color: hsl(160 72% 40%);
+    text-shadow: -1px 0 hsl(29 84% 31% / 0.45);
+  }
+
+  .ref-theme-emotion.ref-module-title {
+    color: hsl(331 68% 50%);
+    text-shadow: -1px 0 hsl(29 84% 31% / 0.45);
+  }
+
+  .ref-theme-environment.ref-module-title {
+    color: hsl(39 88% 48%);
+    text-shadow: -1px 0 hsl(29 84% 31% / 0.45);
+  }
+
+  .ref-note-card {
+    @apply relative rounded-2xl p-3 border;
+    border-color: hsl(var(--border) / 0.86);
+    background:
+      repeating-linear-gradient(
+        180deg,
+        hsl(40 45% 97% / 0.95) 0,
+        hsl(40 45% 97% / 0.95) 21px,
+        hsl(198 30% 86% / 0.14) 22px
+      );
+    box-shadow: 0 6px 16px rgba(120, 93, 74, 0.12);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .ref-note-card.ref-theme-behavior {
+    background:
+      linear-gradient(165deg, hsl(202 100% 95% / 0.95), hsl(40 55% 97% / 0.92));
+  }
+
+  .ref-note-card.ref-theme-mindset {
+    background:
+      linear-gradient(165deg, hsl(151 70% 93% / 0.95), hsl(40 55% 97% / 0.92));
+  }
+
+  .ref-note-card.ref-theme-emotion {
+    background:
+      linear-gradient(165deg, hsl(333 84% 94% / 0.95), hsl(40 55% 97% / 0.92));
+  }
+
+  .ref-note-card.ref-theme-environment {
+    background:
+      linear-gradient(165deg, hsl(46 100% 90% / 0.95), hsl(40 55% 97% / 0.92));
+  }
+
+  .ref-add-btn {
+    @apply inline-flex items-center justify-center gap-1 rounded-full border text-xs;
+    min-width: 80px;
+    height: 25px;
+    border-color: hsl(var(--border) / 0.9);
+    background: linear-gradient(140deg, hsl(203 84% 86%), hsl(159 57% 80%));
+    color: hsl(0 0% 100%);
+  }
+
+  .ref-quote-bubble {
+    @apply absolute z-10 right-2 bottom-12 rounded-xl border p-2;
+    max-width: 220px;
+    border-color: hsl(var(--border) / 0.9);
+    background: hsl(40 55% 98% / 0.96);
+    box-shadow: 0 10px 18px rgba(124, 95, 78, 0.16);
+  }
+
+  .ref-quote-bubble.left {
+    right: auto;
+    left: -228px;
+    bottom: 8px;
+  }
+
+  .ref-page-btn {
+    @apply rounded-full border px-3 py-1 text-xs font-hand;
+    border-color: hsl(var(--border) / 0.85);
+    background: hsl(40 55% 97% / 0.9);
+  }
+
+  .ref-progress-bar {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: hsl(35 35% 92% / 0.8);
+    overflow: hidden;
+  }
+
+  .ref-progress-bar > span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, hsl(202 95% 84%), hsl(151 70% 78%), hsl(333 85% 84%));
+    transition: width 0.3s ease;
+  }
+
+  .ref-bottom-tape {
+    height: 16px;
+    border-radius: 8px;
+    background: linear-gradient(
+      90deg,
+      hsl(202 95% 90% / 0.6) 0%,
+      hsl(151 70% 89% / 0.6) 25%,
+      hsl(333 90% 90% / 0.6) 50%,
+      hsl(46 100% 86% / 0.7) 100%
+    );
+    border: 1px solid hsl(var(--border) / 0.7);
+  }
+}
+
+@keyframes signal-float {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.52;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes arrow-bounce {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2px, -2px);
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes breathing {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes card-wash-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0.6vmax, -0.4vmax, 0) scale(1.015);
+  }
+  100% {
+    transform: translate3d(-0.4vmax, 0.5vmax, 0) scale(0.99);
+  }
+}
+
+@keyframes gradient-flow {
+  0%,
+  100% {
+    background-position: 0% 45%;
+  }
+  50% {
+    background-position: 100% 55%;
+  }
+}
+
+@keyframes cta-shine {
+  0% {
+    left: -35%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.8;
+  }
+  28% {
+    left: 130%;
+    opacity: 0;
+  }
+  100% {
+    left: 130%;
+    opacity: 0;
+  }
+}
+
+@keyframes watercolor-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(2.2vmax, -1.8vmax, 0) scale(1.06) rotate(4deg);
+  }
+  100% {
+    transform: translate3d(-1.6vmax, 2.1vmax, 0) scale(0.98) rotate(-3deg);
+  }
+}
+
+@keyframes sparkle-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(-1.2vmax, 1vmax, 0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(-2.5vmax, 2.4vmax, 0);
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wash-orb,
+  .spark-layer,
+  .paper-card::after,
+  .gradient-cyber,
+  .journal-cta::after {
+    animation: none !important;
+  }
+}
