@@ -4,7 +4,7 @@
 ## 让信任变得可验证
 
  Live Demo:
- https://beautyproof-lovat.vercel.app/
+ https://beautyproof-bh3t23xvh-ryana-faye-yus-projects.vercel.app/
 
 ### Overview | 项目概述
 

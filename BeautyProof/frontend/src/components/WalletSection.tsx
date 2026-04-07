@@ -6,9 +6,11 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const WalletSection = ({
   account,
   onConnect,
+  networkName,
 }: {
   account: string | null;
   onConnect: () => void;
+  networkName: string;
 }) => {
   const { t } = useLanguage();
 
@@ -24,7 +26,9 @@ const WalletSection = ({
         <div className="bg-card rounded-xl border border-border/60 p-6 text-center space-y-4 shadow-sm">
           <div className="flex items-center justify-center gap-2 text-foreground">
             <Wallet className="w-[1.125rem] h-[1.125rem]" />
-            <h2 className="text-lg font-display tracking-tight">{t("wallet.title")}</h2>
+            <h2 className="text-lg font-display tracking-tight">
+              {t("wallet.title")}
+            </h2>
           </div>
 
           {!account ? (
@@ -37,6 +41,7 @@ const WalletSection = ({
                 <Wifi className="w-4 h-4" />
                 <span>{t("wallet.connected")}</span>
               </div>
+
               <p
                 id="walletAddress"
                 className="text-xs text-muted-foreground font-mono break-all bg-muted/60 rounded-md px-3 py-2"
@@ -47,7 +52,7 @@ const WalletSection = ({
           )}
 
           <p id="networkStatus" className="text-xs text-muted-foreground">
-            {account ? t("wallet.network") : t("wallet.noWallet")}
+            {account ? networkName : t("wallet.noWallet")}
           </p>
         </div>
       </motion.div>
