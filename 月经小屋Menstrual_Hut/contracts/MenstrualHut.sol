@@ -102,8 +102,8 @@ contract MenstrualHut {
     }
 
     // 仅本人可查（保护隐私）
-    function getMyPeriods() public view returns (PeriodLog[] memory) {
-        return userPeriodLogs[msg.sender];
+    function getMyPeriods(address _user) public view returns (PeriodLog[] memory) {
+        return userPeriodLogs[_user];
     }
 
     function getTotalRecords() public view returns (uint256) {
@@ -143,5 +143,17 @@ contract MenstrualHut {
         if (r.postType == 0) return true;                                              // 免费帖
         if (r.postType == 1) return r.author == _viewer || hasPaid[_recordId][_viewer]; // 收费帖
         return false;
+    }
+
+    function updatePeriodSymptom(string memory _newSymptomCid) public {
+        uint256 count = userPeriodLogs[msg.sender].length;
+        require(count > 0, "No records found");
+        uint256 lastIndex = count - 1;
+        
+        // 允许在经期结束前或结束后的一段时间内更新感受
+        userPeriodLogs[msg.sender][lastIndex].symptomCid = _newSymptomCid;
+        
+        // 同样给予奖励（可选，取决于你的产品设计）
+        _tryMintReward(msg.sender);
     }
 }
