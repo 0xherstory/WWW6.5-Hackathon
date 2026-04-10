@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>情绪星域</title>
-    <link rel="icon" href="./favicon-20260404.png">
-    <link rel="icon" href="./images/favicon-20260404.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-20260404.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-20260404.png">
-    <link rel="shortcut icon" href="./images/favicon-20260404.png">
-    <link rel="apple-touch-icon" href="./images/favicon-20260404.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png?v=20260404b">
+    <link rel="icon" type="image/webp" sizes="32x32" href="./favicon.webp?v=20260404b">
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon.png?v=20260404b">
     <!-- ethers.js v5 — MetaMask 合约交互 -->
     <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" crossorigin="anonymous"></script>
     <style>
@@ -1387,6 +1384,15 @@
             box-shadow: 0 6px 20px rgba(255,220,115,.4);
         }
         .buy-modal-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .buy-modal-rates {
+            background: rgba(47,35,115,.06); border-radius: 14px; padding: 12px 16px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .buy-modal-rate-item {
+            font-size: 12px; color: var(--wf-muted);
+            font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+            text-align: center; letter-spacing: .03em;
+        }
         .buy-modal-cancel {
             text-align: center; font-size: 13px; color: var(--wf-muted);
             font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
@@ -2177,6 +2183,10 @@
 <div class="buy-modal-overlay" id="buy-modal-overlay">
     <div class="buy-modal">
         <div class="buy-modal-title">购买 MOOD Token</div>
+        <div class="buy-modal-rates">
+            <div class="buy-modal-rate-item">1 AVAX ≈ 2,000 MOOD</div>
+            <div class="buy-modal-rate-item">1 MOOD ≈ 0.0005 AVAX</div>
+        </div>
         <div class="buy-modal-row">
             <label>AVAX</label>
             <input type="number" id="buy-eth-input" placeholder="0.01" min="0" step="0.001" />
@@ -2873,9 +2883,9 @@
     ];
 
     // ─── Avalanche DEX Router（Fuji / Mainnet 按需配置）────────────────
-    // 这里需要填你在 Avalanche 上实际使用的 DEX Router 和 WAVAX 地址。
-    const DEX_ROUTER_ADDRESS = '';
-    const WRAPPED_AVAX_ADDRESS = '';
+    // Pangolin Router on Fuji Testnet + WAVAX Fuji
+    const DEX_ROUTER_ADDRESS = '0x2D99ABD9008Dc933ff5c0CD271B88309593aB921';
+    const WRAPPED_AVAX_ADDRESS = '0xd00ae08403B9bbb9124bB305C09058E32C39A48c';
     const DEX_ROUTER_ABI = [
         'function getAmountsOut(uint amountIn, address[] calldata path) view returns (uint[] memory amounts)',
         'function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) payable returns (uint[] memory amounts)'
@@ -2934,7 +2944,48 @@
         enterHome();
     }
 
+    // ─── Demo: 预置每个星球的印记记录 ───
+    function seedDemoStamps() {
+        const key = 'moodRealm_demoStampsSeeded_v1';
+        if (localStorage.getItem(key)) return;
+        let journey = [];
+        try { journey = JSON.parse(localStorage.getItem(STORAGE_JOURNEY) || '[]'); } catch(e) {}
+
+        const demoStamps = [
+            { planet: '迷雾星球', stampName: '迷雾中的回声',   summary: '我好像总在猜他真正的意思' },
+            { planet: '泪海星球', stampName: '沉入深海的信号',  summary: '每次争吵后只剩下沉默' },
+            { planet: '债务星球', stampName: '还不尽的温柔',   summary: '我永远欠他一个交代' },
+            { planet: '面具星球', stampName: '裂缝下的真实',   summary: '我在他面前不敢做自己' },
+            { planet: '枯竭星球', stampName: '最后一滴能量',   summary: '付出了所有但什么都没剩下' },
+            { planet: '猎场星球', stampName: '被锁定的猎物',   summary: '他的关心总让我感到不安' },
+            { planet: '荆棘星球', stampName: '带刺的拥抱',    summary: '爱和痛总是一起出现' },
+            { planet: '藤蔓星球', stampName: '缠绕的依恋',    summary: '离不开也说不清楚' },
+        ];
+
+        const now = Date.now();
+        demoStamps.forEach((ds, i) => {
+            const pd = planetsData.find(p => p.name === ds.planet);
+            journey.unshift({
+                t: now - (i + 1) * 86400000,
+                planet: ds.planet,
+                npc: pd ? pd.npc : '',
+                summary: ds.summary,
+                secondaryPlanet: null,
+                exercises: [],
+                minted: true,
+                stampName: ds.stampName,
+                personId: null,
+                intensity: '有点',
+                protected: false
+            });
+        });
+
+        localStorage.setItem(STORAGE_JOURNEY, JSON.stringify(journey));
+        localStorage.setItem(key, '1');
+    }
+
     function initEntry() {
+        seedDemoStamps();
         if (sessionStorage.getItem(STORAGE_WALLET) || sessionStorage.getItem(STORAGE_DEMO)==='1') {
             demoMode = sessionStorage.getItem(STORAGE_DEMO)==='1';
             walletAddress = sessionStorage.getItem(STORAGE_WALLET)||'';
@@ -3233,6 +3284,7 @@
     /* 详情页对话：关键词匹配，不调用 API */
     // ─── DeepSeek 通过后端代理调用 ───
     const DEEPSEEK_API_URL = '/api/chat';
+    const DEEPSEEK_KEY = ''; // 留空 = 使用本地关键词匹配；填入 key 后需搭配后端代理
 
     /* DeepSeek：根据用户对话 + 星球参考文本，生成个性化结果回复 */
     async function generatePersonalizedReply(planetDB, planetData, userText) {
@@ -3492,12 +3544,37 @@ ${planetDesc}
         setDetailChatBusy(true);
 
         appendChatMsg('user', text);
+
+        // ── 测试口令：直接跳到结果 ──
+        if (text === '测试专用') {
+            const currentPlanet = planetsData[activeIndex];
+            const db = keywordDB.find(d => d.planet === currentPlanet.name);
+            _lastAnalysis = {
+                primaryPlanet: currentPlanet.name,
+                primaryIndex: activeIndex,
+                primaryScore: 1,
+                secondaryPlanet: null,
+                secondaryScore: 0,
+                summary: '测试模式直达结果'
+            };
+            const aiBubble = appendChatMsg('ai', '', true);
+            const reply = db ? db.strongReply : '已识别到你的情绪模式。';
+            await typeTextInBubble(aiBubble, reply, { delay: 300 });
+            finalizeDetailReply(false);
+            setDetailChatBusy(false);
+            return;
+        }
+
         const aiBubble = appendChatMsg('ai', '', true);
 
         try {
             const { reply, skipTurn } = await buildDetailReplyFromUserInput(text);
             await typeTextInBubble(aiBubble, reply, { delay: getTypingDelay() });
             finalizeDetailReply(skipTurn);
+        } catch (err) {
+            console.error('Chat error:', err);
+            aiBubble.classList.remove('is-typing');
+            aiBubble.textContent = LANG === 'en' ? 'Sorry, something went wrong. Please try again.' : '抱歉，出了点问题，请再试一次。';
         } finally {
             setDetailChatBusy(false);
         }
@@ -4136,64 +4213,33 @@ ${planetDesc}
         };
         openAttributionScene();
     }
-    // ─── Uniswap 预估 & Swap ─────────────────────────────────────────
+    // ─── Demo 模拟兑换（无需真实 DEX 池子）─────────────────────────────
+    const DEMO_EXCHANGE_RATE = 2000; // 1 AVAX = 2000 MOOD（模拟汇率）
+
     async function estimateMoodOut() {
         const ethVal = parseFloat(document.getElementById('buy-eth-input').value);
         const el = document.getElementById('buy-estimate');
         if (!ethVal || ethVal <= 0) { el.textContent = LANG === 'en' ? 'Enter AVAX amount to estimate MOOD received' : '输入 AVAX 数量以预估获得的 MOOD'; return; }
-        if (!DEX_ROUTER_ADDRESS || !WRAPPED_AVAX_ADDRESS) { el.textContent = LANG === 'en' ? 'Avalanche DEX router is not configured yet' : 'Avalanche DEX 路由尚未配置'; return; }
-        try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const router = new ethers.Contract(DEX_ROUTER_ADDRESS, DEX_ROUTER_ABI, provider);
-            const amountIn = ethers.utils.parseEther(ethVal.toString());
-            const amounts = await router.getAmountsOut(amountIn, [WRAPPED_AVAX_ADDRESS, MOOD_TOKEN_ADDRESS]);
-            const moodOut = parseFloat(ethers.utils.formatEther(amounts[1])).toLocaleString('zh-CN', {maximumFractionDigits: 2});
-            el.textContent = `预计获得约 ${moodOut} MOOD`;
-        } catch(e) {
-            el.textContent = '预估失败（池子尚未创建？）';
-        }
+        const moodOut = (ethVal * DEMO_EXCHANGE_RATE).toLocaleString('zh-CN', {maximumFractionDigits: 0});
+        el.textContent = `预计获得约 ${moodOut} MOOD`;
     }
 
     async function swapEthForMood() {
         const ethVal = parseFloat(document.getElementById('buy-eth-input').value);
         if (!ethVal || ethVal <= 0) { alert(LANG === 'en' ? 'Please enter a valid AVAX amount.' : '请输入有效的 AVAX 数量。'); return; }
-        if (!DEX_ROUTER_ADDRESS || !WRAPPED_AVAX_ADDRESS) { alert(LANG === 'en' ? 'Avalanche DEX router is not configured yet.' : 'Avalanche DEX 路由尚未配置。'); return; }
         const btn = document.getElementById('btn-buy-confirm');
         btn.disabled = true; btn.textContent = '交易中…';
-        try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const router = new ethers.Contract(DEX_ROUTER_ADDRESS, DEX_ROUTER_ABI, signer);
-            const amountIn = ethers.utils.parseEther(ethVal.toString());
-            // 预估最小输出（允许 1% 滑点）
-            const amounts = await router.getAmountsOut(amountIn, [WRAPPED_AVAX_ADDRESS, MOOD_TOKEN_ADDRESS]);
-            const amountOutMin = amounts[1].mul(99).div(100);
-            const deadline = Math.floor(Date.now() / 1000) + 300; // 5 分钟
 
-            const tx = await router.swapExactETHForTokens(
-                amountOutMin,
-                [WRAPPED_AVAX_ADDRESS, MOOD_TOKEN_ADDRESS],
-                await signer.getAddress(),
-                deadline,
-                { value: amountIn }
-            );
-            btn.textContent = '等待链上确认…';
-            await tx.wait();
+        // 模拟链上确认延迟
+        await new Promise(r => setTimeout(r, 1500));
+        btn.textContent = '等待链上确认…';
+        await new Promise(r => setTimeout(r, 1500));
 
-            // 链上余额同步到本地 UI
-            const token = new ethers.Contract(MOOD_TOKEN_ADDRESS,
-                ['function balanceOf(address) view returns (uint256)'], provider);
-            const bal = await token.balanceOf(await signer.getAddress());
-            const moodGot = parseFloat(ethers.utils.formatEther(amounts[1]));
-            addFuelLog(`购买 MOOD（${ethVal} AVAX）`, Math.round(moodGot));
+        const moodGot = Math.round(ethVal * DEMO_EXCHANGE_RATE);
+        addFuelLog(`购买 MOOD（${ethVal} AVAX）`, moodGot);
 
-            document.getElementById('buy-modal-overlay').classList.remove('is-visible');
-        } catch(e) {
-            console.warn(e);
-            alert('交易失败：' + (e.reason || e.message || '未知错误'));
-        } finally {
-            btn.disabled = false; btn.textContent = '确认购买';
-        }
+        btn.disabled = false; btn.textContent = '确认购买';
+        document.getElementById('buy-modal-overlay').classList.remove('is-visible');
     }
     // ────────────────────────────────────────────────────────────────
 
@@ -4202,11 +4248,8 @@ ${planetDesc}
 
         // ── 购买 MOOD Token (Uniswap swap) ──
         document.getElementById('btn-buy-mood').addEventListener('click', () => {
-            if (!window.ethereum) { alert('请先连接 MetaMask 钱包。'); return; }
-            if (!MOOD_TOKEN_ADDRESS) { alert('合约地址尚未配置，请先部署合约。'); return; }
-            if (!DEX_ROUTER_ADDRESS || !WRAPPED_AVAX_ADDRESS) { alert('Avalanche DEX 路由尚未配置，请先填入 Router 与 WAVAX 地址。'); return; }
             document.getElementById('buy-eth-input').value = '';
-            document.getElementById('buy-estimate').textContent = '输入 AVAX 数量以预估获得的 MOOD';
+            document.getElementById('buy-estimate').textContent = LANG === 'en' ? 'Enter AVAX amount to estimate MOOD received' : '输入 AVAX 数量以预估获得的 MOOD';
             document.getElementById('buy-modal-overlay').classList.add('is-visible');
         });
         document.getElementById('btn-buy-cancel').addEventListener('click', () => {
