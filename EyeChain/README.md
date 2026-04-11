@@ -6,8 +6,8 @@ web3 hackathon
 # EyeChain: Blockchain-Based Vision Risk Monitoring & Collaboration Network
 # 去中心化视觉风险智能协议
 
-去中心化视觉风险智能协议
-Live Demo 演示地址 | Contract (Avalanche Fuji)
+[Live Demo 演示地址](https://eyechain-pulse.lovable.app/) | [Contract (Avalanche Fuji)](https://testnet.snowtrace.io/)
+
 
 ## 🌟 Project Overview
 
@@ -89,27 +89,17 @@ Architecture: Lovable-driven UI with GitHub synchronized workflow
 ## 📂 Project Structure / 项目结构
 
 ```text
-/ (Project Root)
-├── contracts/               # Smart Contract Source (SSOT) / 核心智能合约
-│   ├── UserManagement.sol   # Role-based user profiling (8 medical parameters) / 角色管理与医学画像
-│   ├── RiskManagement.sol   # FMEA RPN logic & risk event logging / FMEA 风险评估核心逻辑
-│   └── DataSharingAndRewards.sol # B2B Marketplace & incentive distribution / B2B 数据市场与激励分配
-├── src/                     # Frontend Application Source / 前端应用源码
-│   ├── components/          # Modular UI Components / 模块化组件
-│   │   ├── dashboard/       # Real-time FMEA monitors & Mermaid animations / 实时风险监控与动态图表
-│   │   ├── marketplace/     # Institutional data purchasing & B2B portal / 机构数据采购与变现门户
-│   │   └── registration/    # Multi-step medical data onboarding / 多步式医疗数据入库
-│   ├── hooks/               # Custom React Hooks / 自定义逻辑钩子
-│   │   └── useEyeChain.ts   # Unified Web3 contract interaction logic / 统一的 Web3 合约交互逻辑
-│   ├── lib/                 # Core Libraries & Configurations / 核心库与配置
-│   │   ├── contract.ts      # SSOT for ABIs and Avalanche Fuji addresses / 合约 ABI 与地址的唯一真理源
-│   │   ├── constants.ts     # Clinical standards (20-20-20 rule) / 临床标准与护眼常识
-│   │   └── knowledgeBase.ts # Decentralized eye-health wiki data / 去中心化眼健康知识库
-│   └── pages/               # Application Routing & Views / 页面路由与主视图
-├── public/                  # Static Assets / 静态资源
-└── README.md                # Project documentation (Bilingual) / 项目说明文档（双语）
+├── contracts/          # Solidity Smart Contracts (Remix)
+│   ├── UserManagement.sol
+│   └── RiskManagement.sol
+│   └── DataSharingAndRewards.sol
+├── src/
+├── all other necessary docs are in private projects/
+│   ├── lib/            # Contract ABI & Ethers configurations
+│   ├── components/     # Dashboard & Form UI
+│   └── pages/          # Main application logic
+└── README.md
 ```
-
 
 ## 📝 License
 

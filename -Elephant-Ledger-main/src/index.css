@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    /* Warm beige palette */
+    --background: 35 30% 96%;
+    --foreground: 25 25% 20%;
+
+    --card: 35 35% 98%;
+    --card-foreground: 25 25% 20%;
+
+    --popover: 35 35% 98%;
+    --popover-foreground: 25 25% 20%;
+
+    /* Soft terracotta - main accent */
+    --primary: 15 55% 55%;
+    --primary-foreground: 35 30% 98%;
+
+    /* Sage green */
+    --secondary: 145 25% 65%;
+    --secondary-foreground: 145 30% 20%;
+
+    /* Warm muted tones */
+    --muted: 35 20% 92%;
+    --muted-foreground: 25 15% 45%;
+
+    /* Accent - lighter terracotta */
+    --accent: 20 40% 90%;
+    --accent-foreground: 15 55% 35%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 25% 88%;
+    --input: 35 25% 88%;
+    --ring: 15 55% 55%;
+
+    --radius: 1rem;
+
+    /* Custom colors */
+    --golden: 42 90% 55%;
+    --golden-glow: 42 95% 70%;
+    --sage: 145 25% 55%;
+    --sage-light: 145 30% 85%;
+    --terracotta: 15 55% 55%;
+    --terracotta-light: 15 45% 85%;
+    --cream: 35 40% 94%;
+
+    --sidebar-background: 35 30% 96%;
+    --sidebar-foreground: 25 25% 20%;
+    --sidebar-primary: 15 55% 55%;
+    --sidebar-primary-foreground: 35 30% 98%;
+    --sidebar-accent: 20 40% 90%;
+    --sidebar-accent-foreground: 15 55% 35%;
+    --sidebar-border: 35 25% 88%;
+    --sidebar-ring: 15 55% 55%;
+  }
+
+  .dark {
+    --background: 25 20% 12%;
+    --foreground: 35 30% 92%;
+    --card: 25 18% 15%;
+    --card-foreground: 35 30% 92%;
+    --popover: 25 18% 15%;
+    --popover-foreground: 35 30% 92%;
+    --primary: 15 55% 60%;
+    --primary-foreground: 25 20% 10%;
+    --secondary: 145 25% 45%;
+    --secondary-foreground: 145 30% 95%;
+    --muted: 25 15% 20%;
+    --muted-foreground: 35 20% 65%;
+    --accent: 20 30% 25%;
+    --accent-foreground: 15 45% 80%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 25 15% 22%;
+    --input: 25 15% 22%;
+    --ring: 15 55% 60%;
+    --sidebar-background: 25 20% 12%;
+    --sidebar-foreground: 35 30% 92%;
+    --sidebar-primary: 15 55% 60%;
+    --sidebar-primary-foreground: 25 20% 10%;
+    --sidebar-accent: 20 30% 25%;
+    --sidebar-accent-foreground: 15 45% 80%;
+    --sidebar-border: 25 15% 22%;
+    --sidebar-ring: 15 55% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Nunito', sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-golden {
+    color: hsl(var(--golden));
+  }
+  
+  .bg-golden {
+    background-color: hsl(var(--golden));
+  }
+
+  .golden-glow {
+    text-shadow: 0 0 30px hsl(var(--golden-glow) / 0.5),
+                 0 0 60px hsl(var(--golden-glow) / 0.3);
+  }
+
+  .value-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--golden)) 0%,
+      hsl(var(--golden-glow)) 50%,
+      hsl(var(--golden)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: -200% 0; }
+    50% { background-position: 200% 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes grow {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--golden) / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(var(--golden) / 0.6); }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-grow {
+    animation: grow 0.5s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}

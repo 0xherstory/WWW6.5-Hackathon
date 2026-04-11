@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 30% 5%;
+    --foreground: 195 80% 95%;
+
+    --card: 210 30% 8%;
+    --card-foreground: 195 80% 95%;
+
+    --popover: 210 30% 8%;
+    --popover-foreground: 195 80% 95%;
+
+    --primary: 189 100% 69%;
+    --primary-foreground: 220 30% 5%;
+
+    --secondary: 330 100% 70%;
+    --secondary-foreground: 220 30% 5%;
+
+    --muted: 210 20% 14%;
+    --muted-foreground: 195 30% 55%;
+
+    --accent: 150 100% 69%;
+    --accent-foreground: 220 30% 5%;
+
+    --destructive: 340 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 189 60% 30%;
+    --input: 189 30% 20%;
+    --ring: 189 100% 69%;
+
+    --radius: 0.5rem;
+
+    --amber: 40 100% 69%;
+    --cyan: 189 100% 69%;
+    --cyan-dim: 189 60% 50%;
+    --magenta: 330 100% 70%;
+    --green: 150 100% 69%;
+
+    --sidebar-background: 210 30% 6%;
+    --sidebar-foreground: 195 80% 95%;
+    --sidebar-primary: 189 100% 69%;
+    --sidebar-primary-foreground: 220 30% 5%;
+    --sidebar-accent: 210 20% 14%;
+    --sidebar-accent-foreground: 195 80% 95%;
+    --sidebar-border: 189 60% 30%;
+    --sidebar-ring: 189 100% 69%;
+
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 16px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px hsl(var(--cyan) / 0.3), 0 0 60px hsl(var(--cyan) / 0.1);
+}
+
+.glow-magenta {
+  box-shadow: 0 0 20px hsl(var(--magenta) / 0.3), 0 0 60px hsl(var(--magenta) / 0.1);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px hsl(var(--green) / 0.3);
+}
+
+.border-glow {
+  border: 1px solid hsl(var(--cyan) / 0.3);
+  position: relative;
+}
+
+.border-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(var(--cyan)), transparent);
+  opacity: 0.6;
+}
+
+/* Panel variants */
+.panel-magenta::before {
+  background: linear-gradient(90deg, transparent, hsl(var(--magenta)), transparent) !important;
+}
+
+.panel-green::before {
+  background: linear-gradient(90deg, transparent, hsl(var(--green)), transparent) !important;
+}
+
+.panel-amber::before {
+  background: linear-gradient(90deg, transparent, hsl(var(--amber)), transparent) !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--cyan) / 0.3);
+  border-radius: 3px;
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out;
+}
+
+/* Input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: hsl(var(--muted));
+  border-radius: 3px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: hsl(var(--cyan));
+  border-radius: 50%;
+  cursor: pointer;
+}
